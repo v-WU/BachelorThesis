@@ -1,12 +1,15 @@
 import networkx as nx
-import matplotlib.pyplot as plt
-
-G = nx.Graph()
-G = nx.read_graphml("C:/Users/zhaox/Desktop/0_2328molecule_3059_matching_graph.graphml")
-
-nx.draw(G)
-plt.show()
+import glob
 
 
+# argument: path of directory as a string
+# returns a list of graphs
+def read_graphs(string):
+    path = string
+    list_of_graphs = []
+    list_of_files = glob.glob(path + "/*.graphml")
 
+    for file_name in list_of_files:
+        list_of_graphs.append(nx.read_graphml(file_name))
 
+    return list_of_graphs
