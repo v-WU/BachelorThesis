@@ -1,6 +1,6 @@
 import unittest
 import networkx as nx
-from src.parser import read_graphs
+from src.parser import read_graphs_from_folder
 
 
 class TestParser(unittest.TestCase):
@@ -10,7 +10,8 @@ class TestParser(unittest.TestCase):
         G.add_nodes_from([1, 2])
         G.add_edge(1, 2)
 
-        my_list = read_graphs("C:/Users/zhaox/PycharmProjects/Data/graphs_for_my_testing")
+        self.folder = read_graphs_from_folder("C:/Users/zhaox/PycharmProjects/Data/graphs_for_my_testing")
+        my_list = self.folder
 
         assert(nx.is_isomorphic(G, my_list[0]))
 

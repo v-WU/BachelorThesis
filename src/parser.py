@@ -4,7 +4,7 @@ import glob
 
 # argument: path of directory as a string
 # returns a list of graphs
-def read_graphs(string):
+def read_graphs_from_folder(string):
     path = string
     list_of_graphs = []
     list_of_files = glob.glob(path + "/*.graphml")
