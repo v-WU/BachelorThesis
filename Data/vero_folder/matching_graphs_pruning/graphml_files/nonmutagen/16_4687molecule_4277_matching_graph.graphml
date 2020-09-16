@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d1" for="node" attr.name="chem" attr.type="string"/>
+<key id="d0" for="graph" attr.name="name" attr.type="string"/>
+<graph edgedefault="undirected"><data key="d0">16_4687molecule_4277_matching_graph</data>
+<node id="17">
+  <data key="d1">C</data>
+</node>
+<node id="21">
+  <data key="d1">C</data>
+</node>
+<node id="22">
+  <data key="d1">C</data>
+</node>
+<node id="25">
+  <data key="d1">C</data>
+</node>
+<edge source="17" target="21"/>
+<edge source="22" target="25"/>
+</graph></graphml>
