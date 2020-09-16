@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d1" for="node" attr.name="chem" attr.type="string"/>
+<key id="d0" for="graph" attr.name="name" attr.type="string"/>
+<graph edgedefault="undirected"><data key="d0">15_373molecule_4058_matching_graph</data>
+<node id="2">
+  <data key="d1">C</data>
+</node>
+<node id="3">
+  <data key="d1">C</data>
+</node>
+<node id="4">
+  <data key="d1">C</data>
+</node>
+<node id="5">
+  <data key="d1">C</data>
+</node>
+<node id="6">
+  <data key="d1">C</data>
+</node>
+<node id="7">
+  <data key="d1">C</data>
+</node>
+<node id="9">
+  <data key="d1">C</data>
+</node>
+<node id="16">
+  <data key="d1">C</data>
+</node>
+<node id="21">
+  <data key="d1">O</data>
+</node>
+<node id="33">
+  <data key="d1">H</data>
+</node>
+<node id="34">
+  <data key="d1">H</data>
+</node>
+<node id="35">
+  <data key="d1">H</data>
+</node>
+<node id="36">
+  <data key="d1">H</data>
+</node>
+<node id="37">
+  <data key="d1">H</data>
+</node>
+<node id="38">
+  <data key="d1">H</data>
+</node>
+<node id="39">
+  <data key="d1">H</data>
+</node>
+<node id="40">
+  <data key="d1">H</data>
+</node>
+<edge source="2" target="6"/>
+<edge source="2" target="7"/>
+<edge source="3" target="9"/>
+<edge source="4" target="33"/>
+<edge source="5" target="34"/>
+<edge source="5" target="35"/>
+<edge source="5" target="36"/>
+<edge source="6" target="37"/>
+<edge source="7" target="38"/>
+<edge source="7" target="39"/>
+<edge source="9" target="40"/>
+<edge source="16" target="21"/>
+</graph></graphml>
