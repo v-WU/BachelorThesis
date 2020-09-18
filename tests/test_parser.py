@@ -1,6 +1,6 @@
 import unittest
 import networkx as nx
-from src.parser import read_graphs_from_folder
+from src.parser import read_graphs_from_folder_structure
 from src.parser import create_abs_path
 
 
@@ -11,23 +11,29 @@ class TestParser(unittest.TestCase):
         rel_path = "Data/graphs_for_my_testing"
         abs_path = create_abs_path(rel_path)
 
-        assert(abs_path == "C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing")
+        assert (abs_path == "C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing")
 
-
-    def test_read_graphs_from_folder(self):
+    def test_read_graphs_from_folder_structure(self):
         G = nx.Graph()
         G.add_nodes_from([1, 2])
         G.add_edge(1, 2)
 
         # change the (absolute) path to the correct one on YOUR device
-        my_list = read_graphs_from_folder("C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing")
+        my_list = read_graphs_from_folder_structure(
+            "C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing")
         imported_graph = my_list[0][0]
         graph_name = my_list[0][1]
         graph_label = my_list[0][2]
 
-        assert(nx.is_isomorphic(G, imported_graph))
-        assert(graph_name == "simple_testing_graph")
-        assert(graph_label == "graphs_for_my_testing")
+        assert (nx.is_isomorphic(G, imported_graph))
+        assert (graph_name == "simple_testing_graph")
+        assert (graph_label == "graphs_for_my_testing")
+
+    # TODO: write test
+    # def test_read_graphs_with_cxl(self):
+
+    # TODO: write test
+    # def test_read_cxl_files(self):
 
 
 if __name__ == '__main__':
