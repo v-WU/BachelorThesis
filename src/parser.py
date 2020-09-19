@@ -16,10 +16,10 @@ def create_abs_path(string):
     return abs_path
 
 
-# argument: (absolute) path of directory as a string WHERE for each file the path must look like .../label/name.graphml
+# argument: (relative) path of directory as a string WHERE for each file the path must look like .../label/name.graphml
 # returns a list of graphs with the following information for each graph: [graph object itself, name, label]
 def read_graphs_from_folder_structure(string):
-    path = string
+    path = create_abs_path(string)
     list_of_graphs = []
     list_of_files = glob.glob(path + "/*.graphml")
 
@@ -39,10 +39,10 @@ def read_graphs_from_folder_structure(string):
     return list_of_graphs
 
 
-# argument: (absolute) path of directory as string, graphs and cxl files have to be in the same folder
+# argument: (relative) path of directory as string, graphs and cxl files have to be in the same folder
 # returns a list of graphs  with the following information for each graph: [graph object itself, name, label]
 def read_graphs_with_cxl(string):
-    path = string
+    path = create_abs_path(string)
     list_of_graphs = []
     list_of_files = glob.glob(path + "/*.graphml")
 
