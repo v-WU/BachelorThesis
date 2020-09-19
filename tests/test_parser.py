@@ -2,6 +2,8 @@ import unittest
 import networkx as nx
 from src.parser import read_graphs_from_folder_structure
 from src.parser import create_abs_path
+from src.parser import read_cxl_files
+from src.parser import read_graphs_with_cxl
 
 
 class TestParser(unittest.TestCase):
@@ -32,8 +34,13 @@ class TestParser(unittest.TestCase):
     # TODO: write test
     # def test_read_graphs_with_cxl(self):
 
-    # TODO: write test
-    # def test_read_cxl_files(self):
+    # tests only the first entry/graph and if the number of graphs is correct
+    def test_read_cxl_files(self):
+        assert ("molecule_1.graphml" in read_cxl_files()[0])
+        assert("mutagen" in read_cxl_files()[0])
+        self.assertFalse("nonmutagen" in read_cxl_files()[0])
+
+        assert(str(len(read_cxl_files())) == "4337")
 
 
 if __name__ == '__main__':
