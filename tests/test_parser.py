@@ -22,7 +22,7 @@ class TestParser(unittest.TestCase):
 
         # change the (absolute) path to the correct one on YOUR device
         my_list = read_graphs_from_folder_structure(
-            "C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing")
+            "Data/graphs_for_my_testing")
         imported_graph = my_list[0][0]
         graph_name = my_list[0][1]
         graph_label = my_list[0][2]
@@ -33,7 +33,7 @@ class TestParser(unittest.TestCase):
 
     def test_read_graphs_with_cxl(self):
         graph_information = read_graphs_with_cxl(
-            "C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing/original_graph_for_testing")
+            "Data/graphs_for_my_testing/original_graph_for_testing")
         assert (graph_information[0][1] == "molecule_1")
         assert (graph_information[0][2] == "mutagen")
 
