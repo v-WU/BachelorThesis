@@ -20,7 +20,6 @@ class TestParser(unittest.TestCase):
         G.add_nodes_from([1, 2])
         G.add_edge(1, 2)
 
-        # change the (absolute) path to the correct one on YOUR device
         my_list = read_graphs_from_folder_structure(
             "Data/graphs_for_my_testing")
         imported_graph = my_list[0][0]
