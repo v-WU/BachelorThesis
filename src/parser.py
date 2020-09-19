@@ -58,18 +58,18 @@ def read_graphs_with_cxl(string):
         name_n_labels = read_cxl_files()
 
         for x in range(len(name_n_labels)):
-            if graph_name in name_n_labels[x]:
-                if "nonmutagen" in name_n_labels[x]:
-                    graph_information[2] = "nonmutagen"
-                else:
-                    graph_information[2] = "mutagen"
+            split_info = re.split(r'["]', name_n_labels[x])
+            name_cxl = split_info[1][:-8]
+            label_cxl = split_info[3]
+            if graph_name == name_cxl:
+                graph_information[2] = label_cxl
 
         list_of_graphs.append(graph_information)
 
     return list_of_graphs
 
 
-# reads exactly 3 cxl files...
+# reads exactly those 3 cxl files...
 def read_cxl_files():
     name_n_labels = []
 

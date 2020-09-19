@@ -11,6 +11,7 @@ from src.parser import read_graphs_with_cxl
 # list2 = read_graphs_from_folder_structure("C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/vero_folder/matching_graphs_no_pruning/graphml_files/mutagen")
 # print(list2[0:2])
 
-#print(read_graphs_with_cxl("C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/vero_folder/mutagenicity/graphmlFiles")[0:2])
+print(read_graphs_with_cxl("C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/vero_folder/mutagenicity/graphmlFiles")[2720])
 
-print(read_cxl_files()[0])
+#print(read_cxl_files()[0])
+# output: <print file="molecule_1.graphml" class="mutagen"/>
