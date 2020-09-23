@@ -31,10 +31,12 @@ class TestParser(unittest.TestCase):
         assert (graph_label == "graphs_for_my_testing")
 
     def test_read_graphs_with_cxl(self):
-        graph_information = read_graphs_with_cxl(
+        graph_information, set_of_labels = read_graphs_with_cxl(
             "Data/graphs_for_my_testing/original_graph_for_testing")
         assert (graph_information[0][1] == "molecule_1")
         assert (graph_information[0][2] == "mutagen")
+        assert ('mutagen' in set_of_labels)
+        assert ('nonmutagen' in set_of_labels)
 
     # tests only the first entry/graph and if the number of graphs is correct
     def test_read_cxl_files(self):

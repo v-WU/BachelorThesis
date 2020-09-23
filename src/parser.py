@@ -40,10 +40,12 @@ def read_graphs_from_folder_structure(string):
 
 
 # argument: (relative) path of directory as string, graphs and cxl files have to be in the same folder
-# returns a list of graphs  with the following information for each graph: [graph object itself, name, label]
+# returns (1) a list of graphs  with the following information for each graph: [graph object itself, name, label]
+# returns (2) a set of the existing labels
 def read_graphs_with_cxl(string):
     path = create_abs_path(string)
     list_of_graphs = []
+    list_of_labels = []
     list_of_files = glob.glob(path + "/*.graphml")
 
     for file_name in list_of_files:
@@ -61,12 +63,17 @@ def read_graphs_with_cxl(string):
             split_info = re.split(r'["]', name_n_labels[x])
             name_cxl = split_info[1][:-8]
             label_cxl = split_info[3]
+
+            list_of_labels.append(label_cxl)
+
             if graph_name == name_cxl:
                 graph_information[2] = label_cxl
 
         list_of_graphs.append(graph_information)
 
-    return list_of_graphs
+    set_of_labels = set(list_of_labels)
+
+    return list_of_graphs, set_of_labels
 
 
 # reads exactly those 3 cxl files...
