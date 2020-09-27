@@ -1,19 +1,12 @@
 import unittest
 import networkx as nx
-from src.parser import read_graphs_from_folder_structure
-from src.parser import create_abs_path
+from src.parser import read_graphs_from_folder_structure, create_abs_path, create_cxl_files
+from src.parser import read_cxl
 from src.parser import read_cxl_files
 from src.parser import read_graphs_with_cxl
 
 
 class TestParser(unittest.TestCase):
-
-    # change the String in assert() to the correct path on YOUR device
-    def test_create_abs_path(self):
-        rel_path = "Data/graphs_for_my_testing"
-        abs_path = create_abs_path(rel_path)
-
-        assert (abs_path == "C:/Users/zhaox/PycharmProjects/BachelorThesis/Data/graphs_for_my_testing")
 
     def test_read_graphs_from_folder_structure(self):
         G = nx.Graph()
@@ -35,16 +28,32 @@ class TestParser(unittest.TestCase):
             "Data/graphs_for_my_testing/original_graph_for_testing")
         assert (graph_information[0][1] == "molecule_1")
         assert (graph_information[0][2] == "mutagen")
+        assert (graph_information[1][1] == "molecule_2747")
+        assert (graph_information[1][2] == "nonmutagen")
         assert ('mutagen' in set_of_labels)
         assert ('nonmutagen' in set_of_labels)
 
-    # tests only the first entry/graph and if the number of graphs is correct
+    # only tests if the number of graphs is correct
     def test_read_cxl_files(self):
-        assert ("molecule_1.graphml" in read_cxl_files()[0])
-        assert ("mutagen" in read_cxl_files()[0])
-        self.assertFalse("nonmutagen" in read_cxl_files()[0])
+        name_n_labels = read_cxl_files("/test.cxl", "/validation.cxl", "/train.cxl")
+        assert (str(len(name_n_labels) == "4337"))
 
-        assert (str(len(read_cxl_files())) == "4337")
+    # tests only the first entry/graph and if the number of graphs is correct
+    def test_read_cxl(self):
+        abs_path = create_abs_path("Data/vero_folder/mutagenicity/graphmlFiles")
+        file = abs_path + "/test.cxl"
+        name_n_label = []
+
+        name_n_label = read_cxl(file, name_n_label)
+
+        assert ("molecule_1.graphml" in name_n_label[0])
+        assert ("mutagen" in name_n_label[0])
+        self.assertFalse("nonmutagen" in name_n_label[0])
+
+    def test_create_cxl_files(self):
+        files = []
+        create_cxl_files("/test.cxl", files)
+        assert (files[0] == create_abs_path("Data/vero_folder/mutagenicity/graphmlFiles/test.cxl"))
 
 
 if __name__ == '__main__':

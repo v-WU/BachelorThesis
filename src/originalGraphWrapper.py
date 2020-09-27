@@ -1,9 +1,10 @@
 import networkx as nx
 
+
 class OriginalGraph:
     def __init__(self, graph, label):
-        self.graph = graph
+        self._graph = graph
         self.label = label
 
-    def getLabel(self):
+    def get_label(self):
         return self.label
