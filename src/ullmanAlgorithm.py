@@ -8,25 +8,24 @@ def perform_ullman_algorithm(matchingGraph, originalGraph):
 
 
 def init(matchingGraph, orignialGraph):
-    create_adj_matrix(matchingGraph)
-    create_adj_matrix(orignialGraph)
+    A = create_adj_matrix(matchingGraph)
+    B = create_adj_matrix(orignialGraph)
+    H = create_vector(matchingGraph)
+    F = create_vector(orignialGraph)
     create_rotation_matrix()
-    create_vector_f()
-    create_vector_h()
     return
 
 
 def create_adj_matrix(graph):
-    return
+    G = np.array(nx.to_numpy_matrix(graph, dtype=int))
+    return G
 
 
 def create_rotation_matrix():
     return
 
 
-def create_vector_f():
-    return
-
-
-def create_vector_h():
-    return
+def create_vector(graph):
+    x = graph.number_of_nodes()
+    F = np.zeros(x, dtype=int)
+    return F
