@@ -42,8 +42,8 @@ class MyTestCase(unittest.TestCase):
         G2 = nx.Graph()
         G2.add_node(1, chem="H")
         G2.add_node(2, chem="O")
-        G2.add_node(3, chem="C")
-        G2.add_node(4, chem="H")
+        G2.add_node(3, chem="H")
+        G2.add_node(4, chem="C")
         G2.add_edge(1, 2)
         G2.add_edge(2, 3)
         G2.add_edge(2, 4)
@@ -57,37 +57,40 @@ class MyTestCase(unittest.TestCase):
         G3.add_edge(2, 3)
         G3.add_edge(2, 4)
 
-        # x = nx.get_node_attributes(G1, "chem")
-        # print(x[1])
-        #
-        # print(nx.get_node_attributes(G1, "chem"))
-        # print(nx.get_node_attributes(G2, "chem"))
-        # print(nx.get_node_attributes(G3, "chem"))
-        #
-        # print(G1.nodes.data())
-        # print(G1.graph)
-
         A = create_adj_matrix(G1)
         B1 = create_adj_matrix(G2)
         B2 = create_adj_matrix(G3)
 
         M = create_rotation_matrix(G1, G2, A, B1)
 
-        # assertions only for DEG-Kriterium!
         assert (M[0][0] == 1)
-        assert (M[0][1] == 1)
+        assert (M[0][1] == 0)
         assert (M[0][2] == 1)
-        assert (M[0][3] == 1)
+        assert (M[0][3] == 0)
         assert (M[1][0] == 0)
         assert (M[1][1] == 1)
         assert (M[1][2] == 0)
         assert (M[1][3] == 0)
         assert (M[2][0] == 1)
-        assert (M[2][1] == 1)
+        assert (M[2][1] == 0)
         assert (M[2][2] == 1)
-        assert (M[2][3] == 1)
+        assert (M[2][3] == 0)
 
+        N = create_rotation_matrix(G1, G3, A, B2)
 
+        assert (N[0][0] == 1)
+        assert (N[0][1] == 1)
+        assert (N[0][2] == 1)
+        assert (N[0][3] == 1)
+        assert (N[1][0] == 0)
+        assert (N[1][1] == 0)
+        assert (N[1][2] == 0)
+        assert (N[1][3] == 0)
+        assert (N[1][3] == 0)
+        assert (N[2][0] == 1)
+        assert (N[2][1] == 1)
+        assert (N[2][1] == 1)
+        assert (N[2][1] == 1)
 
 
 if __name__ == '__main__':
