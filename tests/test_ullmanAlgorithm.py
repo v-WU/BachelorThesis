@@ -4,6 +4,8 @@ import numpy as np
 from ullmanAlgorithm import create_adj_matrix
 from ullmanAlgorithm import create_vector
 from ullmanAlgorithm import create_rotation_matrix
+from ullmanAlgorithm import bedingung1
+from ullmanAlgorithm import step2
 
 
 class MyTestCase(unittest.TestCase):
@@ -92,6 +94,76 @@ class MyTestCase(unittest.TestCase):
         assert (N[2][1] == 1)
         assert (N[2][1] == 1)
 
+    def test_bedingung1(self):
+        G1 = nx.Graph()
+        G1.add_node(1, chem="H")
+        G1.add_node(2, chem="O")
+        G1.add_node(3, chem="H")
+        G1.add_edge(1, 2)
+        G1.add_edge(2, 3)
+
+        G2 = nx.Graph()
+        G2.add_node(1, chem="H")
+        G2.add_node(2, chem="O")
+        G2.add_node(3, chem="H")
+        G2.add_node(4, chem="C")
+        G2.add_edge(1, 2)
+        G2.add_edge(2, 3)
+        G2.add_edge(2, 4)
+
+        A = create_adj_matrix(G1)
+        B1 = create_adj_matrix(G2)
+
+        M = create_rotation_matrix(G1, G2, A, B1)
+        F = create_vector(G2)
+
+        # d entspricht den Zeilen in der Rotationsmatrix
+        for d in range(3):
+            self.assertFalse(bedingung1(M, F, d))
+
+        # Falls alle Einträge in F = 1
+        for d in range(3):
+            F.fill(1)
+            self.assertTrue(bedingung1(M, F, d))
+
+        # Falls alle Einträge in M = 0
+        for d in range(3):
+            M.fill(0)
+            self.assertTrue(bedingung1(M, F, d))
+
+
+    def test_step2(self):
+        G1 = nx.Graph()
+        G1.add_node(1, chem="H")
+        G1.add_node(2, chem="O")
+        G1.add_node(3, chem="H")
+        G1.add_edge(1, 2)
+        G1.add_edge(2, 3)
+
+        G2 = nx.Graph()
+        G2.add_node(1, chem="H")
+        G2.add_node(2, chem="O")
+        G2.add_node(3, chem="H")
+        G2.add_node(4, chem="C")
+        G2.add_edge(1, 2)
+        G2.add_edge(2, 3)
+        G2.add_edge(2, 4)
+
+        A = create_adj_matrix(G1)
+        B1 = create_adj_matrix(G2)
+
+        M = create_rotation_matrix(G1, G2, A, B1)
+        F = create_vector(G2)
+        H = create_vector(G1)
+        H[0] = 1
+        d = 1
+
+        M, F, H, d, k = step2(M, F, H, d)
+        assert (k == 1)
+
+        d = 2
+        M, F, H, d, k = step2(M, F, H, d)
+        assert (k == 0)
 
 if __name__ == '__main__':
     unittest.main()
