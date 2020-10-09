@@ -5,10 +5,11 @@ import numpy as np
 
 
 def perform_ullman_algorithm(matchingGraph, originalGraph):
+    isomorphism = False
     M, F, H = init(matchingGraph, originalGraph)
     M, F, H, d = step1(M, F, H)
     M, F, H, d, k = step2(M, F, H, d)
-    return
+    return isomorphism
 
 
 def init(matchingGraph, orignialGraph):
@@ -25,15 +26,11 @@ def create_adj_matrix(graph):
     return G
 
 
-def create_rotation_matrix(*args):
+def create_rotation_matrix(matchingGraph, originalGraph, A, B):
     """
-    :param args: (1) matching Graph, (2) original Graph, (3) adj. matrix matching Graph, (4) adj. matrix original Graph
-    :return: M0
+    :param (3) adj. Matrix of matchingGraph, (4) adj. Matrix of originalGraph
+    :return: Rotationsmatrix M0
     """
-    matchingGraph = args[0]
-    originalGraph = args[1]
-    A = args[2]
-    B = args[3]
 
     list1 = nx.get_node_attributes(matchingGraph, "chem")  # list with key and attributes, accessible with index
     attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
@@ -66,35 +63,23 @@ def create_vector(graph):
     return F
 
 
-def get_node_attributes(i, j):
-    chem1 = 2
-    chem2 = 3
-    return chem1, chem2
-
-
-def step1(*args):
+def step1(M, F, H):
     """
     implemented according to the paper even though it seems useless
-    :param args: (1) Rotations matrix M, (2) Hilfsvektor F, (3) Hilfsvektor H
-    :return:
+    :param (1) Rotations matrix M, (2) Hilfsvektor F, (3) Hilfsvektor H
+    :return: M, F, H, d
     """
-    M = args[0]
-    F = args[1]
-    H = args[2]
+
     d = 1
     return M, F, H, d
 
 
-def step2(*args):
+def step2(M, F, H, d):
     """
-
     :param args: (1) Rotations matrix M, (2) Hilfsvektor F, (3) Hilfsvektor H, (4) Indizes d
     :return:
     """
-    M = args[0]
-    F = args[1]
-    H = args[2]
-    d = args[3]
+
     k = 0
 
     if bedingung_step2(M, F, d):
@@ -107,21 +92,17 @@ def step2(*args):
     return M, F, H, d, k
 
 
-def bedingung_step2(*args):
+def bedingung_step2(M, F, d):
     """
     :param args: (1) Rotationsmatrix, (2) Hilfsvektor F, (3) Variable d
-    :return: True, if there is NO j s.d. mdj = 1 && Fj = 0
+    :return: True, if there is NO j s.d. Fj = 0 && mdj = 1
     """
-    M = args[0]
-    F = args[1]
-    d = args[2]
 
     value = True
     for j in range(len(F)):
-        if F[j] == 0:
-            if M[d][j] == 1:
-                value = False
-                break
+        if F[j] == 0 and M[d][j] == 1:
+            value = False
+            break
 
     return value
 
