@@ -6,7 +6,7 @@ from src.parser import read_cxl_files
 from src.parser import read_graphs_with_cxl
 
 
-class TestParser(unittest.TestCase):
+class TestParser():
 
     def test_read_graphs_from_folder_structure(self):
         G = nx.Graph()
@@ -48,7 +48,7 @@ class TestParser(unittest.TestCase):
 
         assert ("molecule_1.graphml" in name_n_label[0])
         assert ("mutagen" in name_n_label[0])
-        self.assertFalse("nonmutagen" in name_n_label[0])
+        assert not ("nonmutagen" in name_n_label[0])
 
     def test_create_cxl_files(self):
         files = []
@@ -56,5 +56,3 @@ class TestParser(unittest.TestCase):
         assert (files[0] == create_abs_path("Data/vero_folder/mutagenicity/graphmlFiles/test.cxl"))
 
 
-if __name__ == '__main__':
-    unittest.main()
