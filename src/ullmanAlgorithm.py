@@ -97,7 +97,7 @@ def step2(*args):
     d = args[3]
     k = 0
 
-    if bedingung1(M, F, d):
+    if bedingung_step2(M, F, d):
         step7()
     else:
         if d == 1:
@@ -107,7 +107,7 @@ def step2(*args):
     return M, F, H, d, k
 
 
-def bedingung1(*args):
+def bedingung_step2(*args):
     """
     :param args: (1) Rotationsmatrix, (2) Hilfsvektor F, (3) Variable d
     :return: True, if there is NO j s.d. mdj = 1 && Fj = 0
