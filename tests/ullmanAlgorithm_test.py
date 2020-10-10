@@ -1,4 +1,4 @@
-
+from pytest_mock import mocker
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
 
@@ -80,16 +80,39 @@ class TestUllman():
         ullman.F = ullman.create_vector(G2)
 
         # d entspricht den Zeilen in der Rotationsmatrix
+        # Assertion: "in jeder Zeile existiert ein j s.d. Fj=0 && mdj=1"
+        # es werden NICHT die einzelnen Einträge überprüft, sondern die ganze Matrixzeile...
         for ullman.d in range(3):
-            assert not(ullman.bedingung_step2())
+            assert not (ullman.bedingung_step2())
+
+    def test_bedingung_step2_F1(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
 
         # Falls alle Einträge in F = 1
         for ullman.d in range(3):
             ullman.F.fill(1)
             assert ullman.bedingung_step2()
 
-        # Falls alle Einträge in M = 0
+    def test_bedingung_step2_M0(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
         ullman.F = ullman.create_vector(G2)
+
+        # Falls alle Einträge in M = 0
         for ullman.d in range(3):
             ullman.M.fill(0)
             assert (ullman.bedingung_step2())
@@ -101,7 +124,6 @@ class TestUllman():
 
         matrixG1 = ullman.create_adj_matrix(G1)
         matrixG2 = ullman.create_adj_matrix(G2)
-
 
         ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
         ullman.F = ullman.create_vector(G2)
@@ -116,10 +138,97 @@ class TestUllman():
         ullman.step2()
         assert (ullman.k == 0)
 
+    def test_step7_exit(self):
+        ullman = UllmanAlgorithm()
+        ullman.d = 1
+        ullman.step7()
+        assert not ullman.isomorphism
+
+    def test_step7(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+        ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_vector(G1)
+        ullman.F.fill(1)  # to make sure it changes back to 0
+        ullman.H.fill(1)
+        ullman.d = 2
+        ullman.k = 0
+        ullman.step7()
+        assert (ullman.F[0] == 0)  # Indizes manuell gesetzt, da k in step 7 nochmal verändert wird
+        assert (ullman.d == 1)
+        assert (ullman.k == 1)
+
+    def test_bedingung_step5_F1(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
+
+        # Falls alle Einträge in F = 1
+        for ullman.d in range(3):
+            ullman.F.fill(1)
+            assert ullman.bedingung_step5()
+
+    def test_bedingung_step5_M0(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
+
+        # Falls alle Einträge in M = 0
+        for ullman.d in range(3):
+            ullman.M.fill(0)
+            assert (ullman.bedingung_step5())
+
+    def test_bedingung_step5_ok(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
+
+        # d entspricht den Zeilen in der Rotationsmatrix
+        # Assertion: "in jeder Zeile existiert ein j s.d. Fj=0 && mdj=1"
+        # es werden NICHT die einzelnen Einträge überprüft, sondern die ganze Matrixzeile...
+        for ullman.k in range(1):  # Bedingung gilt im Beispiel nur für k=0,1
+            for ullman.d in range(3):
+                assert not (ullman.bedingung_step5())
+
+    def test_bedingung_step5_fail(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
+
+        ullman.k = 3  # manuell gesetzt, s.d Bedingung j>k überprüft werden kann
+        # d entspricht den Zeilen in der Rotationsmatrix
+        for ullman.d in range(3):
+            assert (ullman.bedingung_step5())
+
+
     def test_perform_ullman_algorithm(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
         ullman.perform_ullman_algorithm(G1, G2)
-        assert (5==4)
-
+        assert ullman.isomorphism

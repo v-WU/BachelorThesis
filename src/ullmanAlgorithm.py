@@ -57,7 +57,7 @@ class UllmanAlgorithm():
                     if chem1 == chem2:
                         self.M[i][j] = 1
 
-        return
+        return self.M
 
     def create_vector(self, graph):
         """
@@ -98,16 +98,46 @@ class UllmanAlgorithm():
         return value
 
     def step3(self):
+        # self.k = self.k + 1
+        # while self.M[self.d][self.k] == 0 and self.F[self.d] == 1:
+        #     self.k = self.k + 1
+        # for j in range(len(self.F)):
+        #     if j != self.k:
+        #         self.M[self.d][j] = 0
         return
 
     def step4(self):
         return
 
     def step5(self):
+        if self.bedingung_step5():
+            self.step7()
+        else:
+            self.step3()
         return
+
+    def bedingung_step5(self):
+        """
+        :return: True, if there is NO j s.d. j>k && F[j]=0 && mdj=1
+        """
+        value = True
+        for j in range(len(self.F)):
+            if self.F[j] == 0 and self.M[self.d][j] == 1:
+                if j > self.k:
+                    value = False
+                    break
+        return value
 
     def step6(self):
         return
 
     def step7(self):
+        if self.d == 1:
+            self.isomorphism = False  # the algorithm should end here...
+            print("There exists no subgraphisomorphism between these two graphs")
+        else:
+            self.F[self.k] = 0
+            self.d = self.d - 1
+            self.k = self.H[self.d]
+            self.step5()
         return
