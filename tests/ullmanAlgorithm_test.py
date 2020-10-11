@@ -1,4 +1,3 @@
-from pytest_mock import mocker
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
 
@@ -144,7 +143,7 @@ class TestUllman():
         ullman.step7()
         assert not ullman.isomorphism
 
-    def test_step7(self):
+    def test_step7(self, mocker):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, _ = utility.create_test_original_graphs()
@@ -154,6 +153,9 @@ class TestUllman():
         ullman.H.fill(1)
         ullman.d = 2
         ullman.k = 0
+
+        mocker.patch.object(ullman, 'step5', return_value=None)
+
         ullman.step7()
         assert (ullman.F[0] == 0)  # Indizes manuell gesetzt, da k in step 7 nochmal verändert wird
         assert (ullman.d == 1)
@@ -225,6 +227,50 @@ class TestUllman():
         for ullman.d in range(3):
             assert (ullman.bedingung_step5())
 
+    # ToDo implement test step5
+    def test_step5(self, mocker):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
+
+        mocker.patch.object(ullman, 'step7', return_value='7')
+        mocker.patch.object(ullman, 'step3', return_value='3')
+
+        assert True
+
+    def test_step3_k0d0(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        matrixG1 = ullman.create_adj_matrix(G1)
+        matrixG2 = ullman.create_adj_matrix(G2)
+
+        ullman.create_rotation_matrix(G1, G2, matrixG1, matrixG2)
+        ullman.F = ullman.create_vector(G2)
+        ullman.k = 0
+        ullman.d = 0
+
+        ullman.step3()
+
+        assert (ullman.M[0][0] == 0)
+        assert (ullman.M[0][1] == 0)
+        assert (ullman.M[0][2] == 1)
+        assert (ullman.M[0][3] == 0)
+        assert (ullman.M[1][0] == 0)
+        assert (ullman.M[1][1] == 1)
+        assert (ullman.M[1][2] == 0)
+        assert (ullman.M[1][3] == 0)
+        assert (ullman.M[2][0] == 1)
+        assert (ullman.M[2][1] == 0)
+        assert (ullman.M[2][2] == 1)
+        assert (ullman.M[2][3] == 0)
 
     def test_perform_ullman_algorithm(self):
         ullman = UllmanAlgorithm()

@@ -98,12 +98,12 @@ class UllmanAlgorithm():
         return value
 
     def step3(self):
-        # self.k = self.k + 1
-        # while self.M[self.d][self.k] == 0 and self.F[self.d] == 1:
-        #     self.k = self.k + 1
-        # for j in range(len(self.F)):
-        #     if j != self.k:
-        #         self.M[self.d][j] = 0
+        self.k = self.k + 1
+        while self.M[self.d][self.k] == 0 or self.F[self.d] == 1:
+            self.k = self.k + 1
+        for j in range(len(self.F)):
+            if j != self.k:
+                self.M[self.d][j] = 0
         return
 
     def step4(self):
