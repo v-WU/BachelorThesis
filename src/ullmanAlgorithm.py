@@ -7,6 +7,8 @@ import numpy as np
 class UllmanAlgorithm():
 
     def __init__(self):
+        self.A = []
+        self.B = []
         self.M = []
         self.F = []
         self.H = []
@@ -21,11 +23,11 @@ class UllmanAlgorithm():
         return self.isomorphism
 
     def init(self, matchingGraph, orignialGraph):
-        A = self.create_adj_matrix(matchingGraph)
-        B = self.create_adj_matrix(orignialGraph)
+        self.A = self.create_adj_matrix(matchingGraph)
+        self.B = self.create_adj_matrix(orignialGraph)
         self.F = self.create_vector(orignialGraph)
         self.H = self.create_vector(matchingGraph)
-        self.M = self.create_rotation_matrix(matchingGraph, orignialGraph, A, B)
+        self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
         self.d = 1
         return
 
@@ -33,7 +35,7 @@ class UllmanAlgorithm():
         G = np.array(nx.to_numpy_matrix(graph, dtype=int))
         return G
 
-    def create_rotation_matrix(self, matchingGraph, originalGraph, A, B):
+    def create_rotation_matrix(self, matchingGraph, originalGraph):
         """
         :param (3) adj. Matrix of matchingGraph, (4) adj. Matrix of originalGraph
         :return: Rotationsmatrix M0
@@ -44,13 +46,13 @@ class UllmanAlgorithm():
         list2 = nx.get_node_attributes(originalGraph, "chem")
         attributelist2 = re.findall("([A-Z])", str(list2))
 
-        self.M = np.zeros(shape=(len(A), len(B)), dtype=int)
+        self.M = np.zeros(shape=(len(self.A), len(self.B)), dtype=int)
 
-        degA = A.sum(axis=0)
-        degB = B.sum(axis=0)
+        degA = self.A.sum(axis=0)
+        degB = self.B.sum(axis=0)
 
-        for i in range(len(A)):
-            for j in range(len(B)):
+        for i in range(len(self.A)):
+            for j in range(len(self.B)):
                 if degB[j] >= degA[i]:
                     chem1 = attributelist1[i]
                     chem2 = attributelist2[j]
@@ -107,6 +109,10 @@ class UllmanAlgorithm():
         return
 
     def step4(self):
+        if self.d < len(self.H):
+            self.step6()
+        else:
+            self.isomorphism_check()
         return
 
     def step5(self):
@@ -144,4 +150,7 @@ class UllmanAlgorithm():
             self.d = self.d - 1
             self.k = self.H[self.d]
             self.step5()
+        return
+
+    def isomorphism_check(self):
         return
