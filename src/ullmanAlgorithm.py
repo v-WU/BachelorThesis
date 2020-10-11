@@ -129,6 +129,10 @@ class UllmanAlgorithm():
         return value
 
     def step6(self):
+        self.H[self.d] = self.k
+        self.F[self.k] = 1
+        self.d = self.d + 1
+        self.step2()
         return
 
     def step7(self):

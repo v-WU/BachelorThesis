@@ -1,3 +1,5 @@
+from pytest_mock import mocker
+
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
 
@@ -271,6 +273,25 @@ class TestUllman():
         assert (ullman.M[2][1] == 0)
         assert (ullman.M[2][2] == 1)
         assert (ullman.M[2][3] == 0)
+
+    def test_step6(self, mocker):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, _ = utility.create_test_original_graphs()
+
+        ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_vector(G1)
+
+        ullman.H.fill(1)
+
+        ullman.k = 0
+        ullman.d = 0
+        mocker.patch.object(ullman, 'step2', return_value=None)
+        ullman.step6()
+
+        assert(ullman.H[0] == 0)
+        assert(ullman.F[0] == 1)
+        assert(ullman.d == 1)
 
     def test_perform_ullman_algorithm(self):
         ullman = UllmanAlgorithm()
