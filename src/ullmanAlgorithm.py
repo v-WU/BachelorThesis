@@ -18,7 +18,6 @@ class UllmanAlgorithm():
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph):
         self.init(matchingGraph, originalGraph)
-        print(self.M)
         self.step2()
         return self.isomorphism
 
@@ -79,33 +78,40 @@ class UllmanAlgorithm():
         if self.bedingung_step2():
             self.step7()
         else:
+            assert self.d <= len(self.H)
+            assert self.k <= len(self.F)
             if self.d == 1:
                 self.k = self.H[0]
+                self.step3()
             else:
                 self.k = 0
+                self.step3()
         return
 
     def bedingung_step2(self):
         """
-        :param args: (1) Rotationsmatrix, (2) Hilfsvektor F, (3) Variable d
         :return: True, if there is NO j s.d. Fj = 0 && mdj = 1
         """
 
         value = True
+        assert self.d <= len(self.H)
         for j in range(len(self.F)):
-            if self.F[j] == 0 and self.M[self.d][j] == 1:
-                value = False
-                break
+            if self.F[j] == 0:
+                if self.M[self.d][j] == 1:
+                    value = False
+                    break
 
         return value
 
     def step3(self):
+        assert (self.k <= len(self.H))
         self.k = self.k + 1
         while self.M[self.d][self.k] == 0 or self.F[self.d] == 1:
             self.k = self.k + 1
         for j in range(len(self.F)):
             if j != self.k:
                 self.M[self.d][j] = 0
+        self.step4()
         return
 
     def step4(self):
@@ -153,4 +159,9 @@ class UllmanAlgorithm():
         return
 
     def isomorphism_check(self):
+        C = []
+        C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
+        alike = np.array_equal(self.A, C)
+        if alike:
+            self.isomorphism = True
         return
