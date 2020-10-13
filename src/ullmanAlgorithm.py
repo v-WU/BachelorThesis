@@ -4,7 +4,7 @@ import networkx as nx
 import numpy as np
 
 
-class UllmanAlgorithm():
+class UllmanAlgorithm:
 
     def __init__(self):
         self.A = []
@@ -27,7 +27,7 @@ class UllmanAlgorithm():
         self.F = self.create_vector(orignialGraph)
         self.H = self.create_vector(matchingGraph)
         self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
-        self.d = 1
+        self.d = 0  # index in python start at 0
         return
 
     def create_adj_matrix(self, graph):
@@ -36,7 +36,7 @@ class UllmanAlgorithm():
 
     def create_rotation_matrix(self, matchingGraph, originalGraph):
         """
-        :param (3) adj. Matrix of matchingGraph, (4) adj. Matrix of originalGraph
+        :param matchingGraph, originalGraph
         :return: Rotationsmatrix M0
         """
 
@@ -80,8 +80,9 @@ class UllmanAlgorithm():
         else:
             assert self.d <= len(self.H)
             assert self.k <= len(self.F)
-            if self.d == 1:
-                self.k = self.H[0]
+            if self.d == 0:  # python Indizes beginnt bei 0
+                self.k = self.H[0]  # python Indizes beginnt bei 0
+                assert self.k <= len(self.F)
                 self.step3()
             else:
                 self.k = 0
@@ -104,10 +105,11 @@ class UllmanAlgorithm():
         return value
 
     def step3(self):
-        assert (self.k <= len(self.H))
+        assert (self.k <= len(self.F))
         self.k = self.k + 1
-        while self.M[self.d][self.k] == 0 or self.F[self.d] == 1:
+        while self.M[self.d][self.k] == 0 or self.F[self.k] == 1:
             self.k = self.k + 1
+            assert (self.k <= len(self.F))
         for j in range(len(self.F)):
             if j != self.k:
                 self.M[self.d][j] = 0
@@ -115,7 +117,7 @@ class UllmanAlgorithm():
         return
 
     def step4(self):
-        if self.d < len(self.H):
+        if self.d < len(self.H) - 1:  # Werte von d: 0 bis len(H)-1
             self.step6()
         else:
             self.isomorphism_check()
@@ -135,20 +137,23 @@ class UllmanAlgorithm():
         value = True
         for j in range(len(self.F)):
             if self.F[j] == 0 and self.M[self.d][j] == 1:
+                assert self.k <= len(self.F)
                 if j > self.k:
                     value = False
                     break
         return value
 
     def step6(self):
+        assert self.k <= (len(self.H))
         self.H[self.d] = self.k
         self.F[self.k] = 1
         self.d = self.d + 1
+        assert self.d <= len(self.F)
         self.step2()
         return
 
     def step7(self):
-        if self.d == 1:
+        if self.d == 0: # python Indizes beginnt bei 0
             self.isomorphism = False  # the algorithm should end here...
             print("There exists no subgraphisomorphism between these two graphs")
         else:

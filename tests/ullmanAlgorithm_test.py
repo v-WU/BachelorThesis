@@ -2,8 +2,6 @@ from pytest_mock import mocker
 
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
-import numpy as np
-
 
 class TestUllman():
 
@@ -80,6 +78,7 @@ class TestUllman():
         ullman.B = ullman.create_adj_matrix(G2)
         ullman.create_rotation_matrix(G1, G2)
         ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_vector(G1)
 
         # d entspricht den Zeilen in der Rotationsmatrix
         # Assertion: "in jeder Zeile existiert ein j s.d. Fj=0 && mdj=1"
@@ -97,6 +96,7 @@ class TestUllman():
 
         ullman.create_rotation_matrix(G1, G2)
         ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_vector(G1)
 
         # Falls alle Einträge in F = 1
         for ullman.d in range(3):
@@ -113,6 +113,7 @@ class TestUllman():
 
         ullman.create_rotation_matrix(G1, G2)
         ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_vector(G1)
 
         # Falls alle Einträge in M = 0
         for ullman.d in range(3):
@@ -148,7 +149,7 @@ class TestUllman():
         ullman.step7()
         assert not ullman.isomorphism
 
-    def test_step7(self, mocker):
+    def test_step7_else(self, mocker):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, _ = utility.create_test_original_graphs()
@@ -226,6 +227,7 @@ class TestUllman():
 
         ullman.create_rotation_matrix(G1, G2)
         ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_adj_matrix(G1)
 
         ullman.k = 3  # manuell gesetzt, s.d Bedingung j>k überprüft werden kann
         # d entspricht den Zeilen in der Rotationsmatrix
@@ -242,6 +244,7 @@ class TestUllman():
 
         ullman.create_rotation_matrix(G1, G2)
         ullman.F = ullman.create_vector(G2)
+        ullman.H = ullman.create_vector(G1)
         ullman.k = 0
         ullman.d = 0
 
@@ -285,15 +288,11 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         ullman.A = [[2, 0], [2, 1]]
         ullman.B = [[1, 1, 0], [0, 1, 0], [0, 1, 1]]
-
         ullman.M = [[1, 0, 1], [0, 1, 0]]
 
         ullman.isomorphism_check()
 
         assert ullman.isomorphism
-
-    def test_step4(self):
-        assert True
 
     def test_perform_ullman_algorithm(self):
         ullman = UllmanAlgorithm()
