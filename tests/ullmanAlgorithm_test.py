@@ -1,7 +1,6 @@
-from pytest_mock import mocker
-
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
+
 
 class TestUllman():
 
@@ -120,7 +119,7 @@ class TestUllman():
             ullman.M.fill(0)
             assert (ullman.bedingung_step2())
 
-    def test_step2(self, mocker):
+    def test_step2_else(self, mocker):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, _ = utility.create_test_original_graphs()
@@ -132,7 +131,7 @@ class TestUllman():
         ullman.F = ullman.create_vector(G2)
         ullman.H = ullman.create_vector(G1)
         ullman.H[0] = 1
-        ullman.d = 1
+        ullman.d = 0
 
         mocker.patch.object(ullman, 'step3', return_value=None)
 
@@ -141,11 +140,11 @@ class TestUllman():
 
         ullman.d = 2
         ullman.step2()
-        assert (ullman.k == 0)
+        assert (ullman.k == -1)
 
     def test_step7_exit(self):
         ullman = UllmanAlgorithm()
-        ullman.d = 1
+        ullman.d = 0
         ullman.step7()
         assert not ullman.isomorphism
 
@@ -294,9 +293,16 @@ class TestUllman():
 
         assert ullman.isomorphism
 
-    def test_perform_ullman_algorithm(self):
+    def test_perform_ullman_algorithm_iso(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
         ullman.perform_ullman_algorithm(G1, G2)
         assert ullman.isomorphism
+
+    def test_perform_ullman_algorithm_not_iso(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+        ullman.perform_ullman_algorithm(G1, G3)
+        assert not ullman.isomorphism

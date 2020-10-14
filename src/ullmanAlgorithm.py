@@ -13,7 +13,7 @@ class UllmanAlgorithm:
         self.F = []
         self.H = []
         self.d = 0
-        self.k = 0
+        self.k = -1  # paper k = 0 ist kein Indizes sondern "noch nicht in der Matrix"
         self.isomorphism = False
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph):
@@ -85,7 +85,7 @@ class UllmanAlgorithm:
                 assert self.k <= len(self.F)
                 self.step3()
             else:
-                self.k = 0
+                self.k = -1
                 self.step3()
         return
 
