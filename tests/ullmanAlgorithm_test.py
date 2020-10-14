@@ -283,11 +283,34 @@ class TestUllman():
         assert (ullman.F[0] == 1)
         assert (ullman.d == 1)
 
-    def test_isomorphism_check(self):
+    def test_isomorphism_check_true(self):
         ullman = UllmanAlgorithm()
         ullman.A = [[2, 0], [2, 1]]
         ullman.B = [[1, 1, 0], [0, 1, 0], [0, 1, 1]]
         ullman.M = [[1, 0, 1], [0, 1, 0]]
+
+        ullman.isomorphism_check()
+
+        assert ullman.isomorphism
+
+    def test_isomorphism_check_false(self):
+        ullman = UllmanAlgorithm()
+        ullman.A = [[1, 0], [1, 1]]
+        ullman.B = [[1, 1, 0], [0, 1, 0], [0, 1, 1]]
+        ullman.M = [[1, 0, 1], [0, 1, 0]]
+
+        ullman.isomorphism_check()
+
+        assert not ullman.isomorphism
+
+    def test_isomorphism_check_true2(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = [[0, 0, 1, 0], [0, 1, 0, 0], [1, 0, 0, 0]]
 
         ullman.isomorphism_check()
 

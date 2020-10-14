@@ -144,18 +144,18 @@ class UllmanAlgorithm:
         return value
 
     def step6(self):
-        assert self.k <= (len(self.H))
+        assert self.k <= (len(self.F))
         self.H[self.d] = self.k
         self.F[self.k] = 1
         self.d = self.d + 1
-        assert self.d <= len(self.F)
+        assert self.d <= len(self.H)
         self.step2()
         return
 
     def step7(self):
-        if self.d == 0: # python Indizes beginnt bei 0
+        if self.d == 0:  # python Indizes beginnt bei 0
             self.isomorphism = False  # the algorithm should end here...
-            print("There exists no subgraphisomorphism between these two graphs")
+            print("Step 7: There exists no subgraphisomorphism between these two graphs")
         else:
             self.F[self.k] = 0
             self.d = self.d - 1
@@ -169,4 +169,7 @@ class UllmanAlgorithm:
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
+            print("Yay, isomorphism found!")
+        else:
+            print("Nope, not isomorphic")
         return
