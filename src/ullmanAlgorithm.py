@@ -52,12 +52,13 @@ class UllmanAlgorithm:
 
         for i in range(len(self.A)):
             for j in range(len(self.B)):
-                if degB[j] >= degA[i]:
-                    chem1 = attributelist1[i]
-                    chem2 = attributelist2[j]
-                    if chem1 == chem2:
+                chem1 = attributelist1[i]
+                chem2 = attributelist2[j]
+                if chem1.lower() == chem2.lower():
+                    if degB[j] >= degA[i]:
                         self.M[i][j] = 1
 
+        print("Initial M: " + str(self.M))
         return self.M
 
     def create_vector(self, graph):

@@ -26,7 +26,7 @@ class TestUllman():
         ullman.F[0] = 1
         assert (ullman.F[0] == 1)
 
-    def test_create_rotation_matrix(self):
+    def test_create_rotation_matrix_1(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
@@ -48,6 +48,10 @@ class TestUllman():
         assert (ullman.M[2][1] == 0)
         assert (ullman.M[2][2] == 1)
         assert (ullman.M[2][3] == 0)
+
+    def test_create_rotation_matrix_2(self):
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
 
         ullman2 = UllmanAlgorithm()
         ullman2.A = ullman2.create_adj_matrix(G1)
