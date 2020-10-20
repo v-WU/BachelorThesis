@@ -7,6 +7,11 @@ from src.parser import read_graphs_with_cxl
 
 from ullmanAlgorithm import UllmanAlgorithm
 
+import random
+random.seed(246)        # or any integer
+import numpy
+numpy.random.seed(4812)
+
 start_time = time.time()
 
 # original_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder/mutagenicity/graphmlFiles")
@@ -30,7 +35,14 @@ matching_graph = matching_graph + read_graphs_from_folder_structure(
     "Data/graphs_for_my_testing/matching_graphs/nonmutagen")
 print("Matching graphs: " + str(matching_graph))
 
-connected_components = [matching_graph[1][0].subgraph(c).copy() for c in nx.connected_components(matching_graph[1][0])]
+conn_comps_lst = [sorted(elt) for elt in list(nx.connected_components(matching_graph[1][0]))]
+connected_components = []
+for ordered_nodes in conn_comps_lst:
+    SG = nx.OrderedGraph()
+    SG.add_nodes_from(ordered_nodes)
+    SG.add_edges_from((u, v) for (u, v) in matching_graph[1][0].edges() if u in SG if v in SG)
+    connected_components.append(SG)
+# connected_components = [matching_graph[1][0].subgraph(c).copy() for c in conn_comps_lst]
 print("connectet components: " + str(connected_components))
 
 # Vergleich GANZER Matching Graph mit Origial Graph
@@ -39,9 +51,10 @@ print("connectet components: " + str(connected_components))
 # print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))
 
 # 2er Molekül, Connected_components[0], Isomorphismus: True
+nx.draw(connected_components[0])
+plt.show()
+
 # ulli3 = UllmanAlgorithm()
-# nx.draw(connected_components[0])
-# plt.show()
 # ulli3.perform_ullman_algorithm(connected_components[0], original_graph[2][0])
 # print("Isomorphism component 0 and molecule 4204: " + str(ulli3.isomorphism))
 
