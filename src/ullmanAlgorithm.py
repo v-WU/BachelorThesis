@@ -1,4 +1,5 @@
 import re
+import sys
 
 import networkx as nx
 import numpy as np
@@ -54,11 +55,10 @@ class UllmanAlgorithm:
             for j in range(len(self.B)):
                 chem1 = attributelist1[i]
                 chem2 = attributelist2[j]
-                if chem1.lower() == chem2.lower():
+                if chem1 == chem2:
                     if degB[j] >= degA[i]:
                         self.M[i][j] = 1
 
-        print("Initial M: " + str(self.M))
         return self.M
 
     def create_vector(self, graph):
@@ -118,10 +118,11 @@ class UllmanAlgorithm:
         return
 
     def step4(self):
-        if self.d < len(self.H) - 1:  # Werte von d: 0 bis len(H)-1
+        if self.d < len(self.H) - 1:  # Werte von d: 0 bis len(H)-1, wegen Indizesverschiebung von Python
             self.step6()
         else:
             self.isomorphism_check()
+            self.step5()
         return
 
     def step5(self):
@@ -155,8 +156,9 @@ class UllmanAlgorithm:
 
     def step7(self):
         if self.d == 0:  # python Indizes beginnt bei 0
-            self.isomorphism = False  # the algorithm should end here...
-            print("Step 7: There exists no subgraphisomorphism between these two graphs")
+            if self.isomorphism != True:  # the algorithm should end here...
+                print("Step 7: There exists no subgraphisomorphism between these two graphs")
+
         else:
             self.F[self.k] = 0
             self.d = self.d - 1
@@ -165,12 +167,11 @@ class UllmanAlgorithm:
         return
 
     def isomorphism_check(self):
-        C = []
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
             print("Yay, isomorphism found!")
-        else:
-            print("Nope, not isomorphic")
+        # else:
+            # print("Nope, not isomorphic yet")
         return
