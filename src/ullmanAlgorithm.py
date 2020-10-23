@@ -167,6 +167,7 @@ class UllmanAlgorithm:
         return
 
     def isomorphism_check(self):
+        print("isomorphismus check ausgeführt")
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
         alike = np.array_equal(self.A, C)
         if alike:
