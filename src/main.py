@@ -37,15 +37,21 @@ matching_graph = matching_graph + read_graphs_from_folder_structure(
     "Data/graphs_for_my_testing/matching_graphs/nonmutagen")
 # print("Matching graphs: " + str(matching_graph))
 
+
+
 conn_comps_lst = [sorted(elt) for elt in list(nx.connected_components(matching_graph[1][0]))]
-connected_components = []
+connected_components= []
 for ordered_nodes in conn_comps_lst:
     SG = nx.OrderedGraph()
-    SG.add_nodes_from(ordered_nodes)
+    nodes_to_add = []
+    for node in ordered_nodes:
+        nodes_to_add.append((node, matching_graph[1][0].nodes[node]))
+    SG.add_nodes_from(nodes_to_add)
     SG.add_edges_from((u, v) for (u, v) in matching_graph[1][0].edges() if u in SG if v in SG)
     connected_components.append(SG)
-connected_components = [matching_graph[1][0].subgraph(c).copy() for c in conn_comps_lst]
-print("connectet components: " + str(connected_components))
+
+print(connected_components[2].nodes())
+print(original_graph[3][0].nodes())
 
 # subgraphs = nx.connected_components(original_graph[2][0])
 # print("Subgraphs: " + str(subgraphs))
@@ -70,10 +76,10 @@ print("connectet components: " + str(connected_components))
 # print("Isomorphism component 1 and molecule 4204: " + str(ulli4.isomorphism))
 
 # 2er molekül, connected_components[2]
-# origial_graph[4][0] = molecule_4204_small_14Nodes_FALSE
+# origial_graph[2][0] = molecule_4204_small_14Nodes_FALSE
 # original_graph[3][0] = molecule_4204_small_10Nodes_TRUE&FALSE
 ulli5 = UllmanAlgorithm()
-ulli5.perform_ullman_algorithm(connected_components[2], original_graph[3][0])
+ulli5.perform_ullman_algorithm(connected_components[2], original_graph[4][0])
 print("Isomorphism component 2 and molecule 4204: " + str(ulli5.isomorphism))
 
 # connected_components[3], Isomorphismus: False
