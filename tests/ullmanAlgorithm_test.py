@@ -1,5 +1,6 @@
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
+import numpy as np
 
 
 class TestUllman():
@@ -141,10 +142,12 @@ class TestUllman():
 
         ullman.step2()
         assert (ullman.k == 1)
+        assert np.array_equal(ullman.copyM[ullman.d], ullman.M)
 
         ullman.d = 2
         ullman.step2()
         assert (ullman.k == -1)
+        assert np.array_equal(ullman.copyM[ullman.d], ullman.M)
 
     def test_step7_exit(self):
         ullman = UllmanAlgorithm()
@@ -163,9 +166,12 @@ class TestUllman():
         ullman.d = 2
         ullman.k = 0
 
+        ullman.copyM[ullman.d - 1] = [[0, 0], [0, 0]]
+
         mocker.patch.object(ullman, 'step5', return_value=None)
 
         ullman.step7()
+        assert np.array_equal(ullman.M, ullman.copyM[ullman.d])
         assert (ullman.F[0] == 0)  # Indizes manuell gesetzt, da k in step 7 nochmal verändert wird
         assert (ullman.d == 1)
         assert (ullman.k == 1)

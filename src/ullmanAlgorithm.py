@@ -11,6 +11,7 @@ class UllmanAlgorithm:
         self.A = []
         self.B = []
         self.M = []
+        self.copyM = {}
         self.F = []
         self.H = []
         self.d = 0
@@ -27,6 +28,7 @@ class UllmanAlgorithm:
         self.B = self.create_adj_matrix(orignialGraph)
         self.F = self.create_vector(orignialGraph)
         self.H = self.create_vector(matchingGraph)
+        self.H.fill(-1)
         self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
         self.d = 0  # index in python start at 0
         return
@@ -81,6 +83,8 @@ class UllmanAlgorithm:
         else:
             assert self.d <= len(self.H)
             assert self.k <= len(self.F)
+            self.copyM[self.d] = np.copy(self.M)
+            print("step2: made a copy at depth " + str(self.d))
             if self.d == 0:  # python Indizes beginnt bei 0
                 self.k = self.H[0]  # python Indizes beginnt bei 0
                 assert self.k <= len(self.F)
@@ -122,13 +126,18 @@ class UllmanAlgorithm:
             self.step6()
         else:
             self.isomorphism_check()
-            self.step5()
+            if self.isomorphism:
+                return
+            else:
+                self.step5()
         return
 
     def step5(self):
         if self.bedingung_step5():
             self.step7()
         else:
+            self.M = np.copy(self.copyM[self.d])
+            print("step 5 M := copyM at depth: " + str(self.d))
             self.step3()
         return
 
@@ -158,10 +167,13 @@ class UllmanAlgorithm:
         if self.d == 0:  # python Indizes beginnt bei 0
             if self.isomorphism != True:  # the algorithm should end here...
                 print("Step 7: There exists no subgraphisomorphism between these two graphs")
+                return
 
         else:
             self.F[self.k] = 0
             self.d = self.d - 1
+            self.M = np.copy(self.copyM[self.d])
+            print("step 7 M = copyM at depth: " + str(self.d))
             self.k = self.H[self.d]
             self.step5()
         return
