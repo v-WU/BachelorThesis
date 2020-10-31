@@ -27,9 +27,12 @@ class UllmanAlgorithm:
         self.A = self.create_adj_matrix(matchingGraph)
         self.B = self.create_adj_matrix(orignialGraph)
         self.F = self.create_vector(orignialGraph)
+        print("Initial F: " + str(self.F))
         self.H = self.create_vector(matchingGraph)
         self.H.fill(-1)
+        print("Initial H: " + str(self.H))
         self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
+        print("Initial M: " + str(self.M))
         self.d = 0  # index in python start at 0
         return
 
@@ -78,19 +81,23 @@ class UllmanAlgorithm:
         :return:
         """
 
+        print("step 2")
         if self.bedingung_step2():
             self.step7()
         else:
-            assert self.d <= len(self.H)
-            assert self.k <= len(self.F)
+            assert self.d <= len(self.H) - 1
+            assert self.k <= len(self.F) - 1
             self.copyM[self.d] = np.copy(self.M)
-            print("step2: made a copy at depth " + str(self.d))
+            print("step 2: made a copy at depth " + str(self.d))
+            print("step 2: M = " + str(self.M))
             if self.d == 0:  # python Indizes beginnt bei 0
                 self.k = self.H[0]  # python Indizes beginnt bei 0
-                assert self.k <= len(self.F)
+                print("step 2: k = " + str(self.k))
+                assert self.k <= len(self.F) - 1
                 self.step3()
             else:
                 self.k = -1
+                print("step 2: k = " + str(self.k))
                 self.step3()
         return
 
@@ -100,28 +107,31 @@ class UllmanAlgorithm:
         """
 
         value = True
-        assert self.d <= len(self.H)
+        assert self.d <= len(self.H) - 1
         for j in range(len(self.F)):
-            if self.F[j] == 0:
-                if self.M[self.d][j] == 1:
-                    value = False
-                    break
+            if self.F[j] == 0 and self.M[self.d][j] == 1:
+                value = False
+                break
 
         return value
 
     def step3(self):
-        assert (self.k <= len(self.F))
+        print("step 3")
+        assert (self.k <= len(self.F) - 1)
         self.k = self.k + 1
+        print("step 3: k = " + str(self.k))
         while self.M[self.d][self.k] == 0 or self.F[self.k] == 1:
             self.k = self.k + 1
-            assert (self.k <= len(self.F))
+            print("step 3: k = " + str(self.k))
         for j in range(len(self.F)):
             if j != self.k:
                 self.M[self.d][j] = 0
+        print("step 3: changed M to " + str(self.M))
         self.step4()
         return
 
     def step4(self):
+        print("step 4")
         if self.d < len(self.H) - 1:  # Werte von d: 0 bis len(H)-1, wegen Indizesverschiebung von Python
             self.step6()
         else:
@@ -133,11 +143,13 @@ class UllmanAlgorithm:
         return
 
     def step5(self):
+        print("step 5")
         if self.bedingung_step5():
             self.step7()
         else:
             self.M = np.copy(self.copyM[self.d])
-            print("step 5 M := copyM at depth: " + str(self.d))
+            print("step 5: M = copyM at depth " + str(self.d))
+            print("step 5: M = " + str(self.M))
             self.step3()
         return
 
@@ -146,24 +158,32 @@ class UllmanAlgorithm:
         :return: True, if there is NO j s.d. j>k && F[j]=0 && mdj=1
         """
         value = True
+        print("current d = " + str(self.d))
+        print("copyM = " + str(self.copyM))
         for j in range(len(self.F)):
-            if self.F[j] == 0 and self.M[self.d][j] == 1:
-                assert self.k <= len(self.F)
-                if j > self.k:
-                    value = False
-                    break
+            if self.F[j] == 0: # and self.M[self.d][j] == 1:
+               if self.copyM[self.d][self.d][j] == 1:
+                    assert self.k <= len(self.F) - 1
+                    if j > self.k:
+                        value = False
+                        break
         return value
 
     def step6(self):
-        assert self.k <= (len(self.F))
+        print("step 6")
+        assert self.k <= len(self.F) - 1
         self.H[self.d] = self.k
+        print("step 6: H = " + str(self.H))
         self.F[self.k] = 1
+        print("step 6: F = " + str(self.F))
         self.d = self.d + 1
-        assert self.d <= len(self.H)
+        print("step 6: d = " + str(self.d))
+        assert self.d <= len(self.H) - 1
         self.step2()
         return
 
     def step7(self):
+        print("step 7")
         if self.d == 0:  # python Indizes beginnt bei 0
             if self.isomorphism != True:  # the algorithm should end here...
                 print("Step 7: There exists no subgraphisomorphism between these two graphs")
@@ -171,20 +191,24 @@ class UllmanAlgorithm:
 
         else:
             self.F[self.k] = 0
+            print("step 7: F = " + str(self.F))
             self.d = self.d - 1
+            print("step 7: d = " + str(self.d))
             self.M = np.copy(self.copyM[self.d])
-            print("step 7 M = copyM at depth: " + str(self.d))
+            print("step 7: M = copyM at depth " + str(self.d))
+            print("step 7: M = " + str(self.M))
             self.k = self.H[self.d]
+            print("step 7: k = " + str(self.k))
             self.step5()
         return
 
     def isomorphism_check(self):
-        print("isomorphismus check ausgeführt")
+        print("isomorphismus check ausgeführt mit M = " + str(self.M))
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
             print("Yay, isomorphism found!")
         # else:
-            # print("Nope, not isomorphic yet")
+        # print("Nope, not isomorphic yet")
         return
