@@ -17,6 +17,7 @@ class UllmanAlgorithm:
         self.d = 0
         self.k = -1  # paper k = 0 ist kein Indizes sondern "noch nicht in der Matrix"
         self.isomorphism = False
+        self.counter = 0
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph):
         self.init(matchingGraph, originalGraph)
@@ -159,7 +160,7 @@ class UllmanAlgorithm:
         """
         value = True
         print("current d = " + str(self.d))
-        print("copyM = " + str(self.copyM))
+        #print("copyM = " + str(self.copyM))
         for j in range(len(self.F)):
             if self.F[j] == 0: # and self.M[self.d][j] == 1:
                if self.copyM[self.d][self.d][j] == 1:
@@ -203,7 +204,8 @@ class UllmanAlgorithm:
         return
 
     def isomorphism_check(self):
-        print("isomorphismus check ausgeführt mit M = " + str(self.M))
+        self.counter = self.counter + 1
+        print(str(self.counter) + ". isomorphismus check ausgeführt mit M = " + str(self.M))
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
         alike = np.array_equal(self.A, C)
         if alike:
