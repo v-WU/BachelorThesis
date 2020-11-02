@@ -4,6 +4,8 @@ import sys
 import networkx as nx
 import numpy as np
 
+sys.setrecursionlimit(6000)
+
 
 class UllmanAlgorithm:
 
@@ -145,6 +147,10 @@ class UllmanAlgorithm:
 
     def step5(self):
         print("step 5")
+        print("current d = " + str(self.d))
+        print("current k = " + str(self.k))
+        print("current F = " + str(self.F))
+        print("current H = " + str(self.H))
         if self.bedingung_step5():
             self.step7()
         else:
@@ -159,11 +165,10 @@ class UllmanAlgorithm:
         :return: True, if there is NO j s.d. j>k && F[j]=0 && mdj=1
         """
         value = True
-        print("current d = " + str(self.d))
-        #print("copyM = " + str(self.copyM))
+        # print("copyM = " + str(self.copyM))
         for j in range(len(self.F)):
             if self.F[j] == 0: # and self.M[self.d][j] == 1:
-               if self.copyM[self.d][self.d][j] == 1:
+                if self.copyM[self.d][self.d][j] == 1:
                     assert self.k <= len(self.F) - 1
                     if j > self.k:
                         value = False
@@ -191,15 +196,17 @@ class UllmanAlgorithm:
                 return
 
         else:
-            self.F[self.k] = 0
-            print("step 7: F = " + str(self.F))
             self.d = self.d - 1
             print("step 7: d = " + str(self.d))
+            self.k = self.H[self.d]
+            self.F[self.k] = 0
+            print("step 7: k = " + str(self.k))
+            print("step 7: F = " + str(self.F))
+            # print("copyM = " + str(self.copyM))
             self.M = np.copy(self.copyM[self.d])
+            # self.M[self.d+1] = np.copy(self.copyM[self.d][self.d+1])
             print("step 7: M = copyM at depth " + str(self.d))
             print("step 7: M = " + str(self.M))
-            self.k = self.H[self.d]
-            print("step 7: k = " + str(self.k))
             self.step5()
         return
 
