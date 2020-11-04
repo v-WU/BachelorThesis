@@ -20,6 +20,8 @@ class UllmanAlgorithm:
         self.k = -1  # paper k = 0 ist kein Indizes sondern "noch nicht in der Matrix"
         self.isomorphism = False
         self.counter = 0
+        self.matchingGraph = None
+        self.originalGraph = None
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph):
         self.init(matchingGraph, originalGraph)
@@ -37,6 +39,8 @@ class UllmanAlgorithm:
         self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
         print("Initial M: " + str(self.M))
         self.d = 0  # index in python start at 0
+        self.matchingGraph = matchingGraph
+        self.originalGraph = orignialGraph
         return
 
     def create_adj_matrix(self, graph):
@@ -168,7 +172,7 @@ class UllmanAlgorithm:
         # print("copyM = " + str(self.copyM))
         for j in range(len(self.F)):
             if self.F[j] == 0:
-                if self.copyM[self.d][self.d][j] == 1: # in self.M steht schon die veränderte Zeile mit nur einer 1
+                if self.copyM[self.d][self.d][j] == 1:  # in self.M steht schon die veränderte Zeile mit nur einer 1
                     assert self.k <= len(self.F) - 1
                     if j > self.k:
                         value = False
@@ -221,3 +225,71 @@ class UllmanAlgorithm:
         # else:
         # print("Nope, not isomorphic yet")
         return
+
+    def refine(self):
+        print(self.M)
+        blubb = True
+        list1 = nx.get_node_attributes(self.matchingGraph,
+                                       "chem")  # list with key and attributes, accessible with index
+        keylist1 = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+        attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
+
+        list2 = nx.get_node_attributes(self.originalGraph,
+                                       "chem")  # list with key and attributes, accessible with index
+        keylist2 = re.findall(r'\d+', str(list2))  # list with only key, accessible with index
+        attributelist2 = re.findall("([A-Z])", str(list2))  # list with only attributes, accessible with index
+
+        for i in range(len(self.H)):
+            for j in range(len(self.F)):
+                if self.M[i][j] == 1:
+                    node_in_A = keylist1[i]  # get node ID of Ai
+                    key_neighbours_of_Ai = list(
+                        self.matchingGraph.neighbors(int(node_in_A)))  # list with keys of neighbors of Ai
+                    attributes1 = nx.get_node_attributes(self.matchingGraph, 'chem')
+                    att_neighbours_of_Ai = []
+                    for x in key_neighbours_of_Ai:
+                        att_neighbours_of_Ai.append(attributes1[x])  # list with attributes of neighbors of Ai
+
+                    node_in_B = keylist2[j]  # get node ID of Bj
+                    key_neighbours_of_Bj = list(
+                        self.originalGraph.neighbors(int(node_in_B)))  # list with keys of neighbors of Bj
+                    attributes2 = nx.get_node_attributes(self.originalGraph, 'chem')
+                    att_neighbours_of_Bj = []
+                    for x in key_neighbours_of_Bj:
+                        att_neighbours_of_Bj.append(attributes2[x])  # list with attributes of neighbors of Bj
+
+                    found_neighbours_of_Bj = []  # list containing the possible matches between neighbors
+                    for x in att_neighbours_of_Ai:
+                        for y in att_neighbours_of_Bj:
+                            if x == y:
+                                print("x: " + str(x) + ", y: " + str(y))
+                                found_neighbours_of_Bj.append(y)
+                                print("found neighbors: " + str(found_neighbours_of_Bj))
+                                print("neighbours of Bj before: " + str(att_neighbours_of_Bj))
+                                att_neighbours_of_Bj.remove(y)
+                                print("neighbours of Bj after: " + str(att_neighbours_of_Bj))
+
+                            else:
+                                print("i went through without doing anything because I'm a " + str(
+                                    x) + " and he is a " + str(y))
+
+                    att_neighbours_of_Ai.sort()
+                    found_neighbours_of_Bj.sort()
+
+                    print("att_neighbours_of_Ai: " + str(att_neighbours_of_Ai))
+                    print("found_neighbors_of_Bj: " + str(found_neighbours_of_Bj))
+
+                    if att_neighbours_of_Ai != found_neighbours_of_Bj:
+                        self.M[i][j] = 0
+                        print("oh no, they are not the same, so I better change M. i = " + str(i) + ", j = " + str(
+                            j) + ". So M looks like this now: " + str(self.M))
+
+                    degM = self.M.sum(axis=1) # sum of each row in M
+                    print("degM: " + str(degM))
+                    for l in range(len(degM)):
+                        if degM[l] == 0:
+                            blubb = False
+                            break
+
+        print("blubb: " + str(blubb))
+        return blubb

@@ -1,6 +1,7 @@
 from ullmanAlgorithm import UllmanAlgorithm
 import utility
 import numpy as np
+import networkx as nx
 
 
 class TestUllman():
@@ -342,3 +343,19 @@ class TestUllman():
         G2, G3 = utility.create_test_original_graphs()
         ullman.perform_ullman_algorithm(G1, G3)
         assert not ullman.isomorphism
+
+    def test_refine(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G3)
+        ullman.M = ullman.create_rotation_matrix(G1, G3)
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G3)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G3
+
+
+        blubb = ullman.refine()
