@@ -167,8 +167,8 @@ class UllmanAlgorithm:
         value = True
         # print("copyM = " + str(self.copyM))
         for j in range(len(self.F)):
-            if self.F[j] == 0: # and self.M[self.d][j] == 1:
-                if self.copyM[self.d][self.d][j] == 1:
+            if self.F[j] == 0:
+                if self.copyM[self.d][self.d][j] == 1: # in self.M steht schon die veränderte Zeile mit nur einer 1
                     assert self.k <= len(self.F) - 1
                     if j > self.k:
                         value = False

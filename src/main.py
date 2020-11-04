@@ -78,7 +78,7 @@ print(original_graph[3][0].nodes(data=True))
 # origial_graph[2][0] = molecule_4204_small_14Nodes_FALSE
 # original_graph[3][0] = molecule_4204_small_10Nodes_TRUE&FALSE
 ulli5 = UllmanAlgorithm()
-ulli5.perform_ullman_algorithm(connected_components[2], original_graph[6][0])
+ulli5.perform_ullman_algorithm(connected_components[1], original_graph[3][0])
 print("Isomorphism component 2 and molecule 4204: " + str(ulli5.isomorphism))
 
 # connected_components[3], Isomorphismus: False

@@ -166,13 +166,13 @@ class TestUllman():
         ullman.d = 2
         ullman.k = 0
 
-        ullman.copyM[ullman.d - 1] = [[0, 0], [0, 0]]
+        ullman.copyM[ullman.d-1] = [[0, 0], [0, 0]]
 
         mocker.patch.object(ullman, 'step5', return_value=None)
 
         ullman.step7()
         assert np.array_equal(ullman.M, ullman.copyM[ullman.d])
-        assert (ullman.F[0] == 0)  # Indizes manuell gesetzt, da k in step 7 nochmal verändert wird
+        assert (ullman.F[1] == 0)  # Indizes manuell gesetzt, da k in step 7 nochmal verändert wird
         assert (ullman.d == 1)
         assert (ullman.k == 1)
 
@@ -206,6 +206,7 @@ class TestUllman():
         # Falls alle Einträge in M = 0
         for ullman.d in range(3):
             ullman.M.fill(0)
+            ullman.copyM[ullman.d] = np.copy(ullman.M)
             assert (ullman.bedingung_step5())
 
     def test_bedingung_step5_ok(self):
@@ -224,6 +225,7 @@ class TestUllman():
         # es werden NICHT die einzelnen Einträge überprüft, sondern die ganze Matrixzeile...
         for ullman.k in range(1):  # Bedingung gilt im Beispiel nur für k=0,1
             for ullman.d in range(3):
+                ullman.copyM[ullman.d] = np.copy(ullman.M)
                 assert not (ullman.bedingung_step5())
 
     def test_bedingung_step5_fail(self):
@@ -241,6 +243,7 @@ class TestUllman():
         ullman.k = 3  # manuell gesetzt, s.d Bedingung j>k überprüft werden kann
         # d entspricht den Zeilen in der Rotationsmatrix
         for ullman.d in range(3):
+            ullman.copyM[ullman.d] = np.copy(ullman.M)
             assert (ullman.bedingung_step5())
 
     def test_step3_k0d0(self, mocker):
