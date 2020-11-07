@@ -227,69 +227,83 @@ class UllmanAlgorithm:
         return
 
     def refine(self):
-        print(self.M)
-        blubb = True
+        value = True
         list1 = nx.get_node_attributes(self.matchingGraph,
                                        "chem")  # list with key and attributes, accessible with index
         keylist1 = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
-        attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
 
         list2 = nx.get_node_attributes(self.originalGraph,
                                        "chem")  # list with key and attributes, accessible with index
         keylist2 = re.findall(r'\d+', str(list2))  # list with only key, accessible with index
-        attributelist2 = re.findall("([A-Z])", str(list2))  # list with only attributes, accessible with index
 
-        for i in range(len(self.H)):
-            for j in range(len(self.F)):
-                if self.M[i][j] == 1:
-                    node_in_A = keylist1[i]  # get node ID of Ai
-                    key_neighbours_of_Ai = list(
-                        self.matchingGraph.neighbors(int(node_in_A)))  # list with keys of neighbors of Ai
-                    attributes1 = nx.get_node_attributes(self.matchingGraph, 'chem')
-                    att_neighbours_of_Ai = []
-                    for x in key_neighbours_of_Ai:
-                        att_neighbours_of_Ai.append(attributes1[x])  # list with attributes of neighbors of Ai
+        copy = None
+        excluded_candidates = []  # list with id of already excluded candidate nodes
+        while not np.array_equal(copy, self.M):
+            copy = self.M.copy()
+            want_to_break_again = False  # needed to break out of while loop
+            for i in range(len(self.H)):
+                for j in range(len(self.F)):
+                    want_to_break = False  # needed to break out of double loop
+                    if self.M[i][j] == 1:
+                        att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
+                        att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j,
+                                                                                                          excluded_candidates)
 
-                    node_in_B = keylist2[j]  # get node ID of Bj
-                    key_neighbours_of_Bj = list(
-                        self.originalGraph.neighbors(int(node_in_B)))  # list with keys of neighbors of Bj
-                    attributes2 = nx.get_node_attributes(self.originalGraph, 'chem')
-                    att_neighbours_of_Bj = []
-                    for x in key_neighbours_of_Bj:
-                        att_neighbours_of_Bj.append(attributes2[x])  # list with attributes of neighbors of Bj
+                        found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
+                        for x in att_neighbors_of_Ai:
+                            for y in att_neighbors_of_Bj:
+                                if x == y:
+                                    found_neighbors_of_Bj.append(y)
+                                    att_neighbors_of_Bj.remove(y)
 
-                    found_neighbours_of_Bj = []  # list containing the possible matches between neighbors
-                    for x in att_neighbours_of_Ai:
-                        for y in att_neighbours_of_Bj:
-                            if x == y:
-                                print("x: " + str(x) + ", y: " + str(y))
-                                found_neighbours_of_Bj.append(y)
-                                print("found neighbors: " + str(found_neighbours_of_Bj))
-                                print("neighbours of Bj before: " + str(att_neighbours_of_Bj))
-                                att_neighbours_of_Bj.remove(y)
-                                print("neighbours of Bj after: " + str(att_neighbours_of_Bj))
+                        att_neighbors_of_Ai.sort()
+                        found_neighbors_of_Bj.sort()
 
-                            else:
-                                print("i went through without doing anything because I'm a " + str(
-                                    x) + " and he is a " + str(y))
+                        if att_neighbors_of_Ai != found_neighbors_of_Bj:
+                            self.M[i][j] = 0
+                            excluded_candidates.append(int(keylist2[j]))
+                            if self.check_rows():
+                                value = False
+                                want_to_break = True  # needed to break out of double loop
+                                break
 
-                    att_neighbours_of_Ai.sort()
-                    found_neighbours_of_Bj.sort()
+                if want_to_break:
+                    want_to_break_again = True
+                    break
+            if want_to_break_again:
+                break
 
-                    print("att_neighbours_of_Ai: " + str(att_neighbours_of_Ai))
-                    print("found_neighbors_of_Bj: " + str(found_neighbours_of_Bj))
+        return value
 
-                    if att_neighbours_of_Ai != found_neighbours_of_Bj:
-                        self.M[i][j] = 0
-                        print("oh no, they are not the same, so I better change M. i = " + str(i) + ", j = " + str(
-                            j) + ". So M looks like this now: " + str(self.M))
+    def check_rows(self):
+        empty_row = False
+        degM = self.M.sum(axis=1)  # sum of each row in M
+        for l in range(len(degM)):  # iterate through every colum
+            if degM[l] == 0:
+                empty_row = True
+                break
+        return empty_row
 
-                    degM = self.M.sum(axis=1) # sum of each row in M
-                    print("degM: " + str(degM))
-                    for l in range(len(degM)):
-                        if degM[l] == 0:
-                            blubb = False
-                            break
+    def get_list_with_attributes_of_neighbor_in_matching_graph(self, keylist, i):
+        node_id = keylist[i]  # get node ID
+        key_neighbours = list(
+            self.matchingGraph.neighbors(int(node_id)))  # list with keys of neighbors of Ai
+        attributes1 = nx.get_node_attributes(self.matchingGraph, 'chem')
+        att_neighbors = []
+        for x in key_neighbours:
+            att_neighbors.append(attributes1[x])  # list with attributes of neighbors of Ai
+        return att_neighbors
 
-        print("blubb: " + str(blubb))
-        return blubb
+    def get_list_with_attributes_of_neighbor_in_original_graph(self, keylist, j, excluded_candidates):
+        node_id = keylist[j]  # get node ID
+        key_neighbors = list(
+            self.originalGraph.neighbors(int(node_id)))  # list with keys of neighbors of Ai
+        for y in excluded_candidates:
+            for x in key_neighbors:
+                if y == x:
+                    key_neighbors.remove(x)
+        attributes1 = nx.get_node_attributes(self.originalGraph, 'chem')
+        att_neighbors = []
+        for x in key_neighbors:
+            att_neighbors.append(attributes1[x])  # list with attributes of neighbors of Ai
+        return att_neighbors

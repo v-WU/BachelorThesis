@@ -2,6 +2,7 @@ from ullmanAlgorithm import UllmanAlgorithm
 import utility
 import numpy as np
 import networkx as nx
+import re
 
 
 class TestUllman():
@@ -167,7 +168,7 @@ class TestUllman():
         ullman.d = 2
         ullman.k = 0
 
-        ullman.copyM[ullman.d-1] = [[0, 0], [0, 0]]
+        ullman.copyM[ullman.d - 1] = [[0, 0], [0, 0]]
 
         mocker.patch.object(ullman, 'step5', return_value=None)
 
@@ -344,7 +345,7 @@ class TestUllman():
         ullman.perform_ullman_algorithm(G1, G3)
         assert not ullman.isomorphism
 
-    def test_refine(self):
+    def test_refine_fail(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
@@ -357,5 +358,91 @@ class TestUllman():
         ullman.matchingGraph = G1
         ullman.originalGraph = G3
 
+        value = ullman.refine()
+        assert not value
 
-        blubb = ullman.refine()
+    def test_refine_succeed(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+        G2.remove_node(3)
+        G2.add_node(5, chem="O")
+        G2.add_node(6, chem="H")
+        G2.add_node(7, chem="H")
+        G2.add_edge(2, 5)
+        G2.add_edge(5, 6)
+        G2.add_edge(5, 7)
+        print("G2: " + str(G2.nodes(data=True)))
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = ullman.create_rotation_matrix(G1, G2)
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G2)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G2
+
+        value = ullman.refine()
+        assert value
+        M = [[0, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 1, 1]]
+        assert (np.array_equal(ullman.M, M))
+
+    def test_check_rows_empty(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G3)
+        ullman.M = ullman.create_rotation_matrix(G1, G3)
+        assert ullman.check_rows()
+
+    def test_check_rows_non_empty(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = ullman.create_rotation_matrix(G1, G2)
+        assert not ullman.check_rows()
+
+    def test_get_list_with_attributes_of_neighbor_in_matching_graph(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = ullman.create_rotation_matrix(G1, G2)
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G2)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G2
+
+        list1 = nx.get_node_attributes(ullman.matchingGraph,
+                                       "chem")  # list with key and attributes, accessible with index
+        keylist = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+        list = ullman.get_list_with_attributes_of_neighbor_in_matching_graph(keylist, 0)
+        assert (len(list) == 1)
+        assert ("O" in list)
+
+    def test_get_list_with_attributes_of_neighbor_in_original_graph(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = ullman.create_rotation_matrix(G1, G2)
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G2)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G2
+
+        list1 = nx.get_node_attributes(ullman.originalGraph,
+                                       "chem")  # list with key and attributes, accessible with index
+        keylist = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+        list = ullman.get_list_with_attributes_of_neighbor_in_original_graph(keylist, 0, [])
+        assert (len(list) == 1)
+        assert ("O" in list)
