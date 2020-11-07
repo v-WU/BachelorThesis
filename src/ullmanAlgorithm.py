@@ -25,7 +25,11 @@ class UllmanAlgorithm:
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph):
         self.init(matchingGraph, originalGraph)
-        self.step2()
+        if self.refine():
+            print("Initial refinement went well")
+            self.step2()
+        else:
+            print("it's over before it started...")
         return self.isomorphism
 
     def init(self, matchingGraph, orignialGraph):
@@ -134,6 +138,9 @@ class UllmanAlgorithm:
             if j != self.k:
                 self.M[self.d][j] = 0
         print("step 3: changed M to " + str(self.M))
+        value = self.refine()
+        if not value:
+            self.step5()
         self.step4()
         return
 
@@ -142,11 +149,12 @@ class UllmanAlgorithm:
         if self.d < len(self.H) - 1:  # Werte von d: 0 bis len(H)-1, wegen Indizesverschiebung von Python
             self.step6()
         else:
-            self.isomorphism_check()
-            if self.isomorphism:
-                return
-            else:
-                self.step5()
+            # self.isomorphism_check()
+            # if self.isomorphism:
+             #   return
+            # else:
+                # self.step5()
+            self.isomorphism = True
         return
 
     def step5(self):
@@ -268,11 +276,12 @@ class UllmanAlgorithm:
                                 break
 
                 if want_to_break:
-                    want_to_break_again = True
+                    want_to_break_again = True  # needed to break out of the while loop
                     break
             if want_to_break_again:
                 break
 
+        print("finished with the refinement: " + str(self.M))
         return value
 
     def check_rows(self):
@@ -286,8 +295,7 @@ class UllmanAlgorithm:
 
     def get_list_with_attributes_of_neighbor_in_matching_graph(self, keylist, i):
         node_id = keylist[i]  # get node ID
-        key_neighbours = list(
-            self.matchingGraph.neighbors(int(node_id)))  # list with keys of neighbors of Ai
+        key_neighbours = list(self.matchingGraph.neighbors(node_id))  # list with keys of neighbors of Ai
         attributes1 = nx.get_node_attributes(self.matchingGraph, 'chem')
         att_neighbors = []
         for x in key_neighbours:
@@ -297,7 +305,7 @@ class UllmanAlgorithm:
     def get_list_with_attributes_of_neighbor_in_original_graph(self, keylist, j, excluded_candidates):
         node_id = keylist[j]  # get node ID
         key_neighbors = list(
-            self.originalGraph.neighbors(int(node_id)))  # list with keys of neighbors of Ai
+            self.originalGraph.neighbors(node_id))  # list with keys of neighbors of Ai
         for y in excluded_candidates:
             for x in key_neighbors:
                 if y == x:
