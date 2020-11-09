@@ -263,6 +263,7 @@ class TestUllman():
         ullman.d = 0
 
         mocker.patch.object(ullman, 'step4', return_value=None)
+        mocker.patch.object(ullman, 'refine', return_value=True)
 
         ullman.step3()
 
@@ -365,13 +366,13 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
-        G2.remove_node(3)
-        G2.add_node(5, chem="O")
-        G2.add_node(6, chem="H")
-        G2.add_node(7, chem="H")
-        G2.add_edge(2, 5)
-        G2.add_edge(5, 6)
-        G2.add_edge(5, 7)
+        G2.remove_node('3')
+        G2.add_node('5', chem="O")
+        G2.add_node('6', chem="H")
+        G2.add_node('7', chem="H")
+        G2.add_edge('2', '5')
+        G2.add_edge('5', '6')
+        G2.add_edge('5', '7')
         print("G2: " + str(G2.nodes(data=True)))
 
         ullman.A = ullman.create_adj_matrix(G1)
@@ -423,6 +424,7 @@ class TestUllman():
         list1 = nx.get_node_attributes(ullman.matchingGraph,
                                        "chem")  # list with key and attributes, accessible with index
         keylist = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+        print("keylist: " + str(keylist))
         list = ullman.get_list_with_attributes_of_neighbor_in_matching_graph(keylist, 0)
         assert (len(list) == 1)
         assert ("O" in list)
@@ -446,3 +448,6 @@ class TestUllman():
         list = ullman.get_list_with_attributes_of_neighbor_in_original_graph(keylist, 0, [])
         assert (len(list) == 1)
         assert ("O" in list)
+
+    def test_refine_big(self):
+        assert True

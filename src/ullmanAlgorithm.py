@@ -151,9 +151,9 @@ class UllmanAlgorithm:
         else:
             # self.isomorphism_check()
             # if self.isomorphism:
-             #   return
+            #   return
             # else:
-                # self.step5()
+            # self.step5()
             self.isomorphism = True
         return
 
@@ -252,6 +252,8 @@ class UllmanAlgorithm:
             for i in range(len(self.H)):
                 for j in range(len(self.F)):
                     want_to_break = False  # needed to break out of double loop
+                    if i == 1 and j == 31:
+                        print("checked the C's")
                     if self.M[i][j] == 1:
                         att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
                         att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j,
@@ -269,7 +271,7 @@ class UllmanAlgorithm:
 
                         if att_neighbors_of_Ai != found_neighbors_of_Bj:
                             self.M[i][j] = 0
-                            excluded_candidates.append(int(keylist2[j]))
+                            excluded_candidates.append(keylist2[j])
                             if self.check_rows():
                                 value = False
                                 want_to_break = True  # needed to break out of double loop

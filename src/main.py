@@ -49,8 +49,8 @@ for ordered_nodes in conn_comps_lst:
     SG.add_edges_from((u, v) for (u, v) in matching_graph[1][0].edges() if u in SG if v in SG)
     connected_components.append(SG)
 
-print(connected_components[2].nodes(data=True))
-print(original_graph[3][0].nodes(data=True))
+print(connected_components[1].nodes(data=True))
+print("nodes of all_inclusive: " + str(original_graph[3][0].nodes(data=True)))
 
 # subgraphs = nx.connected_components(original_graph[2][0])
 # print("Subgraphs: " + str(subgraphs))
@@ -78,7 +78,7 @@ print(original_graph[3][0].nodes(data=True))
 # origial_graph[2][0] = molecule_4204_small_14Nodes_FALSE
 # original_graph[3][0] = molecule_4204_small_10Nodes_TRUE&FALSE
 ulli5 = UllmanAlgorithm()
-ulli5.perform_ullman_algorithm(connected_components[0], original_graph[2][0])
+ulli5.perform_ullman_algorithm(connected_components[1], original_graph[2][0])
 print("Isomorphism component 2 and molecule 4204: " + str(ulli5.isomorphism))
 
 # connected_components[3], Isomorphismus: False
