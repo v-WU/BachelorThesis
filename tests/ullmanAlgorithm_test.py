@@ -373,7 +373,6 @@ class TestUllman():
         G2.add_edge('2', '5')
         G2.add_edge('5', '6')
         G2.add_edge('5', '7')
-        print("G2: " + str(G2.nodes(data=True)))
 
         ullman.A = ullman.create_adj_matrix(G1)
         ullman.B = ullman.create_adj_matrix(G2)
@@ -450,4 +449,16 @@ class TestUllman():
         assert ("O" in list)
 
     def test_refine_big(self):
-        assert True
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_connected_component_1()
+        G2 = utility.create_part_original_graph()
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = ullman.create_rotation_matrix(G1, G2)
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G2)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G2
+
+        value = ullman.refine()
+        assert value

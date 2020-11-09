@@ -38,3 +38,42 @@ def create_test_original_graphs():
     G3.add_edge('2', '4')
 
     return G2, G3
+
+
+def create_connected_component_1():
+    G = nx.Graph()
+    G.add_node('17', chem="C")
+    G.add_node('21', chem="C")
+    G.add_node('25', chem="C")
+    G.add_node('64', chem="H")
+    G.add_node('65', chem="H")
+    G.add_node('66', chem="H")
+    G.add_edge('17', '64')
+    G.add_edge('17', '21')
+    G.add_edge('25', '21')
+    G.add_edge('66', '21')
+    G.add_edge('65', '21')
+
+    return G
+
+
+def create_part_original_graph():
+    G = nx.Graph()
+    G.add_node('23', chem="N")
+    G.add_node('27', chem="C")
+    G.add_node('32', chem="C")
+    G.add_node('38', chem="C")
+    G.add_node('69', chem="H")
+    G.add_node('72', chem="H")
+    G.add_node('75', chem="H")
+    G.add_node('76', chem="H")
+
+    G.add_edge('23', '27')
+    G.add_edge('23', '69')
+    G.add_edge('27', '72')
+    G.add_edge('27', '32')
+    G.add_edge('75', '32')
+    G.add_edge('76', '32')
+    G.add_edge('38', '32')
+
+    return G
