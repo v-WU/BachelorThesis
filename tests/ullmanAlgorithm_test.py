@@ -384,7 +384,7 @@ class TestUllman():
 
         value = ullman.refine()
         assert value
-        M = [[0, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 1, 1]]
+        M = [[1, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 1]]
         assert (np.array_equal(ullman.M, M))
 
     def test_check_rows_empty(self):
@@ -423,7 +423,6 @@ class TestUllman():
         list1 = nx.get_node_attributes(ullman.matchingGraph,
                                        "chem")  # list with key and attributes, accessible with index
         keylist = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
-        print("keylist: " + str(keylist))
         list = ullman.get_list_with_attributes_of_neighbor_in_matching_graph(keylist, 0)
         assert (len(list) == 1)
         assert ("O" in list)
@@ -444,7 +443,7 @@ class TestUllman():
         list1 = nx.get_node_attributes(ullman.originalGraph,
                                        "chem")  # list with key and attributes, accessible with index
         keylist = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
-        list = ullman.get_list_with_attributes_of_neighbor_in_original_graph(keylist, 0, [])
+        list = ullman.get_list_with_attributes_of_neighbor_in_original_graph(keylist, 0)
         assert (len(list) == 1)
         assert ("O" in list)
 

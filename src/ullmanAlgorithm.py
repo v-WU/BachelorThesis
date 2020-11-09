@@ -36,12 +36,9 @@ class UllmanAlgorithm:
         self.A = self.create_adj_matrix(matchingGraph)
         self.B = self.create_adj_matrix(orignialGraph)
         self.F = self.create_vector(orignialGraph)
-        print("Initial F: " + str(self.F))
         self.H = self.create_vector(matchingGraph)
         self.H.fill(-1)
-        print("Initial H: " + str(self.H))
         self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
-        print("Initial M: " + str(self.M))
         self.d = 0  # index in python start at 0
         self.matchingGraph = matchingGraph
         self.originalGraph = orignialGraph
@@ -92,23 +89,18 @@ class UllmanAlgorithm:
         :return:
         """
 
-        print("step 2")
         if self.bedingung_step2():
             self.step7()
         else:
             assert self.d <= len(self.H) - 1
             assert self.k <= len(self.F) - 1
             self.copyM[self.d] = np.copy(self.M)
-            print("step 2: made a copy at depth " + str(self.d))
-            print("step 2: M = " + str(self.M))
             if self.d == 0:  # python Indizes beginnt bei 0
                 self.k = self.H[0]  # python Indizes beginnt bei 0
-                print("step 2: k = " + str(self.k))
                 assert self.k <= len(self.F) - 1
                 self.step3()
             else:
                 self.k = -1
-                print("step 2: k = " + str(self.k))
                 self.step3()
         return
 
@@ -127,17 +119,13 @@ class UllmanAlgorithm:
         return value
 
     def step3(self):
-        print("step 3")
         assert (self.k <= len(self.F) - 1)
         self.k = self.k + 1
-        print("step 3: k = " + str(self.k))
         while self.M[self.d][self.k] == 0 or self.F[self.k] == 1:
             self.k = self.k + 1
-            print("step 3: k = " + str(self.k))
         for j in range(len(self.F)):
             if j != self.k:
                 self.M[self.d][j] = 0
-        print("step 3: changed M to " + str(self.M))
         value = self.refine()
         if not value:
             self.step5()
@@ -145,30 +133,24 @@ class UllmanAlgorithm:
         return
 
     def step4(self):
-        print("step 4")
         if self.d < len(self.H) - 1:  # Werte von d: 0 bis len(H)-1, wegen Indizesverschiebung von Python
             self.step6()
         else:
+            # these lines are no longer necessary because the refinement is in place
             # self.isomorphism_check()
             # if self.isomorphism:
             #   return
             # else:
             # self.step5()
             self.isomorphism = True
+            print("Yay, isomorphism found!")
         return
 
     def step5(self):
-        print("step 5")
-        print("current d = " + str(self.d))
-        print("current k = " + str(self.k))
-        print("current F = " + str(self.F))
-        print("current H = " + str(self.H))
         if self.bedingung_step5():
             self.step7()
         else:
             self.M = np.copy(self.copyM[self.d])
-            print("step 5: M = copyM at depth " + str(self.d))
-            print("step 5: M = " + str(self.M))
             self.step3()
         return
 
@@ -188,20 +170,15 @@ class UllmanAlgorithm:
         return value
 
     def step6(self):
-        print("step 6")
         assert self.k <= len(self.F) - 1
         self.H[self.d] = self.k
-        print("step 6: H = " + str(self.H))
         self.F[self.k] = 1
-        print("step 6: F = " + str(self.F))
         self.d = self.d + 1
-        print("step 6: d = " + str(self.d))
         assert self.d <= len(self.H) - 1
         self.step2()
         return
 
     def step7(self):
-        print("step 7")
         if self.d == 0:  # python Indizes beginnt bei 0
             if self.isomorphism != True:  # the algorithm should end here...
                 print("Step 7: There exists no subgraphisomorphism between these two graphs")
@@ -209,19 +186,13 @@ class UllmanAlgorithm:
 
         else:
             self.d = self.d - 1
-            print("step 7: d = " + str(self.d))
             self.k = self.H[self.d]
             self.F[self.k] = 0
-            print("step 7: k = " + str(self.k))
-            print("step 7: F = " + str(self.F))
-            # print("copyM = " + str(self.copyM))
             self.M = np.copy(self.copyM[self.d])
-            # self.M[self.d+1] = np.copy(self.copyM[self.d][self.d+1])
-            print("step 7: M = copyM at depth " + str(self.d))
-            print("step 7: M = " + str(self.M))
             self.step5()
         return
 
+    # this is no longer necessary because the refinement is in place
     def isomorphism_check(self):
         self.counter = self.counter + 1
         print(str(self.counter) + ". isomorphismus check ausgeführt mit M = " + str(self.M))
@@ -245,20 +216,15 @@ class UllmanAlgorithm:
         keylist2 = re.findall(r'\d+', str(list2))  # list with only key, accessible with index
 
         copy = None
-        excluded_candidates = []  # list with id of already excluded candidate nodes
         while not np.array_equal(copy, self.M):
             copy = self.M.copy()
             want_to_break_again = False  # needed to break out of while loop
             for i in range(len(self.H)):
                 for j in range(len(self.F)):
                     want_to_break = False  # needed to break out of double loop
-                    if i == 1 and j == 31:
-                        print("checked the C's")
                     if self.M[i][j] == 1:
                         att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
-                        att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j,
-                                                                                                          excluded_candidates)
-
+                        att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j)
                         found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
                         for x in att_neighbors_of_Ai:
                             for y in att_neighbors_of_Bj:
@@ -271,7 +237,6 @@ class UllmanAlgorithm:
 
                         if att_neighbors_of_Ai != found_neighbors_of_Bj:
                             self.M[i][j] = 0
-                            excluded_candidates.append(keylist2[j])
                             if self.check_rows():
                                 value = False
                                 want_to_break = True  # needed to break out of double loop
@@ -283,7 +248,6 @@ class UllmanAlgorithm:
             if want_to_break_again:
                 break
 
-        print("finished with the refinement: " + str(self.M))
         return value
 
     def check_rows(self):
@@ -304,14 +268,10 @@ class UllmanAlgorithm:
             att_neighbors.append(attributes1[x])  # list with attributes of neighbors of Ai
         return att_neighbors
 
-    def get_list_with_attributes_of_neighbor_in_original_graph(self, keylist, j, excluded_candidates):
+    def get_list_with_attributes_of_neighbor_in_original_graph(self, keylist, j):
         node_id = keylist[j]  # get node ID
         key_neighbors = list(
             self.originalGraph.neighbors(node_id))  # list with keys of neighbors of Ai
-        for y in excluded_candidates:
-            for x in key_neighbors:
-                if y == x:
-                    key_neighbors.remove(x)
         attributes1 = nx.get_node_attributes(self.originalGraph, 'chem')
         att_neighbors = []
         for x in key_neighbors:
