@@ -144,7 +144,7 @@ class UllmanAlgorithm:
             # else:
             # self.step5()
             #
-            # just for fun. by the way, der isomorphism_check funktioniert nicht bei unzusammenhänenden graphen
+            # just for fun.
             # self.isomorphism_check()
             # print("result of isomorphism check: " + str(self.isomorphism))
 
