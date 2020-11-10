@@ -516,9 +516,80 @@ class TestUllman():
         assert np.array_equal(matched_nodes, [2, 1])
 
     def test_2_rounds_of_ullman_true(self):
-        #TODO
+        # TODO
         assert True
 
     def test_2_rounds_of_ullman_false(self):
-        #TODO
+        # TODO
         assert True
+
+    def test_ullman_unconnected_matching_graph(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G1.add_node('4', chem="N")
+        G1.add_node('5', chem="N")
+        G1.add_edge('4', '5')
+
+        G2, G3 = utility.create_test_original_graphs()
+        G2.add_node('5', chem="N")
+        G2.add_node('6', chem="N")
+        G2.add_edge('4', '5')
+        G2.add_edge('6', '5')
+
+        ullman.perform_ullman_algorithm(G1, G2, [])
+
+        assert ullman.isomorphism
+
+    def test_ullman_unconnected_matching_graph_2(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G1.add_node('4', chem="O")
+        G1.add_node('5', chem="H")
+        G1.add_edge('4', '5')
+
+        G2, G3 = utility.create_test_original_graphs()
+
+        ullman.perform_ullman_algorithm(G1, G2, [])
+        print("M: " + str(ullman.M))
+
+        assert not ullman.isomorphism
+
+    def test_ullman_unconnected_matching_graph_3(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G1.add_node('4', chem="O")
+        G1.add_node('5', chem="H")
+        G1.add_edge('4', '5')
+
+        G2, G3 = utility.create_test_original_graphs()
+        G2.add_node('5', chem="O")
+        G2.add_node('6', chem="H")
+        G2.add_edge('1', '5')
+        G2.add_edge('6', '5')
+
+        ullman.perform_ullman_algorithm(G1, G2, [])
+
+        assert ullman.isomorphism
+
+    def test_ullman_unconnected_matching_graph_4(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G1.add_node('4', chem="C")
+        G1.add_node('5', chem="C")
+        G1.add_edge('4', '5')
+
+        G2, G3 = utility.create_test_original_graphs()
+        G2.add_node('5', chem="C")
+        G2.add_node('6', chem="C")
+        G2.add_node('7', chem="C")
+        G2.add_edge('4', '6')
+        G2.add_edge('7', '3')
+        G2.add_edge('7', '5')
+
+        # der algorithmus mappt 4 -> 4 und 5 -> 5. (das erkennt man, weil in M (3,3) = 1 und (4,4) = 1)
+        # Im matching graph G1 besteht die Verbindung 4-5,jedoch im original graph G2 existiert diese Verbindung NICHT..
+        # trotzdem gibt der algorithmus true aus...
+        # (was eigentlich stimmt, aber es wurde nicht das richtige matching gemacht)
+        ullman.perform_ullman_algorithm(G1, G2, [])
+        print("iso: " + str(ullman.isomorphism))
+        assert False

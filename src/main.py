@@ -58,10 +58,14 @@ for ordered_nodes in conn_comps_lst:
 # subgraphs = nx.connected_components(original_graph[2][0])
 # print("Subgraphs: " + str(subgraphs))
 
+print("Nodes of matching graph: " + str(matching_graph[1][0].nodes(data=True)))
+print("Nodes of original graph: " + str(original_graph[2][0].nodes(data=True)))
+
 # Vergleich GANZER Matching Graph mit Origial Graph
 ulli2 = UllmanAlgorithm()
 ulli2.perform_ullman_algorithm(matching_graph[1][0], original_graph[2][0], [])
 print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))
+
 
 # 2er Molekül, Connected_components[0], Isomorphismus: True
 # nx.draw(connected_components[0])

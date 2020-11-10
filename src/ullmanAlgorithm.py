@@ -52,7 +52,7 @@ class UllmanAlgorithm:
         :param matchingGraph, originalGraph
         :return: Rotationsmatrix M0
         """
-        # TODO consider matched_nodes
+
         list1 = nx.get_node_attributes(matchingGraph, "chem")  # list with key and attributes, accessible with index
         attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
         list2 = nx.get_node_attributes(originalGraph, "chem")
@@ -144,13 +144,15 @@ class UllmanAlgorithm:
             # else:
             # self.step5()
             #
-            # self.isomorphism = True
+            # just for fun. by the way, der isomorphism_check funktioniert nicht bei unzusammenhänenden graphen
+            # self.isomorphism_check()
+            # print("result of isomorphism check: " + str(self.isomorphism))
+
+            self.isomorphism = True
             new_matches = self.find_matched_nodes()
             self.matched_nodes_indizes = np.concatenate((self.matched_nodes_indizes, new_matches), 0)
             self.matched_nodes_indizes = self.matched_nodes_indizes.astype(int)
-            print("all matched nodes indizes: " + str(self.matched_nodes_indizes))
-            self.isomorphism_check()
-            print("Isomorphism should be found! It is: " + str(self.isomorphism))
+            print("Isomorphism found! It's: " + str(self.isomorphism))
         return
 
     def step5(self):
@@ -202,14 +204,15 @@ class UllmanAlgorithm:
     # this is no longer necessary because the refinement is in place
     def isomorphism_check(self):
         self.counter = self.counter + 1
-        print(str(self.counter) + ". isomorphismus check ausgeführt mit M = " + str(self.M))
+        print(str(self.counter) + ". isomorphismus check ausgeführt")
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
             print("Yay, isomorphism found!")
-        # else:
-        # print("Nope, not isomorphic yet")
+        else:
+            self.isomorphism = False
+            print("Nope, not isomorphic yet")
         return
 
     def refine(self):
