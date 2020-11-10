@@ -77,3 +77,30 @@ def create_part_original_graph():
     G.add_edge('38', '32')
 
     return G
+
+def create_graph_11_nodes():
+    G = nx.Graph()
+    G.add_node('1', chem="O")
+    G.add_node('2', chem="H")
+    G.add_node('3', chem="O")
+    G.add_node('4', chem="O")
+    G.add_node('5', chem="C")
+    G.add_node('6', chem="C")
+    G.add_node('7', chem="O")
+    G.add_node('8', chem="H")
+    G.add_node('9', chem="H")
+    G.add_node('10', chem="O")
+    G.add_node('11', chem="H")
+
+    G.add_edge('1', '2')
+    G.add_edge('3', '2')
+    G.add_edge('4', '2')
+    G.add_edge('5', '2')
+    G.add_edge('6', '5')
+    G.add_edge('6', '7')
+    G.add_edge('7', '8')
+    G.add_edge('9', '8')
+    G.add_edge('10', '9')
+    G.add_edge('11', '3')
+
+    return G

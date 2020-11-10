@@ -36,7 +36,7 @@ class UllmanAlgorithm:
         self.F = self.create_vector(orignialGraph)
         self.H = self.create_vector(matchingGraph)
         self.H.fill(-1)
-        self.M = self.create_rotation_matrix(matchingGraph, orignialGraph)
+        self.M = self.create_rotation_matrix(matchingGraph, orignialGraph, matched_nodes_indizes)
         self.d = 0  # index in python start at 0
         self.matchingGraph = matchingGraph
         self.originalGraph = orignialGraph
@@ -47,7 +47,7 @@ class UllmanAlgorithm:
         G = np.array(nx.to_numpy_matrix(graph, dtype=int))
         return G
 
-    def create_rotation_matrix(self, matchingGraph, originalGraph):
+    def create_rotation_matrix(self, matchingGraph, originalGraph, matched_nodes_indizes):
         """
         :param matchingGraph, originalGraph
         :return: Rotationsmatrix M0
@@ -70,6 +70,8 @@ class UllmanAlgorithm:
                 if chem1 == chem2:
                     if degB[j] >= degA[i]:
                         self.M[i][j] = 1
+                if j in matched_nodes_indizes:
+                    self.M[i][j] = 0
 
         return self.M
 
