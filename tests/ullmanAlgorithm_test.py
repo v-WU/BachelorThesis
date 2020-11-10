@@ -461,3 +461,12 @@ class TestUllman():
 
         value = ullman.refine()
         assert value
+
+    def test_refinement_iso_false(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+        G1.add_node('4', chem="N")
+        G1.add_edge('1', '4')
+
+        assert not ullman.perform_ullman_algorithm(G1, G2)
