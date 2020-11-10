@@ -4,7 +4,7 @@ import sys
 import networkx as nx
 import numpy as np
 
-sys.setrecursionlimit(6000)
+sys.setrecursionlimit(5000)
 
 
 class UllmanAlgorithm:
@@ -22,17 +22,15 @@ class UllmanAlgorithm:
         self.counter = 0
         self.matchingGraph = None
         self.originalGraph = None
+        self.matched_nodes_indizes = []  # contains indizes of matched nodes of prev runs and current run
 
-    def perform_ullman_algorithm(self, matchingGraph, originalGraph):
-        self.init(matchingGraph, originalGraph)
+    def perform_ullman_algorithm(self, matchingGraph, originalGraph, matched_nodes_indizes):
+        self.init(matchingGraph, originalGraph, matched_nodes_indizes)
         if self.refine():
-            print("Initial refinement went well")
             self.step2()
-        else:
-            print("it's over before it started...")
-        return self.isomorphism
+        return self.isomorphism, self.matched_nodes_indizes,
 
-    def init(self, matchingGraph, orignialGraph):
+    def init(self, matchingGraph, orignialGraph, matched_nodes_indizes):
         self.A = self.create_adj_matrix(matchingGraph)
         self.B = self.create_adj_matrix(orignialGraph)
         self.F = self.create_vector(orignialGraph)
@@ -42,6 +40,7 @@ class UllmanAlgorithm:
         self.d = 0  # index in python start at 0
         self.matchingGraph = matchingGraph
         self.originalGraph = orignialGraph
+        self.matched_nodes_indizes = matched_nodes_indizes
         return
 
     def create_adj_matrix(self, graph):
@@ -53,7 +52,7 @@ class UllmanAlgorithm:
         :param matchingGraph, originalGraph
         :return: Rotationsmatrix M0
         """
-
+        # TODO consider matched_nodes
         list1 = nx.get_node_attributes(matchingGraph, "chem")  # list with key and attributes, accessible with index
         attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
         list2 = nx.get_node_attributes(originalGraph, "chem")
@@ -142,8 +141,14 @@ class UllmanAlgorithm:
             #   return
             # else:
             # self.step5()
-            self.isomorphism = True
-            print("Yay, isomorphism found!")
+            #
+            # self.isomorphism = True
+            new_matches = self.find_matched_nodes()
+            self.matched_nodes_indizes = np.concatenate((self.matched_nodes_indizes, new_matches), 0)
+            self.matched_nodes_indizes = self.matched_nodes_indizes.astype(int)
+            print("all matched nodes indizes: " + str(self.matched_nodes_indizes))
+            self.isomorphism_check()
+            print("Isomorphism should be found! It is: " + str(self.isomorphism))
         return
 
     def step5(self):
@@ -180,7 +185,7 @@ class UllmanAlgorithm:
 
     def step7(self):
         if self.d == 0:  # python Indizes beginnt bei 0
-            if self.isomorphism != True:  # the algorithm should end here...
+            if not self.isomorphism:  # the algorithm should end here...
                 print("Step 7: There exists no subgraphisomorphism between these two graphs")
                 return
 
@@ -277,3 +282,9 @@ class UllmanAlgorithm:
         for x in key_neighbors:
             att_neighbors.append(attributes1[x])  # list with attributes of neighbors of Ai
         return att_neighbors
+
+    def find_matched_nodes(self):
+        print("M: " + str(self.M))
+        result = np.where(np.array(self.M) == 1)
+        newly_matched_nodes_indizes = result[1]
+        return newly_matched_nodes_indizes

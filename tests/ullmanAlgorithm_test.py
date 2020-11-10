@@ -336,14 +336,14 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
-        ullman.perform_ullman_algorithm(G1, G2)
+        ullman.perform_ullman_algorithm(G1, G2, [])
         assert ullman.isomorphism
 
     def test_perform_ullman_algorithm_not_iso(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
-        ullman.perform_ullman_algorithm(G1, G3)
+        ullman.perform_ullman_algorithm(G1, G3, [])
         assert not ullman.isomorphism
 
     def test_refine_fail(self):
@@ -468,5 +468,10 @@ class TestUllman():
         G2, G3 = utility.create_test_original_graphs()
         G1.add_node('4', chem="N")
         G1.add_edge('1', '4')
+        assert not ullman.isomorphism
 
-        assert not ullman.perform_ullman_algorithm(G1, G2)
+    def test_find_matched_nodes(self):
+        ullman = UllmanAlgorithm()
+        ullman.M = [[0, 0, 1], [0, 1, 0]]
+        ullman.find_matched_nodes()
+        assert np.array_equal(ullman.matched_nodes_indizes, [2, 1])
