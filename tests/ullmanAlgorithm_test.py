@@ -592,7 +592,7 @@ class TestUllman():
         # (was eigentlich stimmt, aber es wurde nicht das richtige matching gemacht)
         ullman.perform_ullman_algorithm(G1, G2, [])
         print("iso: " + str(ullman.isomorphism))
-        assert False
+        assert ullman.isomorphism
 
 
     def test_ullman_unconnected_matching_graph_5(self):
@@ -616,4 +616,5 @@ class TestUllman():
         # (was eigentlich stimmt, aber es wurde nicht das richtige matching gemacht)
         ullman.perform_ullman_algorithm(G1, G2, [])
         print("iso: " + str(ullman.isomorphism))
-        assert False
+        print("end M: " + str(ullman.M))
+        assert ullman.isomorphism
