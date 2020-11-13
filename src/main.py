@@ -59,20 +59,21 @@ for ordered_nodes in conn_comps_lst:
 # print("Subgraphs: " + str(subgraphs))
 
 print("Nodes of matching graph: " + str(matching_graph[1][0].nodes(data=True)))
+print("Nodes of connected_components[1]: " + str(connected_components[1].nodes(data=True)))
 print("Nodes of original graph: " + str(original_graph[2][0].nodes(data=True)))
 
 # Vergleich GANZER Matching Graph mit Origial Graph
-ulli2 = UllmanAlgorithm()
-ulli2.perform_ullman_algorithm(matching_graph[1][0], original_graph[2][0], [])
-print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))
+# ulli2 = UllmanAlgorithm()
+# ulli2.perform_ullman_algorithm(matching_graph[1][0], original_graph[2][0], [])
+# print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))
 
 
 # 2er Molekül, Connected_components[0], Isomorphismus: True
 # nx.draw(connected_components[0])
 # plt.show()
-# ulli3 = UllmanAlgorithm()
-# ulli3.perform_ullman_algorithm(connected_components[0], original_graph[2][0])
-# print("Isomorphism component 0 and molecule 4204: " + str(ulli3.isomorphism))
+ulli3 = UllmanAlgorithm()
+ulli3.perform_ullman_algorithm(connected_components[1], original_graph[2][0], [])
+print("Isomorphism component 1 and molecule 4204: " + str(ulli3.isomorphism))
 
 
 print("Time taken with Ullman = " + str(time.time() - start_time))

@@ -205,9 +205,9 @@ class UllmanAlgorithm:
     def isomorphism_check(self):
         self.counter = self.counter + 1
         print(str(self.counter) + ". isomorphismus check ausgeführt")
-        print("mit M: " + str(self.M))
+        # print("mit M: " + str(self.M))
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
-        print("Multiplikation sieht so aus: " + str(C))
+        # print("Multiplikation sieht so aus: " + str(C))
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
