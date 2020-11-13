@@ -138,21 +138,17 @@ class UllmanAlgorithm:
             self.step6()
         else:
             # these lines are no longer necessary because the refinement is in place
-            self.isomorphism_check()
-            if self.isomorphism:
-               return
-            else:
-             self.step5()
-            #
-            # just for fun.
             # self.isomorphism_check()
-            # print("result of isomorphism check: " + str(self.isomorphism))
+            # if self.isomorphism:
+            #   return
+            # else:
+            # self.step5()
 
-            # self.isomorphism = True
+            self.isomorphism = True
             # new_matches = self.find_matched_nodes()
             # self.matched_nodes_indizes = np.concatenate((self.matched_nodes_indizes, new_matches), 0)
             # self.matched_nodes_indizes = self.matched_nodes_indizes.astype(int)
-            # print("Isomorphism found! It's: " + str(self.isomorphism))
+
         return
 
     def step5(self):
@@ -190,7 +186,7 @@ class UllmanAlgorithm:
     def step7(self):
         if self.d == 0:  # python Indizes beginnt bei 0
             if not self.isomorphism:  # the algorithm should end here...
-                print("Step 7: There exists no subgraphisomorphism between these two graphs")
+                # print("Step 7: There exists no subgraphisomorphism between these two graphs")
                 return
 
         else:
@@ -204,10 +200,8 @@ class UllmanAlgorithm:
     # this is no longer necessary because the refinement is in place
     def isomorphism_check(self):
         self.counter = self.counter + 1
-        print(str(self.counter) + ". isomorphismus check ausgeführt")
-        print("mit M: " + str(self.M))
+        # print(str(self.counter) + ". isomorphismus check ausgeführt")
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
-        print("Multiplikation sieht so aus: " + str(C))
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
