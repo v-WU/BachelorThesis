@@ -4,7 +4,7 @@ import sys
 import networkx as nx
 import numpy as np
 
-sys.setrecursionlimit(5000)
+sys.setrecursionlimit(50000)
 
 
 class UllmanAlgorithm:
@@ -31,7 +31,7 @@ class UllmanAlgorithm:
         return self.isomorphism, self.matched_nodes_indizes,
 
     def init(self, matchingGraph, orignialGraph, matched_nodes_indizes):
-        self.A = self.create_adj_matrix(matchingGraph)
+        self.A = self.create_adj_matrix_sorted(matchingGraph)
         self.B = self.create_adj_matrix(orignialGraph)
         self.F = self.create_vector(orignialGraph)
         self.H = self.create_vector(matchingGraph)
@@ -47,18 +47,33 @@ class UllmanAlgorithm:
         G = np.array(nx.to_numpy_matrix(graph, dtype=int))
         return G
 
+    def create_adj_matrix_sorted(self, graph):
+        sorted_node_list = self.sort_nodes_by_degree(graph)
+        sorted_list = []
+        for (u,v) in sorted_node_list:
+            sorted_list.append(u)
+        G = np.array(nx.to_numpy_matrix(graph, sorted_list, dtype=int))
+        return G
+
     def create_rotation_matrix(self, matchingGraph, originalGraph, matched_nodes_indizes):
         """
         :param matchingGraph, originalGraph
         :return: Rotationsmatrix M0
         """
 
-        list1 = nx.get_node_attributes(matchingGraph, "chem")  # list with key and attributes, accessible with index
-        attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
+        sorted_node_list = self.sort_nodes_by_degree(matchingGraph)
+        attributelist1 = []
+        for (u,v) in sorted_node_list:
+            attributelist1.append(v)
+        attributelist1 = re.findall("([A-Z])", str(attributelist1))
+
+        # list1 = nx.get_node_attributes(matchingGraph, "chem")  # list with key and attributes, accessible with index
+        # attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
         list2 = nx.get_node_attributes(originalGraph, "chem")
         attributelist2 = re.findall("([A-Z])", str(list2))
 
         self.M = np.zeros(shape=(len(self.A), len(self.B)), dtype=int)
+
 
         degA = self.A.sum(axis=0)
         degB = self.B.sum(axis=0)
@@ -143,7 +158,7 @@ class UllmanAlgorithm:
                 return
             else:
                 self.step5()
-            #
+
             # just for fun.
             # self.isomorphism_check()
             # print("result of isomorphism check: " + str(self.isomorphism))
@@ -219,9 +234,16 @@ class UllmanAlgorithm:
 
     def refine(self):
         value = True
-        list1 = nx.get_node_attributes(self.matchingGraph,
-                                       "chem")  # list with key and attributes, accessible with index
-        keylist1 = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+
+        sorted_node_list = self.sort_nodes_by_degree(self.matchingGraph)
+        keylist1 = []
+        for (u,v) in sorted_node_list:
+            keylist1.append(u)
+        keylist1 = re.findall(r'\d+', str(keylist1))
+
+        # list1 = nx.get_node_attributes(self.matchingGraph,
+        #                              "chem")  # list with key and attributes, accessible with index
+        # keylist1 = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
 
         list2 = nx.get_node_attributes(self.originalGraph,
                                        "chem")  # list with key and attributes, accessible with index
