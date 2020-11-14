@@ -594,7 +594,6 @@ class TestUllman():
         print("iso: " + str(ullman.isomorphism))
         assert ullman.isomorphism
 
-
     def test_ullman_unconnected_matching_graph_5(self):
         ullman = UllmanAlgorithm()
         G1 = nx.Graph()
@@ -618,3 +617,12 @@ class TestUllman():
         print("iso: " + str(ullman.isomorphism))
         print("end M: " + str(ullman.M))
         assert ullman.isomorphism
+
+    def test_sort_nodes_by_degree(self):
+        ullman = UllmanAlgorithm()
+        G2, G3 = utility.create_test_original_graphs()
+        sorted_list = ullman.sort_nodes_by_degree(G2)
+
+        assert len(sorted_list) != 0
+        assert np.array_equal([('2', {'chem': 'O'}), ('1', {'chem': 'H'}), ('3', {'chem': 'H'}), ('4', {'chem': 'C'})],
+                              sorted_list)

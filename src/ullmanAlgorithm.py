@@ -140,9 +140,9 @@ class UllmanAlgorithm:
             # these lines are no longer necessary because the refinement is in place
             self.isomorphism_check()
             if self.isomorphism:
-               return
+                return
             else:
-             self.step5()
+                self.step5()
             #
             # just for fun.
             # self.isomorphism_check()
@@ -295,3 +295,14 @@ class UllmanAlgorithm:
         result = np.where(np.array(self.M) == 1)
         newly_matched_nodes_indizes = result[1]
         return newly_matched_nodes_indizes
+
+    def sort_nodes_by_degree(self, graph):
+        prelist = graph.nodes(data=True)
+        id_n_degree = sorted(graph.degree, key=lambda x: x[1], reverse=True)
+        sorted_list = []
+        for (u, v) in id_n_degree:
+            for (x, y) in prelist:
+                if u == x:
+                    sorted_list.append((x, y))
+
+        return sorted_list
