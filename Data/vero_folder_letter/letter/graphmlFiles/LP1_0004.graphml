@@ -1,0 +1,20 @@
+<graphml>
+    <key id="x" for="node" attr.name="x"/>
+    <key id="y" for="node" attr.name="y"/>
+    <graph id="LP1_0004" edgedefault="undirected">
+        <node id="_0">
+            <data key="x">1.25655</data>
+            <data key="y">3.06472</data>
+        </node>
+        <node id="_1">
+            <data key="x">0.950512</data>
+            <data key="y">0.752442</data>
+        </node>
+        <node id="_2">
+            <data key="x">2.46943</data>
+            <data key="y">0.581778</data>
+        </node>
+        <edge source="_0" target="_1"/>
+        <edge source="_1" target="_2"/>
+    </graph>
+</graphml>

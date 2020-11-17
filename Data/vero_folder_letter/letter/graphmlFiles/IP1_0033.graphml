@@ -1,0 +1,15 @@
+<graphml>
+    <key id="x" for="node" attr.name="x"/>
+    <key id="y" for="node" attr.name="y"/>
+    <graph id="IP1_0033" edgedefault="undirected">
+        <node id="_0">
+            <data key="x">1.16119</data>
+            <data key="y">3.59835</data>
+        </node>
+        <node id="_1">
+            <data key="x">1.37415</data>
+            <data key="y">0.435538</data>
+        </node>
+        <edge source="_0" target="_1"/>
+    </graph>
+</graphml>

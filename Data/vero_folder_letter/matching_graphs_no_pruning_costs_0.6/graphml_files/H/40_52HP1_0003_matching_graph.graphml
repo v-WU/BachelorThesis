@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d2" for="node" attr.name="y" attr.type="string"/>
+<key id="d1" for="node" attr.name="x" attr.type="string"/>
+<key id="d0" for="graph" attr.name="name" attr.type="string"/>
+<graph edgedefault="undirected"><data key="d0">40_52HP1_0003_matching_graph</data>
+<node id="_0">
+  <data key="d1">0.542409</data>
+  <data key="d2">3.46624</data>
+</node>
+<node id="_1">
+  <data key="d1">0.800156</data>
+  <data key="d2">0.709677</data>
+</node>
+<node id="_3">
+  <data key="d1">2.05</data>
+  <data key="d2">2.86</data>
+</node>
+<node id="_4">
+  <data key="d1">0.470779</data>
+  <data key="d2">1.82355</data>
+</node>
+<node id="_5">
+  <data key="d1">2.54671</data>
+  <data key="d2">1.83167</data>
+</node>
+<node id="_6">
+  <data key="d1">1.7091</data>
+  <data key="d2">0.400025</data>
+</node>
+<edge source="_0" target="_1"/>
+<edge source="_3" target="_6"/>
+<edge source="_4" target="_5"/>
+</graph></graphml>

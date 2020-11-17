@@ -1,0 +1,26 @@
+<graphml>
+    <key id="x" for="node" attr.name="x"/>
+    <key id="y" for="node" attr.name="y"/>
+    <graph id="TP1_0014" edgedefault="undirected">
+        <node id="_0">
+            <data key="x">0.800108</data>
+            <data key="y">2.58912</data>
+        </node>
+        <node id="_1">
+            <data key="x">1.74959</data>
+            <data key="y">3.16207</data>
+        </node>
+        <node id="_2">
+            <data key="x">1.64296</data>
+            <data key="y">-0.117303</data>
+        </node>
+        <node id="_3">
+            <data key="x">1.61714</data>
+            <data key="y">2.67818</data>
+        </node>
+        <edge source="_0" target="_1"/>
+        <edge source="_0" target="_2"/>
+        <edge source="_1" target="_3"/>
+        <edge source="_2" target="_3"/>
+    </graph>
+</graphml>

@@ -108,7 +108,7 @@ def read_cxl(file, name_n_labels):
 
 
 def create_cxl_files(string, files):
-    abs_path = create_abs_path("Data/vero_folder/mutagenicity/graphmlFiles")
+    abs_path = create_abs_path("Data/vero_folder_letter/letter/graphmlFiles")
     file = abs_path + string
     files = files.append(file)
     return files

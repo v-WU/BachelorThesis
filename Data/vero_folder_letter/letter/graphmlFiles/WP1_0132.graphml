@@ -1,0 +1,40 @@
+<graphml>
+    <key id="x" for="node" attr.name="x"/>
+    <key id="y" for="node" attr.name="y"/>
+    <graph id="WP1_0132" edgedefault="undirected">
+        <node id="_0">
+            <data key="x">0.763335</data>
+            <data key="y">3.53347</data>
+        </node>
+        <node id="_1">
+            <data key="x">1</data>
+            <data key="y">0.48</data>
+        </node>
+        <node id="_2">
+            <data key="x">2.5</data>
+            <data key="y">3</data>
+        </node>
+        <node id="_3">
+            <data key="x">2.201</data>
+            <data key="y">0.52018</data>
+        </node>
+        <node id="_4">
+            <data key="x">1.8333</data>
+            <data key="y">1.39991</data>
+        </node>
+        <node id="_5">
+            <data key="x">2.48252</data>
+            <data key="y">2.33651</data>
+        </node>
+        <node id="_6">
+            <data key="x">2.51528</data>
+            <data key="y">0.88257</data>
+        </node>
+        <edge source="_0" target="_1"/>
+        <edge source="_1" target="_4"/>
+        <edge source="_1" target="_5"/>
+        <edge source="_2" target="_3"/>
+        <edge source="_2" target="_6"/>
+        <edge source="_3" target="_4"/>
+    </graph>
+</graphml>

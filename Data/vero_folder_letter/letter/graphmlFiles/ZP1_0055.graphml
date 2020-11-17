@@ -1,0 +1,27 @@
+<graphml>
+    <key id="x" for="node" attr.name="x"/>
+    <key id="y" for="node" attr.name="y"/>
+    <graph id="ZP1_0055" edgedefault="undirected">
+        <node id="_0">
+            <data key="x">1.19569</data>
+            <data key="y">3.08233</data>
+        </node>
+        <node id="_1">
+            <data key="x">2.73417</data>
+            <data key="y">2.32848</data>
+        </node>
+        <node id="_2">
+            <data key="x">0.500033</data>
+            <data key="y">-0.0387222</data>
+        </node>
+        <node id="_3">
+            <data key="x">2.65651</data>
+            <data key="y">0.223492</data>
+        </node>
+        <edge source="_0" target="_1"/>
+        <edge source="_0" target="_2"/>
+        <edge source="_1" target="_2"/>
+        <edge source="_1" target="_3"/>
+        <edge source="_2" target="_3"/>
+    </graph>
+</graphml>

@@ -1,0 +1,39 @@
+<graphml>
+    <key id="x" for="node" attr.name="x"/>
+    <key id="y" for="node" attr.name="y"/>
+    <graph id="HP1_0148" edgedefault="undirected">
+        <node id="_0">
+            <data key="x">0.499886</data>
+            <data key="y">3.09809</data>
+        </node>
+        <node id="_1">
+            <data key="x">0.844455</data>
+            <data key="y">0.712061</data>
+        </node>
+        <node id="_2">
+            <data key="x">2.72976</data>
+            <data key="y">0.995978</data>
+        </node>
+        <node id="_3">
+            <data key="x">2.05</data>
+            <data key="y">2.86</data>
+        </node>
+        <node id="_4">
+            <data key="x">1.23734</data>
+            <data key="y">1.62313</data>
+        </node>
+        <node id="_5">
+            <data key="x">2.79021</data>
+            <data key="y">2.23804</data>
+        </node>
+        <node id="_6">
+            <data key="x">2.48033</data>
+            <data key="y">1.62139</data>
+        </node>
+        <edge source="_0" target="_1"/>
+        <edge source="_0" target="_5"/>
+        <edge source="_2" target="_3"/>
+        <edge source="_3" target="_6"/>
+        <edge source="_4" target="_5"/>
+    </graph>
+</graphml>
