@@ -26,7 +26,8 @@ class UllmanAlgorithm:
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph, matched_nodes_indizes):
         self.init(matchingGraph, originalGraph, matched_nodes_indizes)
-        self.step2()
+        if self.refine():
+            self.step2()
         return self.isomorphism
 
     def init(self, matchingGraph, orignialGraph, matched_nodes_indizes):
@@ -118,7 +119,10 @@ class UllmanAlgorithm:
         for j in range(len(self.F)):
             if j != self.k:
                 self.M[self.d][j] = 0
-        self.step4()
+        if self.refine():
+            self.step4()
+        else:
+            self.step5()
         return
 
     def step4(self):
@@ -126,13 +130,13 @@ class UllmanAlgorithm:
             self.step6()
         else:
             # these lines are no longer necessary because the refinement is in place
-            self.isomorphism_check()
-            if self.isomorphism:
-                return
-            else:
-                self.step5()
+            # self.isomorphism_check()
+            # if self.isomorphism:
+            #     return
+            # else:
+            #     self.step5()
 
-            # self.isomorphism = True
+            self.isomorphism = True
             # new_matches = self.find_matched_nodes()
             # self.matched_nodes_indizes = np.concatenate((self.matched_nodes_indizes, new_matches), 0)
             # self.matched_nodes_indizes = self.matched_nodes_indizes.astype(int)
@@ -203,46 +207,43 @@ class UllmanAlgorithm:
 
     def refine(self):
         value = True
-        list1 = nx.get_node_attributes(self.matchingGraph,
-                                       "chem")  # list with key and attributes, accessible with index
-        keylist1 = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+        # list1 = nx.get_node_attributes(self.matchingGraph,
+        #                                "chem")  # list with key and attributes, accessible with index
+        # keylist1 = re.findall(r'\d+', str(list1))  # list with only key, accessible with index
+        #
+        # list2 = nx.get_node_attributes(self.originalGraph,
+        #                                "chem")  # list with key and attributes, accessible with index
+        # keylist2 = re.findall(r'\d+', str(list2))  # list with only key, accessible with index
 
-        list2 = nx.get_node_attributes(self.originalGraph,
-                                       "chem")  # list with key and attributes, accessible with index
-        keylist2 = re.findall(r'\d+', str(list2))  # list with only key, accessible with index
+        keylist1 = list(self.matchingGraph.nodes)
+        keylist2 = list(self.originalGraph.nodes)
 
         copy = None
         while not np.array_equal(copy, self.M):
             copy = self.M.copy()
-            want_to_break_again = False  # needed to break out of while loop
             for i in range(len(self.H)):
                 for j in range(len(self.F)):
-                    want_to_break = False  # needed to break out of double loop
                     if self.M[i][j] == 1:
-                        att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
-                        att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j)
-                        found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
-                        for x in att_neighbors_of_Ai:
-                            for y in att_neighbors_of_Bj:
-                                if x == y:
-                                    found_neighbors_of_Bj.append(y)
-                                    att_neighbors_of_Bj.remove(y)
+                        node_id_matching_graph = keylist1[i]  # get node ID
+                        key_neighbors_matching_graph = list(
+                            self.matchingGraph.neighbors(node_id_matching_graph))  # list with keys of neighbors of Ai
+                        node_id_original_graph = keylist2[j]  # get node ID
+                        key_neighbors_original_graph = list(
+                            self.originalGraph.neighbors(node_id_original_graph))  # list with keys of neighbors of Bj
 
-                        att_neighbors_of_Ai.sort()
-                        found_neighbors_of_Bj.sort()
-
-                        if att_neighbors_of_Ai != found_neighbors_of_Bj:
-                            self.M[i][j] = 0
-                            if self.check_rows():
-                                value = False
-                                want_to_break = True  # needed to break out of double loop
+                    for key_m in key_neighbors_matching_graph:
+                        possible_neighbor = False
+                        for key_o in key_neighbors_original_graph:
+                            x = keylist1.index(key_m)
+                            y = keylist2.index(key_o)
+                            if self.M[x][y] == 1:
+                                possible_neighbor = True
                                 break
-
-                if want_to_break:
-                    want_to_break_again = True  # needed to break out of the while loop
-                    break
-            if want_to_break_again:
-                break
+                        if not possible_neighbor:
+                            self.M[i][j] = 0
+                            empty_row = self.check_rows()
+                            if empty_row:
+                                value = False
 
         return value
 

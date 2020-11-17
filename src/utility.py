@@ -78,6 +78,7 @@ def create_part_original_graph():
 
     return G
 
+
 def create_graph_11_nodes():
     G = nx.Graph()
     G.add_node('1', chem="O")
@@ -103,4 +104,16 @@ def create_graph_11_nodes():
     G.add_edge('10', '9')
     G.add_edge('11', '3')
 
+    return G
+
+
+def create_letter_matching_graph():
+    G = nx.Graph()
+    G.add_edges_from([(1, 2), (2, 3), (2, 4)])
+    return G
+
+
+def create_letter_original_graph():
+    G = nx.Graph()
+    G.add_edges_from([(1, 2), (2, 3), (2, 4), (4, 5)])
     return G

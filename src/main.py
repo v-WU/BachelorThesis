@@ -90,14 +90,15 @@ print("example pruning: " + str(pruning_graphs[0]) + ", " + str(pruning_graphs[1
 
 print("Time taken to read graphs: " + str(time.time() - start_time))
 
-print("matching graph: " + str(pruning_graphs[0][0].nodes(data=True)))
-print("original graph: " + str(original_graphs[4][0].nodes(data=True)))
+print("matching graph: " + str(pruning_graphs[0][1]) + ", " + str(pruning_graphs[0][0].nodes(data=True)))
+print("original graph: " + str(original_graphs[4][1]) + ", " + str(original_graphs[4][0].nodes(data=True)))
 
 ullman = UllmanAlgorithm()
 ullman.init(pruning_graphs[0][0], original_graphs[4][0], [])
-print("M: " + str(ullman.M))
+print("Initial M: " + str(ullman.M))
 ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[4][0], [])
-print("Iso: " + str(ullman.isomorphism))
+print("End M : " + str(ullman.M))
+print("Isomorphismus: " + str(ullman.isomorphism))
 
 # counter = 0
 # for graph in original_graphs:
@@ -118,12 +119,3 @@ print("Iso: " + str(ullman.isomorphism))
 #     SG.add_nodes_from(nodes_to_add)
 #     SG.add_edges_from((u, v) for (u, v) in matching_graph[1][0].edges() if u in SG if v in SG)
 #     connected_components.append(SG)
-
-# print(connected_components[1].nodes(data=True))
-# print("nodes of all_inclusive: " + str(original_graph[3][0].nodes(data=True)))
-
-
-# Vergleich GANZER Matching Graph mit Origial Graph
-# ulli2 = UllmanAlgorithm()
-# ulli2.perform_ullman_algorithm(matching_graph[1][0], original_graph[2][0], [])
-# print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))

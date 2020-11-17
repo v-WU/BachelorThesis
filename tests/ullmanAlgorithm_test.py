@@ -398,7 +398,7 @@ class TestUllman():
         value = ullman.refine()
         assert not value
 
-    def test_refine_succeed(self):
+    def test_refine_succeed_attribute(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
@@ -423,24 +423,50 @@ class TestUllman():
         M = [[1, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 1]]
         assert (np.array_equal(ullman.M, M))
 
+    def test_refinement_succeed_neighbors(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_letter_matching_graph()
+        G2 = utility.create_letter_original_graph()
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.M = ullman.create_rotation_matrix(G1, G2, [])
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G2)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G2
+
+        print("M: " + str(ullman.M))
+        value = ullman.refine()
+        assert value
+        assert (ullman.M[0][0] == 1)
+        assert (ullman.M[0][1] == 0)
+        assert (ullman.M[0][2] == 1)
+        assert (ullman.M[0][3] == 1)
+        assert (ullman.M[0][4] == 0)
+        assert (ullman.M[1][0] == 0)
+        assert (ullman.M[1][1] == 1)
+        assert (ullman.M[1][2] == 0)
+        assert (ullman.M[1][3] == 0)
+        assert (ullman.M[1][4] == 0)
+        assert (ullman.M[2][0] == 1)
+        assert (ullman.M[2][1] == 0)
+        assert (ullman.M[2][2] == 1)
+        assert (ullman.M[2][3] == 1)
+        assert (ullman.M[2][4] == 0)
+        assert (ullman.M[3][0] == 1)
+        assert (ullman.M[3][1] == 0)
+        assert (ullman.M[3][2] == 1)
+        assert (ullman.M[3][3] == 1)
+        assert (ullman.M[3][4] == 0)
+
     def test_check_rows_empty(self):
         ullman = UllmanAlgorithm()
-        G1 = utility.create_test_matching_graph()
-        G2, G3 = utility.create_test_original_graphs()
-
-        ullman.A = ullman.create_adj_matrix(G1)
-        ullman.B = ullman.create_adj_matrix(G3)
-        ullman.M = ullman.create_rotation_matrix(G1, G3, [])
+        ullman.M = np.array([[1, 1, 0], [0, 0, 0]])
         assert ullman.check_rows()
 
     def test_check_rows_non_empty(self):
         ullman = UllmanAlgorithm()
-        G1 = utility.create_test_matching_graph()
-        G2, G3 = utility.create_test_original_graphs()
-
-        ullman.A = ullman.create_adj_matrix(G1)
-        ullman.B = ullman.create_adj_matrix(G2)
-        ullman.M = ullman.create_rotation_matrix(G1, G2, [])
+        ullman.M = np.array([[1, 1, 0], [0, 1, 0]])
         assert not ullman.check_rows()
 
     def test_get_list_with_attributes_of_neighbor_in_matching_graph(self):
@@ -515,10 +541,17 @@ class TestUllman():
         matched_nodes = ullman.find_matched_nodes()
         assert np.array_equal(matched_nodes, [2, 1])
 
-    def test_2_rounds_of_ullman_true(self):
-        #TODO
-        assert True
+    def test_letter_ullman_iso(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_letter_matching_graph()
+        G2 = utility.create_letter_original_graph()
+        ullman.perform_ullman_algorithm(G1, G2, [])
+        assert ullman.isomorphism
 
-    def test_2_rounds_of_ullman_false(self):
-        #TODO
-        assert True
+    def test_letter_ullman_not_iso(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_letter_matching_graph()
+        G2 = utility.create_letter_original_graph()
+        G2.remove_edge(2,3)
+        ullman.perform_ullman_algorithm(G1, G2, [])
+        assert not ullman.isomorphism
