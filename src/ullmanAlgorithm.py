@@ -190,14 +190,15 @@ class UllmanAlgorithm:
     # this is no longer necessary because the refinement is in place
     def isomorphism_check(self):
         self.counter = self.counter + 1
-        print(str(self.counter) + ". isomorphismus check ausgeführt mit M = " + str(self.M))
+        print(str(self.counter) + ". isomorphismus check ausgeführt.")
+        # " mit M = " + str(self.M))
         C = np.matmul(self.M, np.matmul(self.M, self.B).transpose())
         alike = np.array_equal(self.A, C)
         if alike:
             self.isomorphism = True
             print("Yay, isomorphism found!")
         else:
-         print("Nope, not isomorphic yet")
+            print("Nope, not isomorphic yet")
         return
 
     def refine(self):

@@ -18,6 +18,7 @@ start_time = time.time()
 
 original_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles")
 print("example original graphs: " + str(original_graphs[0]))
+print("number of original graphs: " + str(len(original_graphs)))
 print("set of labels: " + str(set_of_labels))
 
 no_pruning_graphs = read_graphs_from_folder_structure(
@@ -52,44 +53,59 @@ no_pruning_graphs = no_pruning_graphs + read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_no_pruning_costs_0.6/graphml_files/Z")
 
 print("example no pruning: " + str(no_pruning_graphs[0]))
+print("number of no pruning matching graphs: " + str(len(no_pruning_graphs)))
 
-pruning_graphs = read_graphs_from_folder_structure("Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/A")
+pruning_graphs = read_graphs_from_folder_structure(
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/A")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/E")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/E")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/F")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/F")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/H")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/H")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/I")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/I")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/K")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/K")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/L")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/L")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/M")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/M")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/N")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/N")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/T")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/T")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/V")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/V")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/W")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/W")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/X")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/X")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/Y")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/Y")
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
-     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/Z")
+    "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/Z")
 
-print("example pruning: " + str(pruning_graphs[0]))
+print("example pruning: " + str(pruning_graphs[0]) + ", " + str(pruning_graphs[1]))
 
 print("Time taken to read graphs: " + str(time.time() - start_time))
 
+print("matching graph: " + str(pruning_graphs[0][0].nodes(data=True)))
+print("original graph: " + str(original_graphs[4][0].nodes(data=True)))
+
 ullman = UllmanAlgorithm()
-ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[0][0], [])
-print("iso: " + str(ullman.isomorphism))
+ullman.init(pruning_graphs[0][0], original_graphs[4][0], [])
+print("M: " + str(ullman.M))
+ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[4][0], [])
+print("Iso: " + str(ullman.isomorphism))
+
+# counter = 0
+# for graph in original_graphs:
+#     counter = counter + 1
+#     ullman = UllmanAlgorithm()
+#     ullman.perform_ullman_algorithm(pruning_graphs[0][0], graph[0], [])
+#     print(str(counter) + ". Isomorphismus between " + str(pruning_graphs[0][1]) + " and " + str(graph[1]) + " is: " + str(
+#         ullman.isomorphism))
 
 # creates a list with all the (unconnected) subgraphs of the matching graph
 # conn_comps_lst = [sorted(elt) for elt in list(nx.connected_components(matching_graph[1][0]))]
@@ -111,5 +127,3 @@ print("iso: " + str(ullman.isomorphism))
 # ulli2 = UllmanAlgorithm()
 # ulli2.perform_ullman_algorithm(matching_graph[1][0], original_graph[2][0], [])
 # print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))
-
-
