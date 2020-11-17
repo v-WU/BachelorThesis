@@ -552,6 +552,6 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         G1 = utility.create_letter_matching_graph()
         G2 = utility.create_letter_original_graph()
-        G2.remove_edge(2,3)
+        G2.remove_edge(2, 3)
         ullman.perform_ullman_algorithm(G1, G2, [])
         assert not ullman.isomorphism

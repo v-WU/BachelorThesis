@@ -90,23 +90,26 @@ print("example pruning: " + str(pruning_graphs[0]) + ", " + str(pruning_graphs[1
 
 print("Time taken to read graphs: " + str(time.time() - start_time))
 
-print("matching graph: " + str(pruning_graphs[0][1]) + ", " + str(pruning_graphs[0][0].nodes(data=True)))
-print("original graph: " + str(original_graphs[4][1]) + ", " + str(original_graphs[4][0].nodes(data=True)))
+# print("matching graph: " + str(pruning_graphs[0][1]) + ", " + str(pruning_graphs[0][0].nodes(data=True)))
+# print("original graph: " + str(original_graphs[4][1]) + ", " + str(original_graphs[4][0].nodes(data=True)))
+#
+# ullman = UllmanAlgorithm()
+# ullman.init(pruning_graphs[0][0], original_graphs[4][0], [])
+# print("Initial M: " + str(ullman.M))
+# ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[4][0], [])
+# print("End M : " + str(ullman.M))
+# print("Isomorphismus: " + str(ullman.isomorphism))
 
-ullman = UllmanAlgorithm()
-ullman.init(pruning_graphs[0][0], original_graphs[4][0], [])
-print("Initial M: " + str(ullman.M))
-ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[4][0], [])
-print("End M : " + str(ullman.M))
-print("Isomorphismus: " + str(ullman.isomorphism))
+ullman_time = time.time()
 
-# counter = 0
-# for graph in original_graphs:
-#     counter = counter + 1
-#     ullman = UllmanAlgorithm()
-#     ullman.perform_ullman_algorithm(pruning_graphs[0][0], graph[0], [])
-#     print(str(counter) + ". Isomorphismus between " + str(pruning_graphs[0][1]) + " and " + str(graph[1]) + " is: " + str(
-#         ullman.isomorphism))
+for i in range(5):
+    for graph in original_graphs:
+         ullman = UllmanAlgorithm()
+         ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])
+         print("Isomorphismus between " + str(pruning_graphs[i][1]) + " and " + str(graph[1]) + " is: " + str(
+             ullman.isomorphism))
+
+print("Time to perform Ullman: " + str(time.time() - ullman_time))
 
 # creates a list with all the (unconnected) subgraphs of the matching graph
 # conn_comps_lst = [sorted(elt) for elt in list(nx.connected_components(matching_graph[1][0]))]

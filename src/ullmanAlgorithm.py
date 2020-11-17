@@ -180,7 +180,7 @@ class UllmanAlgorithm:
     def step7(self):
         if self.d == 0:  # python Indizes beginnt bei 0
             if not self.isomorphism:  # the algorithm should end here...
-                print("Step 7: There exists no subgraphisomorphism between these two graphs")
+                # print("Step 7: There exists no subgraphisomorphism between these two graphs")
                 return
 
         else:
@@ -231,19 +231,19 @@ class UllmanAlgorithm:
                         key_neighbors_original_graph = list(
                             self.originalGraph.neighbors(node_id_original_graph))  # list with keys of neighbors of Bj
 
-                    for key_m in key_neighbors_matching_graph:
-                        possible_neighbor = False
-                        for key_o in key_neighbors_original_graph:
-                            x = keylist1.index(key_m)
-                            y = keylist2.index(key_o)
-                            if self.M[x][y] == 1:
-                                possible_neighbor = True
-                                break
-                        if not possible_neighbor:
-                            self.M[i][j] = 0
-                            empty_row = self.check_rows()
-                            if empty_row:
-                                value = False
+                        for key_m in key_neighbors_matching_graph:
+                            possible_neighbor = False
+                            for key_o in key_neighbors_original_graph:
+                                x = keylist1.index(key_m)
+                                y = keylist2.index(key_o)
+                                if self.M[x][y] == 1:
+                                    possible_neighbor = True
+                                    break
+                            if not possible_neighbor:
+                                self.M[i][j] = 0
+                                empty_row = self.check_rows()
+                                if empty_row:
+                                    value = False
 
         return value
 
