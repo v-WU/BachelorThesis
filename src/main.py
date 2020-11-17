@@ -17,7 +17,7 @@ numpy.random.seed(4812)
 start_time = time.time()
 
 original_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles")
-print("original graphs: " + str(original_graphs[0]))
+print("example original graphs: " + str(original_graphs[0]))
 print("set of labels: " + str(set_of_labels))
 
 no_pruning_graphs = read_graphs_from_folder_structure(
@@ -85,6 +85,11 @@ pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
 
 print("example pruning: " + str(pruning_graphs[0]))
 
+print("Time taken to read graphs: " + str(time.time() - start_time))
+
+ullman = UllmanAlgorithm()
+ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[0][0], [])
+print("iso: " + str(ullman.isomorphism))
 
 # creates a list with all the (unconnected) subgraphs of the matching graph
 # conn_comps_lst = [sorted(elt) for elt in list(nx.connected_components(matching_graph[1][0]))]
@@ -108,4 +113,3 @@ print("example pruning: " + str(pruning_graphs[0]))
 # print("Isomorphism (matching graph 1960 and 4204) and molecule 4204: " + str(ulli2.isomorphism))
 
 
-print("Time taken with Ullman = " + str(time.time() - start_time))

@@ -26,9 +26,8 @@ class UllmanAlgorithm:
 
     def perform_ullman_algorithm(self, matchingGraph, originalGraph, matched_nodes_indizes):
         self.init(matchingGraph, originalGraph, matched_nodes_indizes)
-        if self.refine():
-            self.step2()
-        return self.isomorphism, self.matched_nodes_indizes,
+        self.step2()
+        return self.isomorphism
 
     def init(self, matchingGraph, orignialGraph, matched_nodes_indizes):
         self.A = self.create_adj_matrix(matchingGraph)
@@ -52,11 +51,6 @@ class UllmanAlgorithm:
         :param matchingGraph, originalGraph
         :return: Rotationsmatrix M0
         """
-        # TODO consider matched_nodes
-        list1 = nx.get_node_attributes(matchingGraph, "chem")  # list with key and attributes, accessible with index
-        attributelist1 = re.findall("([A-Z])", str(list1))  # list with only attributes, accessible with index
-        list2 = nx.get_node_attributes(originalGraph, "chem")
-        attributelist2 = re.findall("([A-Z])", str(list2))
 
         self.M = np.zeros(shape=(len(self.A), len(self.B)), dtype=int)
 
@@ -65,11 +59,8 @@ class UllmanAlgorithm:
 
         for i in range(len(self.A)):
             for j in range(len(self.B)):
-                chem1 = attributelist1[i]
-                chem2 = attributelist2[j]
-                if chem1 == chem2:
-                    if degB[j] >= degA[i]:
-                        self.M[i][j] = 1
+                if degB[j] >= degA[i]:
+                    self.M[i][j] = 1
                 if j in matched_nodes_indizes:
                     self.M[i][j] = 0
 
@@ -127,9 +118,6 @@ class UllmanAlgorithm:
         for j in range(len(self.F)):
             if j != self.k:
                 self.M[self.d][j] = 0
-        value = self.refine()
-        if not value:
-            self.step5()
         self.step4()
         return
 
@@ -138,19 +126,19 @@ class UllmanAlgorithm:
             self.step6()
         else:
             # these lines are no longer necessary because the refinement is in place
-            # self.isomorphism_check()
-            # if self.isomorphism:
-            #   return
-            # else:
-            # self.step5()
-            #
-            # self.isomorphism = True
-            new_matches = self.find_matched_nodes()
-            self.matched_nodes_indizes = np.concatenate((self.matched_nodes_indizes, new_matches), 0)
-            self.matched_nodes_indizes = self.matched_nodes_indizes.astype(int)
-            print("all matched nodes indizes: " + str(self.matched_nodes_indizes))
             self.isomorphism_check()
-            print("Isomorphism should be found! It is: " + str(self.isomorphism))
+            if self.isomorphism:
+                return
+            else:
+                self.step5()
+
+            # self.isomorphism = True
+            # new_matches = self.find_matched_nodes()
+            # self.matched_nodes_indizes = np.concatenate((self.matched_nodes_indizes, new_matches), 0)
+            # self.matched_nodes_indizes = self.matched_nodes_indizes.astype(int)
+            # print("all matched nodes indizes: " + str(self.matched_nodes_indizes))
+            # self.isomorphism_check()
+            # print("Isomorphism should be found! It is: " + str(self.isomorphism))
         return
 
     def step5(self):
@@ -208,8 +196,8 @@ class UllmanAlgorithm:
         if alike:
             self.isomorphism = True
             print("Yay, isomorphism found!")
-        # else:
-        # print("Nope, not isomorphic yet")
+        else:
+         print("Nope, not isomorphic yet")
         return
 
     def refine(self):
