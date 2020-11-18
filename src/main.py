@@ -107,9 +107,9 @@ for i in range(2):
         ullman = UllmanAlgorithm()
         ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])
         print(
-            "Isomorphismus between '" + str(pruning_graphs[i][1]) + "', '" + str(
-                pruning_graphs[i][2]) + "' and '" + str(
-                graph[1]) + "', '" + str(graph[2]) + "' is = " + str(
+            "matching graph='" + str(pruning_graphs[i][1]) + "', class='" + str(
+                pruning_graphs[i][2]) + "' and original graph='" + str(
+                graph[1]) + "', class='" + str(graph[2]) + "': isomorphism=" + str(
                 ullman.isomorphism))
 
 print("Time to perform Ullman: " + str(time.time() - ullman_time))
