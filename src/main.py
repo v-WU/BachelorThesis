@@ -104,10 +104,10 @@ ullman_time = time.time()
 
 for i in range(5):
     for graph in original_graphs:
-         ullman = UllmanAlgorithm()
-         ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])
-         print("Isomorphismus between " + str(pruning_graphs[i][1]) + " and " + str(graph[1]) + " is: " + str(
-             ullman.isomorphism))
+        ullman = UllmanAlgorithm()
+        ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])
+        print("Isomorphismus between " + str(pruning_graphs[i][1]) + " and " + str(graph[1]) + " is: " + str(
+            ullman.isomorphism))
 
 print("Time to perform Ullman: " + str(time.time() - ullman_time))
 
