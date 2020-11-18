@@ -519,3 +519,21 @@ class TestUllman():
         G2.remove_edge(2, 3)
         ullman.perform_ullman_algorithm(G1, G2, [])
         assert not ullman.isomorphism
+
+    def test_letter_iso_unconnected_true(self):
+        ullman = UllmanAlgorithm()
+        G1 = nx.Graph()
+        G1.add_edges_from([(1, 2), (3, 4), (4, 5)])
+        G2 = nx.Graph()
+        G2.add_edges_from([(1, 2), (2, 3), (2, 4), (4, 5)])
+        ullman.perform_ullman_algorithm(G1, G2, [])
+        assert ullman.isomorphism
+
+    def test_letter_iso_unconnected_false(self):
+        ullman = UllmanAlgorithm()
+        G1 = nx.Graph()
+        G1.add_edges_from([(1, 2), (3, 4), (4, 5), (4, 6)])
+        G2 = nx.Graph()
+        G2.add_edges_from([(1, 2), (1, 3), (2, 4), (4, 5), (5, 6)])
+        ullman.perform_ullman_algorithm(G1, G2, [])
+        assert not ullman.isomorphism
