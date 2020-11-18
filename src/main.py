@@ -1,9 +1,11 @@
 import time
+import sys
 import networkx as nx
 import matplotlib.pyplot as plt
 
 from src.parser import read_graphs_from_folder_structure
 from src.parser import read_graphs_with_cxl
+from src.parser import create_abs_path
 
 from ullmanAlgorithm import UllmanAlgorithm
 
@@ -17,7 +19,6 @@ numpy.random.seed(4812)
 start_time = time.time()
 
 original_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles")
-print("example original graphs: " + str(original_graphs[0]))
 print("number of original graphs: " + str(len(original_graphs)))
 print("set of labels: " + str(set_of_labels))
 
@@ -52,7 +53,6 @@ no_pruning_graphs = no_pruning_graphs + read_graphs_from_folder_structure(
 no_pruning_graphs = no_pruning_graphs + read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_no_pruning_costs_0.6/graphml_files/Z")
 
-print("example no pruning: " + str(no_pruning_graphs[0]))
 print("number of no pruning matching graphs: " + str(len(no_pruning_graphs)))
 
 pruning_graphs = read_graphs_from_folder_structure(
@@ -86,33 +86,26 @@ pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/Z")
 
-print("example pruning: " + str(pruning_graphs[0]) + ", " + str(pruning_graphs[1]))
+print("number of pruning matching graphs: " + str(len(pruning_graphs)))
 
 print("Time taken to read graphs: " + str(time.time() - start_time))
 
-# print("matching graph: " + str(pruning_graphs[0][1]) + ", " + str(pruning_graphs[0][0].nodes(data=True)))
-# print("original graph: " + str(original_graphs[4][1]) + ", " + str(original_graphs[4][0].nodes(data=True)))
-#
-# ullman = UllmanAlgorithm()
-# ullman.init(pruning_graphs[0][0], original_graphs[4][0], [])
-# print("Initial M: " + str(ullman.M))
-# ullman.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[4][0], [])
-# print("End M : " + str(ullman.M))
-# print("Isomorphismus: " + str(ullman.isomorphism))
+for i in range(1200):
+    name_of_file = str(pruning_graphs[i][1])  # change to no_pruning
+    save_path = create_abs_path("letter_results/pruning/" + name_of_file)   # change to no_pruning
+    complete_name = save_path + ".txt"
+    sys.stdout = open(complete_name, "w")
 
-ullman_time = time.time()
-
-for i in range(2):
     for graph in original_graphs:
         ullman = UllmanAlgorithm()
-        ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])
+        ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])   # change to no_pruning
         print(
-            "matching graph='" + str(pruning_graphs[i][1]) + "', class='" + str(
-                pruning_graphs[i][2]) + "' and original graph='" + str(
+            "matching graph='" + str(pruning_graphs[i][1]) + "', class='" + str(  # change to no_pruning
+                pruning_graphs[i][2]) + "' and original graph='" + str(  # change to no_pruning
                 graph[1]) + "', class='" + str(graph[2]) + "': isomorphism=" + str(
                 ullman.isomorphism))
 
-print("Time to perform Ullman: " + str(time.time() - ullman_time))
+    sys.stdout.close()
 
 # creates a list with all the (unconnected) subgraphs of the matching graph
 # conn_comps_lst = [sorted(elt) for elt in list(nx.connected_components(matching_graph[1][0]))]
