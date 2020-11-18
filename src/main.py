@@ -91,17 +91,17 @@ print("number of pruning matching graphs: " + str(len(pruning_graphs)))  # 1200
 print("Time taken to read graphs: " + str(time.time() - start_time))
 
 for i in range(1200):
-    name_of_file = str(pruning_graphs[i][1])  # change to no_pruning
-    save_path = create_abs_path("letter_results/pruning/" + name_of_file)   # change to no_pruning
+    name_of_file = str(no_pruning_graphs[i][1])  # change to no_pruning
+    save_path = create_abs_path("letter_results/no_pruning/" + name_of_file)   # change to no_pruning
     complete_name = save_path + ".txt"
     sys.stdout = open(complete_name, "w")
 
     for graph in original_graphs:
         ullman = UllmanAlgorithm()
-        ullman.perform_ullman_algorithm(pruning_graphs[i][0], graph[0], [])   # change to no_pruning
+        ullman.perform_ullman_algorithm(no_pruning_graphs[i][0], graph[0], [])   # change to no_pruning
         print(
-            "matching graph='" + str(pruning_graphs[i][1]) + "', class='" + str(  # change to no_pruning
-                pruning_graphs[i][2]) + "' and original graph='" + str(  # change to no_pruning
+            "matching graph='" + str(no_pruning_graphs[i][1]) + "', class='" + str(  # change to no_pruning
+                no_pruning_graphs[i][2]) + "' and original graph='" + str(  # change to no_pruning
                 graph[1]) + "', class='" + str(graph[2]) + "': isomorphism=" + str(
                 ullman.isomorphism))
 
