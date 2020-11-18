@@ -19,7 +19,7 @@ numpy.random.seed(4812)
 start_time = time.time()
 
 original_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles")
-print("number of original graphs: " + str(len(original_graphs)))
+print("number of original graphs: " + str(len(original_graphs)))  # 2250
 print("set of labels: " + str(set_of_labels))
 
 no_pruning_graphs = read_graphs_from_folder_structure(
@@ -53,7 +53,7 @@ no_pruning_graphs = no_pruning_graphs + read_graphs_from_folder_structure(
 no_pruning_graphs = no_pruning_graphs + read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_no_pruning_costs_0.6/graphml_files/Z")
 
-print("number of no pruning matching graphs: " + str(len(no_pruning_graphs)))
+print("number of no pruning matching graphs: " + str(len(no_pruning_graphs)))  # 1200
 
 pruning_graphs = read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/A")
@@ -86,7 +86,7 @@ pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
 pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_pruning_costs_1.6/graphml_files/Z")
 
-print("number of pruning matching graphs: " + str(len(pruning_graphs)))
+print("number of pruning matching graphs: " + str(len(pruning_graphs)))  # 1200
 
 print("Time taken to read graphs: " + str(time.time() - start_time))
 
