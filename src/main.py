@@ -48,6 +48,9 @@ for i in range(1):
     for graph in original_graphs:
         iso_counter = 0
         counter = 0
+        # ullman1 = UllmanAlgorithm()
+        # ullman1.perform_ullman_algorithm(no_pruning_graphs[i][0], graph[0], [])
+        # entire_iso = ullman1.isomorphism
         for component in connected_components:
             counter = counter + 1
             ullman = UllmanAlgorithm()
@@ -55,6 +58,6 @@ for i in range(1):
             if ullman.isomorphism:
                 iso_counter = iso_counter + 1
         print("Original graph: " + str(graph[1]) + ", " + str(graph[2]) + ". Result: " + str(iso_counter) + " / " + str(
-            counter))
+            counter) + " parts found.")  # Entire Matching Graph: " + str(entire_iso))
 
 print("Time to perform Ullman = " + str(time.time() - ullman_time))

@@ -419,8 +419,9 @@ class TestUllman():
         ullman.originalGraph = G2
 
         value = ullman.refine()
+
         assert value
-        M = [[1, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 1]]
+        M = [[0, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 1, 1]]
         assert (np.array_equal(ullman.M, M))
 
     def test_refine_succeed_no_attributes(self):
@@ -569,7 +570,6 @@ class TestUllman():
         G2, G3 = utility.create_test_original_graphs()
 
         ullman.perform_ullman_algorithm(G1, G2, [])
-        print("M: " + str(ullman.M))
 
         assert not ullman.isomorphism
 

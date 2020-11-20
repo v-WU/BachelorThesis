@@ -248,8 +248,23 @@ class UllmanAlgorithm:
                                     x = keylist1.index(key_m)
                                     y = keylist2.index(key_o)
                                     if self.M[x][y] == 1:
-                                        possible_neighbor = True
-                                        break  # break out of for-key_o-loop
+                                        att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(
+                                            keylist1, x)
+                                        att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(
+                                            keylist2, y)
+                                        found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
+                                        for x in att_neighbors_of_Ai:
+                                            for y in att_neighbors_of_Bj:
+                                                if x == y:
+                                                    found_neighbors_of_Bj.append(y)
+                                                    att_neighbors_of_Bj.remove(y)
+
+                                        att_neighbors_of_Ai.sort()
+                                        found_neighbors_of_Bj.sort()
+
+                                        if att_neighbors_of_Ai == found_neighbors_of_Bj:
+                                            possible_neighbor = True
+                                            break  # break out of for-key_o-loop
                                 if not possible_neighbor:
                                     self.M[i][j] = 0
                                     empty_row = self.check_rows()
@@ -257,40 +272,13 @@ class UllmanAlgorithm:
                                         value = False
                                         want_to_break = True  # needed to break out of outer loop
                                         break  # break out of for-key_m-loop
-                            if want_to_break:
-                                want_to_break_again = True  # needed to break out of outer loop
-                                break  # break out of for-j-loop
+                        if want_to_break:
+                            want_to_break_again = True  # needed to break out of outer loop
+                            break  # break out of for-j-loop
                     if want_to_break_again:
                         break  # break out of for-i-loop
 
         return value
-
-        #                 att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
-        #                 att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j)
-        #                 found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
-        #                 for x in att_neighbors_of_Ai:
-        #                     for y in att_neighbors_of_Bj:
-        #                         if x == y:
-        #                             found_neighbors_of_Bj.append(y)
-        #                             att_neighbors_of_Bj.remove(y)
-        #
-        #                 att_neighbors_of_Ai.sort()
-        #                 found_neighbors_of_Bj.sort()
-        #
-        #                 if att_neighbors_of_Ai != found_neighbors_of_Bj:
-        #                     self.M[i][j] = 0
-        #                     if self.check_rows():
-        #                         value = False
-        #                         want_to_break = True  # needed to break out of double loop
-        #                         break
-        #
-        #         if want_to_break:
-        #             want_to_break_again = True  # needed to break out of the while loop
-        #             break
-        #     if want_to_break_again:
-        #         break
-        #
-        # return value
 
     # returns True if there is an empty row
     def check_rows(self):
