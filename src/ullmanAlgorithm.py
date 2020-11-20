@@ -225,37 +225,74 @@ class UllmanAlgorithm:
         while not np.array_equal(copy, self.M):
             copy = self.M.copy()
             want_to_break_again = False  # needed to break out of while loop
-            for i in range(len(self.H)):
-                for j in range(len(self.F)):
-                    want_to_break = False  # needed to break out of double loop
-                    if self.M[i][j] == 1:
-                        att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
-                        att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j)
-                        found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
-                        for x in att_neighbors_of_Ai:
-                            for y in att_neighbors_of_Bj:
-                                if x == y:
-                                    found_neighbors_of_Bj.append(y)
-                                    att_neighbors_of_Bj.remove(y)
+            empty_row = self.check_rows()
+            if empty_row:
+                value = False
+            else:
+                for i in range(len(self.H)):
+                    for j in range(len(self.F)):
+                        want_to_break = False  # needed to break out of double loop
+                        if self.M[i][j] == 1:
+                            node_id_matching_graph = keylist1[i]  # get node ID
+                            key_neighbors_matching_graph = list(
+                                self.matchingGraph.neighbors(
+                                    node_id_matching_graph))  # list with keys of neighbors of Ai
+                            node_id_original_graph = keylist2[j]  # get node ID
+                            key_neighbors_original_graph = list(
+                                self.originalGraph.neighbors(
+                                    node_id_original_graph))  # list with keys of neighbors of Bj
 
-                        att_neighbors_of_Ai.sort()
-                        found_neighbors_of_Bj.sort()
-
-                        if att_neighbors_of_Ai != found_neighbors_of_Bj:
-                            self.M[i][j] = 0
-                            if self.check_rows():
-                                value = False
-                                want_to_break = True  # needed to break out of double loop
-                                break
-
-                if want_to_break:
-                    want_to_break_again = True  # needed to break out of the while loop
-                    break
-            if want_to_break_again:
-                break
+                            for key_m in key_neighbors_matching_graph:
+                                possible_neighbor = False
+                                for key_o in key_neighbors_original_graph:
+                                    x = keylist1.index(key_m)
+                                    y = keylist2.index(key_o)
+                                    if self.M[x][y] == 1:
+                                        possible_neighbor = True
+                                        break  # break out of for-key_o-loop
+                                if not possible_neighbor:
+                                    self.M[i][j] = 0
+                                    empty_row = self.check_rows()
+                                    if empty_row:
+                                        value = False
+                                        want_to_break = True  # needed to break out of outer loop
+                                        break  # break out of for-key_m-loop
+                            if want_to_break:
+                                want_to_break_again = True  # needed to break out of outer loop
+                                break  # break out of for-j-loop
+                    if want_to_break_again:
+                        break  # break out of for-i-loop
 
         return value
 
+        #                 att_neighbors_of_Ai = self.get_list_with_attributes_of_neighbor_in_matching_graph(keylist1, i)
+        #                 att_neighbors_of_Bj = self.get_list_with_attributes_of_neighbor_in_original_graph(keylist2, j)
+        #                 found_neighbors_of_Bj = []  # list containing the possible matches between neighbors
+        #                 for x in att_neighbors_of_Ai:
+        #                     for y in att_neighbors_of_Bj:
+        #                         if x == y:
+        #                             found_neighbors_of_Bj.append(y)
+        #                             att_neighbors_of_Bj.remove(y)
+        #
+        #                 att_neighbors_of_Ai.sort()
+        #                 found_neighbors_of_Bj.sort()
+        #
+        #                 if att_neighbors_of_Ai != found_neighbors_of_Bj:
+        #                     self.M[i][j] = 0
+        #                     if self.check_rows():
+        #                         value = False
+        #                         want_to_break = True  # needed to break out of double loop
+        #                         break
+        #
+        #         if want_to_break:
+        #             want_to_break_again = True  # needed to break out of the while loop
+        #             break
+        #     if want_to_break_again:
+        #         break
+        #
+        # return value
+
+    # returns True if there is an empty row
     def check_rows(self):
         empty_row = False
         degM = self.M.sum(axis=1)  # sum of each row in M

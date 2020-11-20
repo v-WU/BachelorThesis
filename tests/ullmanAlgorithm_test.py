@@ -398,7 +398,7 @@ class TestUllman():
         value = ullman.refine()
         assert not value
 
-    def test_refine_succeed(self):
+    def test_refine_succeed_attributes(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
@@ -421,6 +421,30 @@ class TestUllman():
         value = ullman.refine()
         assert value
         M = [[1, 0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 1]]
+        assert (np.array_equal(ullman.M, M))
+
+    def test_refine_succeed_no_attributes(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_test_matching_graph()
+        G2, G3 = utility.create_test_original_graphs()
+        G1.add_node('4', chem="H")
+        G1.add_edge('2', '4')
+        nx.set_node_attributes(G1, "H", 'chem')
+        G3.add_node('4', chem="H")
+        G3.add_node('5', chem="H")
+        G3.add_edge('2', '4')
+        G3.add_edge('5', '4')
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G3)
+        ullman.M = ullman.create_rotation_matrix(G1, G3, [])
+        ullman.H = ullman.create_vector(G1)
+        ullman.F = ullman.create_vector(G3)
+        ullman.matchingGraph = G1
+        ullman.originalGraph = G3
+
+        M = [[1, 0, 1, 1, 0], [0, 1, 0, 0, 0], [1, 0, 1, 1, 0], [1, 0, 1, 1, 0]]
+        assert ullman.refine()
         assert (np.array_equal(ullman.M, M))
 
     def test_check_rows_empty(self):
@@ -505,6 +529,9 @@ class TestUllman():
         G1.add_node('4', chem="N")
         G1.add_edge('1', '4')
 
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.create_rotation_matrix(G1, G2, [])
         ullman.perform_ullman_algorithm(G1, G2, [])
 
         assert not ullman.isomorphism
@@ -514,14 +541,6 @@ class TestUllman():
         ullman.M = [[0, 0, 1], [0, 1, 0]]
         matched_nodes = ullman.find_matched_nodes()
         assert np.array_equal(matched_nodes, [2, 1])
-
-    def test_2_rounds_of_ullman_true(self):
-        # TODO
-        assert True
-
-    def test_2_rounds_of_ullman_false(self):
-        # TODO
-        assert True
 
     def test_ullman_unconnected_matching_graph(self):
         ullman = UllmanAlgorithm()
@@ -586,35 +605,5 @@ class TestUllman():
         G2.add_edge('7', '3')
         G2.add_edge('7', '5')
 
-        # der algorithmus mappt 4 -> 4 und 5 -> 5. (das erkennt man, weil in M (3,3) = 1 und (4,4) = 1)
-        # Im matching graph G1 besteht die Verbindung 4-5,jedoch im original graph G2 existiert diese Verbindung NICHT..
-        # trotzdem gibt der algorithmus true aus...
-        # (was eigentlich stimmt, aber es wurde nicht das richtige matching gemacht)
         ullman.perform_ullman_algorithm(G1, G2, [])
-        print("iso: " + str(ullman.isomorphism))
-        assert ullman.isomorphism
-
-
-    def test_ullman_unconnected_matching_graph_5(self):
-        ullman = UllmanAlgorithm()
-        G1 = nx.Graph()
-        G1.add_node('4', chem="C")
-        G1.add_node('5', chem="C")
-        G1.add_edge('4', '5')
-
-        G2, G3 = utility.create_test_original_graphs()
-        G2.add_node('5', chem="C")
-        G2.add_node('6', chem="C")
-        G2.add_node('7', chem="C")
-        G2.add_edge('4', '6')
-        G2.add_edge('7', '3')
-        G2.add_edge('7', '5')
-
-        # der algorithmus mappt 4 -> 4 und 5 -> 5. (das erkennt man, weil in M (0,3) = 1 und (1,4) = 1)
-        # Im matching graph G1 besteht die Verbindung 4-5,jedoch im original graph G2 existiert diese Verbindung NICHT..
-        # trotzdem gibt der algorithmus true aus...
-        # (was eigentlich stimmt, aber es wurde nicht das richtige matching gemacht)
-        ullman.perform_ullman_algorithm(G1, G2, [])
-        print("iso: " + str(ullman.isomorphism))
-        print("end M: " + str(ullman.M))
         assert ullman.isomorphism
