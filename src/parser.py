@@ -43,7 +43,7 @@ def read_graphs_from_folder_structure(string):
     return list_of_graphs
 
 
-def read_graphs_with_cxl(string):
+def read_graphs_with_cxl_all_sets(string):
     """
     :param string: (relative) path of directory as string, graphs and cxl files have to be in the same folder
     :return: (1) a list of graphs  with the following information for each graph: [graph object itself, name, label],
@@ -52,7 +52,7 @@ def read_graphs_with_cxl(string):
     path = create_abs_path(string)
     list_of_graphs = []
     list_of_labels = []
-    list_of_files = glob.glob(path + "/*.graphml")
+    list_of_files = glob.glob(path + "/*.graphml")  # all graphs in folder
 
     name_n_labels = read_cxl_files("/test.cxl", "/validation.cxl", "/train.cxl")
 
@@ -112,3 +112,43 @@ def create_cxl_files(string, files):
     file = abs_path + string
     files = files.append(file)
     return files
+
+
+def read_graphs_with_cxl(*args):
+    """
+    :param args: [0] string: (relative) path of directory as string, graphs and cxl files have to be in the same folder,
+    [1] cxl file e.g. "/test.cxl"
+    :return:
+    """
+    path = create_abs_path(args[0])
+    list_of_graphs = []
+    list_of_labels = []
+    list_of_files = glob.glob(path + "/*.graphml")  # all graphs in thr folder
+
+    # args[1] sould be something like this: "/test.cxl", "/validation.cxl" or "/train.cxl"
+    name_n_labels = read_cxl_files(args[1])
+
+    for file_name in list_of_files:
+        graph_information = [0, 0, 0]
+
+        split_path = re.split(r'[/\\]', file_name)
+        graph_name = split_path[-1][:-8]
+
+        graph_information[0] = nx.read_graphml(file_name)
+        graph_information[1] = graph_name
+
+        for x in range(len(name_n_labels)):
+            split_info = re.split(r'["]', name_n_labels[x])
+            name_cxl = split_info[1][:-8]
+            label_cxl = split_info[3]
+
+            list_of_labels.append(label_cxl)
+
+            if graph_name == name_cxl:
+                graph_information[2] = label_cxl
+                list_of_graphs.append(graph_information)
+                break
+
+    set_of_labels = set(list_of_labels)
+
+    return list_of_graphs, set_of_labels

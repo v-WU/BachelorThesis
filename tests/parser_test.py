@@ -3,8 +3,11 @@ import networkx as nx
 from src.parser import read_graphs_from_folder_structure, create_abs_path, create_cxl_files
 from src.parser import read_cxl
 from src.parser import read_cxl_files
+from src.parser import read_graphs_with_cxl_all_sets
 from src.parser import read_graphs_with_cxl
 
+
+# some tests may fail because in src.parser create_cxl_files the path is hard coded...
 
 class TestParser():
 
@@ -23,8 +26,8 @@ class TestParser():
         assert (graph_name == "simple_testing_graph")
         assert (graph_label == "graphs_for_my_testing")
 
-    def test_read_graphs_with_cxl(self):
-        graph_information, set_of_labels = read_graphs_with_cxl(
+    def test_read_graphs_with_cxl_all_sets(self):
+        graph_information, set_of_labels = read_graphs_with_cxl_all_sets(
             "Data/graphs_for_my_testing/original_graph_for_testing")
         assert (graph_information[0][1] == "molecule_1")
         assert (graph_information[0][2] == "mutagen")
@@ -55,4 +58,8 @@ class TestParser():
         create_cxl_files("/test.cxl", files)
         assert (files[0] == create_abs_path("Data/vero_folder/mutagenicity/graphmlFiles/test.cxl"))
 
-
+    def test_read_graphs_with_cxl(self):
+        graph_information, set_of_labels = read_graphs_with_cxl("Data/graphs_for_my_testing/original_graph_for_testing",
+                                                                "/test.cxl")
+        assert (graph_information[0][1] == "molecule_1")
+        assert (graph_information[0][2] == "mutagen")
