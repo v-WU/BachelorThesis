@@ -23,12 +23,12 @@ original_graphs, set_of_labels = read_graphs_with_cxl_all_sets("Data/vero_folder
 print("number of original graphs: " + str(len(original_graphs)))  # 2250
 print("set of labels: " + str(set_of_labels))
 
-train_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/train.cxl")
-print("number of training graphs: " + str(len(train_graphs)))
-test_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/test.cxl")
-print("number of test graphs: " + str(len(test_graphs)))
-validation_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/validation.cxl")
-print("number of validation graphs: " + str(len(validation_graphs)))
+# train_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/train.cxl")
+# print("number of training graphs: " + str(len(train_graphs)))
+# test_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/test.cxl")
+# print("number of test graphs: " + str(len(test_graphs)))
+# validation_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/validation.cxl")
+# print("number of validation graphs: " + str(len(validation_graphs)))
 
 no_pruning_graphs = read_graphs_from_folder_structure(
     "Data/vero_folder_letter/matching_graphs_no_pruning_costs_0.6/graphml_files/A")
@@ -97,6 +97,13 @@ pruning_graphs = pruning_graphs + read_graphs_from_folder_structure(
 print("number of pruning matching graphs: " + str(len(pruning_graphs)))  # 1200
 
 print("Time taken to read graphs: " + str(time.time() - start_time))
+
+print("original: " + str(original_graphs[0:3]))
+print("pruning: " + str(pruning_graphs[0:3]))
+
+ulli = UllmanAlgorithm()
+ulli.perform_ullman_algorithm(pruning_graphs[0][0], original_graphs[0][0], [])
+print("iso: " + str(ulli.isomorphism))
 
 # for i in range(1200):
 #     name_of_file = str(no_pruning_graphs[i][1])  # change to no_pruning

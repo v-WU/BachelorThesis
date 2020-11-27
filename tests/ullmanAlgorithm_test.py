@@ -90,6 +90,36 @@ class TestUllman():
         assert (ullman.M[1][1] == 0)
         assert (ullman.M[2][1] == 0)
 
+    def test_create_rotation_matrix_attr(self):
+        ullman = UllmanAlgorithm()
+        G1 = utility.create_letter_matching_graph()
+        G2 = utility.create_letter_original_graph()
+
+        ullman.A = ullman.create_adj_matrix(G1)
+        ullman.B = ullman.create_adj_matrix(G2)
+        ullman.create_rotation_matrix(G1, G2, [])
+
+        assert (ullman.M[0][0] == 0)
+        assert (ullman.M[0][1] == 1)
+        assert (ullman.M[0][2] == 1)
+        assert (ullman.M[0][3] == 0)
+        assert (ullman.M[0][4] == 0)
+        assert (ullman.M[1][0] == 0)
+        assert (ullman.M[1][1] == 1)
+        assert (ullman.M[1][2] == 0)
+        assert (ullman.M[1][3] == 0)
+        assert (ullman.M[1][4] == 0)
+        assert (ullman.M[2][0] == 0)
+        assert (ullman.M[2][1] == 0)
+        assert (ullman.M[2][2] == 0)
+        assert (ullman.M[2][3] == 1)
+        assert (ullman.M[2][4] == 1)
+        assert (ullman.M[3][0] == 1)
+        assert (ullman.M[3][1] == 1)
+        assert (ullman.M[3][2] == 0)
+        assert (ullman.M[3][3] == 1)
+        assert (ullman.M[3][4] == 1)
+
     def test_bedingung_step2(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
@@ -358,7 +388,7 @@ class TestUllman():
     def test_perform_ullman_algorithm_not_iso(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
-        G1.add_node('4', chem="O")
+        G1.add_node('4', chem="O", x=1, y=1)
         G1.add_edges_from([('2', '4')])
         G2, G3 = utility.create_test_original_graphs()
         G3.remove_edge('2', '4')
@@ -369,7 +399,7 @@ class TestUllman():
     def test_refine_fail(self):
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
-        G1.add_node('4', chem="O")
+        G1.add_node('4', chem="O", x=1, y=1)
         G1.add_edge('2', '4')
         G2, G3 = utility.create_test_original_graphs()
         G3.remove_edge('2', '4')
@@ -399,27 +429,26 @@ class TestUllman():
         ullman.matchingGraph = G1
         ullman.originalGraph = G2
 
-        print("M: " + str(ullman.M))
         value = ullman.refine()
         assert value
-        assert (ullman.M[0][0] == 1)
+        assert (ullman.M[0][0] == 0)
         assert (ullman.M[0][1] == 0)
         assert (ullman.M[0][2] == 1)
-        assert (ullman.M[0][3] == 1)
+        assert (ullman.M[0][3] == 0)
         assert (ullman.M[0][4] == 0)
         assert (ullman.M[1][0] == 0)
         assert (ullman.M[1][1] == 1)
         assert (ullman.M[1][2] == 0)
         assert (ullman.M[1][3] == 0)
         assert (ullman.M[1][4] == 0)
-        assert (ullman.M[2][0] == 1)
+        assert (ullman.M[2][0] == 0)
         assert (ullman.M[2][1] == 0)
-        assert (ullman.M[2][2] == 1)
+        assert (ullman.M[2][2] == 0)
         assert (ullman.M[2][3] == 1)
         assert (ullman.M[2][4] == 0)
         assert (ullman.M[3][0] == 1)
         assert (ullman.M[3][1] == 0)
-        assert (ullman.M[3][2] == 1)
+        assert (ullman.M[3][2] == 0)
         assert (ullman.M[3][3] == 1)
         assert (ullman.M[3][4] == 0)
 
@@ -492,7 +521,7 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         G1 = utility.create_test_matching_graph()
         G2, G3 = utility.create_test_original_graphs()
-        G1.add_node('4', chem="N")
+        G1.add_node('4', chem="N", x=1, y=1)
         G1.add_edge('1', '4')
 
         ullman.perform_ullman_algorithm(G1, G2, [])
@@ -524,8 +553,12 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         G1 = nx.Graph()
         G1.add_edges_from([(1, 2), (3, 4), (4, 5)])
+        nx.set_node_attributes(G1, 1, "x")
+        nx.set_node_attributes(G1, 1, "y")
         G2 = nx.Graph()
         G2.add_edges_from([(1, 2), (2, 3), (2, 4), (4, 5)])
+        nx.set_node_attributes(G2, 1, "x")
+        nx.set_node_attributes(G2, 1, "y")
         ullman.perform_ullman_algorithm(G1, G2, [])
         assert ullman.isomorphism
 
@@ -533,7 +566,11 @@ class TestUllman():
         ullman = UllmanAlgorithm()
         G1 = nx.Graph()
         G1.add_edges_from([(1, 2), (3, 4), (4, 5), (4, 6)])
+        nx.set_node_attributes(G1, 1, "x")
+        nx.set_node_attributes(G1, 1, "y")
         G2 = nx.Graph()
         G2.add_edges_from([(1, 2), (1, 3), (2, 4), (4, 5), (5, 6)])
+        nx.set_node_attributes(G2, 1, "x")
+        nx.set_node_attributes(G2, 1, "y")
         ullman.perform_ullman_algorithm(G1, G2, [])
         assert not ullman.isomorphism

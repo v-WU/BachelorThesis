@@ -53,6 +53,20 @@ class UllmanAlgorithm:
         :return: Rotationsmatrix M0
         """
 
+        list1_x = matchingGraph.nodes("x")
+        list1_y = matchingGraph.nodes("y")
+        list1 = []
+        for node in matchingGraph.nodes:
+            coordinate = (list1_x[node], list1_y[node])
+            list1.append(coordinate)
+
+        list2_x = originalGraph.nodes("x")
+        list2_y = originalGraph.nodes("y")
+        list2 = []
+        for node in originalGraph.nodes:
+            coordinate = (list2_x[node], list2_y[node])
+            list2.append(coordinate)
+
         self.M = np.zeros(shape=(len(self.A), len(self.B)), dtype=int)
 
         degA = self.A.sum(axis=0)
@@ -61,7 +75,10 @@ class UllmanAlgorithm:
         for i in range(len(self.A)):
             for j in range(len(self.B)):
                 if degB[j] >= degA[i]:
-                    self.M[i][j] = 1
+                    dist = np.linalg.norm(np.array(list1[i]).astype(float) - np.array(list2[j]).astype(float))
+                    if dist < 0.6:
+                        self.M[i][j] = 1
+
                 if j in matched_nodes_indizes:
                     self.M[i][j] = 0
 
