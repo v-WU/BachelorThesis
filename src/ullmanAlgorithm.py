@@ -76,7 +76,7 @@ class UllmanAlgorithm:
             for j in range(len(self.B)):
                 if degB[j] >= degA[i]:
                     dist = np.linalg.norm(np.array(list1[i]).astype(float) - np.array(list2[j]).astype(float))
-                    if dist < 0.6:
+                    if dist < 0.9:
                         self.M[i][j] = 1
 
                 if j in matched_nodes_indizes:
