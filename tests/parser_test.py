@@ -6,6 +6,7 @@ from src.parser import read_cxl_files
 from src.parser import read_graphs_with_cxl_all_sets
 from src.parser import read_graphs_with_cxl
 from src.parser import get_iso_results
+from src.parser import read_txt_file
 
 
 # some tests may fail because in src.parser create_cxl_files the path is hard coded...
@@ -75,3 +76,16 @@ class TestParser():
         assert values[2] == 0
         assert values[3] == 0
         assert values[4] == 0
+
+
+    def test_read_txt_file(self):
+        path = create_abs_path("letter_results/pruning_cost_1.6_dist_0.9_train/0_17LP1_0045_matching_graph.txt")
+        mg, og, result = read_txt_file(path)
+
+        assert mg == "0_17LP1_0045_matching_graph"
+        assert og[0] == "AP1_0000"
+        assert og[1] == "AP1_0001"
+        assert og[2] == "AP1_0002"
+        assert result[0] == 0
+        assert result[1] == 1
+        assert result[2] == 0

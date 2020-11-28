@@ -174,3 +174,31 @@ def get_iso_results(string):
                 values.append(0)
 
     return values
+
+
+def read_txt_file(string):
+    '''
+
+    :param string: (absolute) path of file
+    :return: (1) name of matching graph, (2) array with names of the original graphs, (3) array with 0 and 1
+    '''
+    name_matching = ""
+    name_orginal = []
+    data = []
+
+    with open(string, "r") as file:
+        first_line = file.readline()
+        chunks = first_line.split(", ")
+        chunky_chunks = chunks[0].split("=")
+        name_matching = chunky_chunks[1].strip("'")
+
+    with open(string, "r") as f:
+        for line in f:
+            word_list = line.split(",")
+            # print(word_list)
+            wordy_word_list = word_list[1].split("=")
+            name_orginal.append(wordy_word_list[2].strip("'"))
+
+    data = get_iso_results(string)
+
+    return name_matching, name_orginal, data
