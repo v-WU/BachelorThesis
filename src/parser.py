@@ -3,6 +3,7 @@ import os
 import networkx as nx
 import glob
 import re
+import numpy as np
 
 
 def create_abs_path(string):
@@ -200,5 +201,6 @@ def read_txt_file(string):
             name_orginal.append(wordy_word_list[2].strip("'"))
 
     data = get_iso_results(string)
+    data = np.array(data)
 
     return name_matching, name_orginal, data
