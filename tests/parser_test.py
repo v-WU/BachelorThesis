@@ -5,6 +5,7 @@ from src.parser import read_cxl
 from src.parser import read_cxl_files
 from src.parser import read_graphs_with_cxl_all_sets
 from src.parser import read_graphs_with_cxl
+from src.parser import get_iso_results
 
 
 # some tests may fail because in src.parser create_cxl_files the path is hard coded...
@@ -63,3 +64,14 @@ class TestParser():
                                                                 "/test.cxl")
         assert (graph_information[0][1] == "molecule_1")
         assert (graph_information[0][2] == "mutagen")
+
+    def test_get_iso_results(self):
+        values = get_iso_results("letter_results/pruning_cost_1.6_dist_0.9_train", "/0_17LP1_0045_matching_graph.txt")
+
+        # only checking the first few entries
+        assert values[0] == 0
+        assert values[1] == 1
+        assert values[2] == 0
+        assert values[3] == 0
+        assert values[4] == 0
+

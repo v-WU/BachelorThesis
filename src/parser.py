@@ -152,3 +152,28 @@ def read_graphs_with_cxl(*args):
     set_of_labels = set(list_of_labels)
 
     return list_of_graphs, set_of_labels
+
+
+def get_iso_results(directory, name):
+    """
+    This function does not retrieve the names of the graphs!
+    :param directory: (relative) path of directory e.g. "letter_results/pruning_cost_1.6_dist_0.9_train"
+    :param name: name of txt file e.g. "/0_17LP1_0045_matching_graph.txt"
+    :return: array with 0, 1 corresponding to not-iso resp. iso
+    """
+    values = []
+    path = create_abs_path(directory)
+    file_name = path + name
+
+    with open(file_name, "r") as file:
+        for line in file:
+            word_list = line.split()
+            isomorphism_chunk = word_list[-1]  # e.g. isomorphism=True
+            words = isomorphism_chunk.split("=")
+            isomorphism = words[-1]
+            if isomorphism == "True":
+                values.append(1)
+            else:
+                values.append(0)
+
+    return values
