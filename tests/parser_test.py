@@ -66,7 +66,8 @@ class TestParser():
         assert (graph_information[0][2] == "mutagen")
 
     def test_get_iso_results(self):
-        values = get_iso_results("letter_results/pruning_cost_1.6_dist_0.9_train", "/0_17LP1_0045_matching_graph.txt")
+        path = create_abs_path("letter_results/pruning_cost_1.6_dist_0.9_train/0_17LP1_0045_matching_graph.txt")
+        values = get_iso_results(path)
 
         # only checking the first few entries
         assert values[0] == 0
@@ -74,4 +75,3 @@ class TestParser():
         assert values[2] == 0
         assert values[3] == 0
         assert values[4] == 0
-
