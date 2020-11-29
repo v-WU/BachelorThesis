@@ -52,4 +52,4 @@ def create_table(string):
     overall_data = np.array(overall_data)
 
     df = pd.DataFrame(data=overall_data, index=names_MG, columns=names_OG)
-    return df
+    return df, names_OG, names_MG

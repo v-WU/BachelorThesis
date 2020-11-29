@@ -204,3 +204,29 @@ def read_txt_file(string):
     data = np.array(data)
 
     return name_matching, name_orginal, data
+
+
+def get_names_MG(string, graphclass):
+    '''
+
+    :param string: (relative) path of file where the data set is stored
+    :param graphclass: e.g "A"
+    :return: names of all the matching graphs from class e.g. "A"
+    '''
+    names = []
+    path = create_abs_path(string)
+    list_of_files = glob.glob(path + "/*.txt")  # abs path of all txt files in the folder
+
+    graphclass = graphclass.upper()
+
+    for file in list_of_files:
+        matching_graph, original_graphs, data = read_txt_file(file)
+        for name in matching_graph:
+            None
+
+
+
+    return
+
+def last_27chars(string):
+    return string[-23:]

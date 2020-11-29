@@ -7,6 +7,7 @@ from src.parser import read_graphs_with_cxl_all_sets
 from src.parser import read_graphs_with_cxl
 from src.parser import get_iso_results
 from src.parser import read_txt_file
+from src.parser import get_names_MG
 
 
 # some tests may fail because in src.parser create_cxl_files the path is hard coded...
@@ -92,3 +93,9 @@ class TestParser():
         assert result[0] == 0
         assert result[1] == 1
         assert result[2] == 0
+
+
+    def test_get_names_MG(self):
+        get_names_MG("letter_results/pruning_cost_1.6_dist_0.9_train", "A")
+
+        assert True
