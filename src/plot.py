@@ -91,7 +91,7 @@ df, orig_names, mg_names = create_table("letter_results/pruning_cost_1.6_dist_0.
 #     sub_df = get_subset_rows_df(df, filtered_mg_by_class)
 #     sub_class_df = get_subset_columns_df(sub_df, filtered_og_by_class)
 #
-#     sub_class_rest_df = get_subset_columns_df(sub_df, set(orig_names) - set(filtered_og_by_class))
+#     sub_class_rest_df = get_subset_columns_df(sub_df, set(orig_names) - set(filtered_og_by_class)) #left with og others
 #
 #     # ToDO: Count_things (sub_class_df)
 #     # ToDo: count_things (rest)
@@ -106,10 +106,10 @@ filtered_mg_by_A = filter_matching_graph_list_by_class(mg_names, "A")
 df_mg_a = get_subset_rows_df(df, filtered_mg_by_A)
 # # print(df_mg_a)
 #
-df_mg_a_og_a = get_subset_columns_df(df_mg_a, set(orig_names) - (set(orig_names) - set(filtered_og_by_A)))
+df_mg_a_og_a = get_subset_columns_df(df_mg_a, set(orig_names) - (set(orig_names) - set(filtered_og_by_A))) #left with og A
 # print("Data frame mg a, og a: " + str(df_mg_a_og_a))
 #
-df_mg_a_og_rest = get_subset_columns_df(df_mg_a, set(orig_names) - set(filtered_og_by_A))
+df_mg_a_og_rest = get_subset_columns_df(df_mg_a, set(orig_names) - set(filtered_og_by_A)) #left with og others
 # # print(df_mg_a_og_rest)
 #
 new_df = count_occur_in_corr_class(df_mg_a_og_a)
