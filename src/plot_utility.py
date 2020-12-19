@@ -1,7 +1,8 @@
-import pandas as pd
 import glob
 import numpy as np
 import re
+import matplotlib.pyplot as plt
+import pandas as pd
 
 from src.parser import get_iso_results
 from src.parser import create_abs_path
@@ -128,12 +129,43 @@ def count_occurences(df):
     occurences.to_frame()
     return occurences
 
-def create_histogram(df):
+def create_diagram(df):
     """
 
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
     :return:
     """
     #TODO return = histogram?
+    x = df.to_numpy()
+    occur_same_class = []
+    occur_diff_class = []
+    number_of_rows = len(df.index)
+    for i in range(number_of_rows):
+        occur_same_class.append(x[i][1])
 
+    for i in range(number_of_rows):
+        occur_diff_class.append(x[i][2])
+
+    # sort both arrays (high numbers first)
+    sorted_occur_same_class = np.sort(occur_same_class)  # lowest first
+    sorted_occur_diff_class = np.sort(occur_diff_class)  # lowest first
+    sorted_occur_same_class = np.flip(sorted_occur_same_class)  # highest first
+    sorted_occur_diff_class = np.flip(sorted_occur_diff_class)  # highest first
+
+    # no idea why.
+    y = []
+    for j in range(80):
+        y.append(j)
+
+    # creating plot
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(y, height=sorted_occur_same_class, label='same')
+    rects2 = ax.bar(y, height=sorted_occur_diff_class, label='different')
+
+    ax.set_ylabel('Number of Occurences')
+    ax.set_xlabel('Number of Matching Graphs')
+    ax.legend()
+
+    fig.tight_layout()
+    plt.show()
     return
