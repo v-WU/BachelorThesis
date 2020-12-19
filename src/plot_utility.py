@@ -118,12 +118,22 @@ def get_subset_rows_df(dataframe, row_names):
 
 
 def count_occurences(df):
-    '''
+    """
 
     :param df: dataframe in which we want to count the occurences
     :return: dataframe with col = MG names, row = #occurences
-    '''
+    """
     occurences = []
     occurences = df.apply(lambda row: sum(row == 1), axis=1)
     occurences.to_frame()
     return occurences
+
+def create_histogram(df):
+    """
+
+    :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
+    :return:
+    """
+    #TODO return = histogram?
+
+    return
