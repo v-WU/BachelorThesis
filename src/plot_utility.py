@@ -118,10 +118,10 @@ def get_subset_rows_df(dataframe, row_names):
     return dataframe.loc[row_names]
 
 
-def count_occurences(df):
+def count_occurences_in_row(df):
     """
 
-    :param df: dataframe in which we want to count the occurences
+    :param df: dataframe in which we want to count the occurences of MG
     :return: dataframe with col = MG names, row = #occurences
     """
     occurences = []
@@ -129,13 +129,26 @@ def count_occurences(df):
     occurences.to_frame()
     return occurences
 
+
+def count_occurences_in_columns(df):
+    """
+
+    :param df: dataframe in which we want to count the occurences of OG
+    :return: dataframe with col = MG names, row = #occurences
+    """
+    occurences = []
+    occurences = df.apply(lambda row: sum(row == 1), axis=0)
+    occurences.to_frame()
+    return occurences
+
+
 def create_diagram(df):
     """
 
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
     :return:
     """
-    #TODO return = histogram?
+    # TODO return = histogram?
     x = df.to_numpy()
     occur_same_class = []
     occur_diff_class = []
