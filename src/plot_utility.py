@@ -13,7 +13,7 @@ list_of_classes = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "
 
 def create_matrix(string):
     """
-    careful! you don't know the order of the MG! The OG are sorted by name.
+    careful! you don't know the order of the MG in the resulting  matrix! The OG are sorted by name.
     :param string: (relative) path of dictionary
     :return: Matrix with 0 and 1
     """
@@ -36,6 +36,10 @@ def last_27chars(string):
 
 
 def create_table(string):
+    """
+    :param string: (relative) path of directory
+    :return: dataframe, names of original graphs, names of matching graphs
+    """
     path = create_abs_path(string)
     list_of_files = glob.glob(path + "/*.txt")  # abs path of all txt files in the folder
 

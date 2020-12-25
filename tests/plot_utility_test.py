@@ -19,6 +19,6 @@ class MyTestCase(unittest.TestCase):
     def test_create_histogram(self):
         # import MG A dataframe
         df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
-                           ".9_train/MG_A_end_df.csv")
+                         ".9_train/MG_A_end_df.csv")
         create_diagram(df)
         assert True

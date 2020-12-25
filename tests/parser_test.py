@@ -7,7 +7,8 @@ from src.parser import read_graphs_with_cxl_all_sets
 from src.parser import read_graphs_with_cxl
 from src.parser import get_iso_results
 from src.parser import read_txt_file
-from src.parser import get_names_MG
+from src.parser import get_original_graphs
+from src.parser import get_matching_graphs_from_folder
 
 
 # some tests may fail because in src.parser create_cxl_files the path is hard coded...
@@ -94,8 +95,15 @@ class TestParser():
         assert result[1] == 1
         assert result[2] == 0
 
+    def test_get_original_graphs(self):
+        train_graphs, validation_graphs, test_graphs, set_of_labels = get_original_graphs()
 
-    def test_get_names_MG(self):
-        get_names_MG("letter_results/pruning_cost_1.6_dist_0.9_train", "A")
+        assert len(train_graphs) == 750
+        assert len(validation_graphs) == 750
+        assert len(test_graphs) == 750
+        assert len(set_of_labels) == 15
 
-        assert True
+    def test_get_matching_graphs_from_folder(self):
+        matching_graphs = get_matching_graphs_from_folder("Data/vero_folder_letter/matching_graphs_pruning_costs_1.6")
+        assert len(matching_graphs) == 1200
+

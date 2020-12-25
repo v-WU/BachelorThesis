@@ -5,6 +5,7 @@ import glob
 import re
 import numpy as np
 
+list_of_classes = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "X", "Y", "Z"]
 
 def create_abs_path(string):
     """
@@ -206,27 +207,39 @@ def read_txt_file(string):
     return name_matching, name_orginal, data
 
 
-def get_names_MG(string, graphclass):
-    '''
-
-    :param string: (relative) path of file where the data set is stored
-    :param graphclass: e.g "A"
-    :return: names of all the matching graphs from class e.g. "A"
-    '''
-    names = []
-    path = create_abs_path(string)
-    list_of_files = glob.glob(path + "/*.txt")  # abs path of all txt files in the folder
-
-    graphclass = graphclass.upper()
-
-    for file in list_of_files:
-        matching_graph, original_graphs, data = read_txt_file(file)
-        for name in matching_graph:
-            None
-
-
-
-    return
-
 def last_27chars(string):
     return string[-23:]
+
+
+def get_original_graphs():
+    """
+    get all original graphs (training set, validation set, test set)
+    :return: 4 arrays (train_graphs, validation_graphs, test_graphs, set_of_labels)
+    """
+    train_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/train.cxl")
+    # print("number of training graphs: " + str(len(train_graphs)))  # 750
+
+    validation_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/validation.cxl")
+    # print("number of validation graphs: " + str(len(validation_graphs)))  # 750
+
+    test_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/test.cxl")
+    # print("number of test graphs: " + str(len(test_graphs)))  # 750
+
+    return train_graphs, validation_graphs, test_graphs, set_of_labels
+
+
+def get_matching_graphs_from_folder(string):
+    """
+    :param string: (relative) path of folder e.g. "Data/vero_folder_letter_matching_graphs_no_pruning_costs_0.6"
+    :return: array with all the matching graphs from this folder
+    """
+    matching_graphs = []
+    list_of_folders = []
+
+    for letter in list_of_classes:
+        list_of_folders.append(string + "/graphml_files/" + letter)
+
+    for folder in list_of_folders:
+        matching_graphs = matching_graphs + read_graphs_from_folder_structure(folder)
+
+    return matching_graphs
