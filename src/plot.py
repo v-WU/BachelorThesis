@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 from matplotlib.ticker import StrMethodFormatter
 
 from src.plot_utility import create_matrix
 from src.parser import create_abs_path
 from src.parser import read_txt_file
 from src.plot_utility import create_table
-import re
 
 list_of_classes = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "X", "Y", "Z"]
 
@@ -80,7 +80,7 @@ def count_occur_in_rest_class(df):
 path = create_abs_path("letter_results/pruning_cost_1.6_dist_0.9_train")
 
 df, orig_names, mg_names = create_table("letter_results/pruning_cost_1.6_dist_0.9_train")
-# df.to_excel("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0.9_test/isomorphism_table.xlsx")
+df.to_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0.9_train/isomorphism_table.csv")
 
 # Split dataframe into subparts
 # for class_nam in list_of_classes:
@@ -100,25 +100,25 @@ df, orig_names, mg_names = create_table("letter_results/pruning_cost_1.6_dist_0.
 
 # split dataframe into subparts from class A
 
-filtered_og_by_A = filter_original_graph_list_by_class(orig_names, "A")
-filtered_mg_by_A = filter_matching_graph_list_by_class(mg_names, "A")
-
-df_mg_a = get_subset_rows_df(df, filtered_mg_by_A)
-# # print(df_mg_a)
+# filtered_og_by_A = filter_original_graph_list_by_class(orig_names, "A")
+# filtered_mg_by_A = filter_matching_graph_list_by_class(mg_names, "A")
 #
-df_mg_a_og_a = get_subset_columns_df(df_mg_a, set(orig_names) - (set(orig_names) - set(filtered_og_by_A))) #left with og A
-# print("Data frame mg a, og a: " + str(df_mg_a_og_a))
-#
-df_mg_a_og_rest = get_subset_columns_df(df_mg_a, set(orig_names) - set(filtered_og_by_A)) #left with og others
-# # print(df_mg_a_og_rest)
-#
-new_df = count_occur_in_corr_class(df_mg_a_og_a)
-# # print(new_df)
-#
-new_df_2 = count_occur_in_rest_class(df_mg_a_og_rest)
-# # print(new_df_2)
-#
-end_df = pd.concat([new_df, new_df_2], axis=1)
-end_df.rename(columns={0: 'same class', 1: 'different classes'}, inplace=True)
-print("end data frame: " + str(end_df))
-end_df.to_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0.9_train/MG_A_end_df.csv")
+# df_mg_a = get_subset_rows_df(df, filtered_mg_by_A)
+# # # print(df_mg_a)
+# #
+# df_mg_a_og_a = get_subset_columns_df(df_mg_a, set(orig_names) - (set(orig_names) - set(filtered_og_by_A))) #left with og A
+# # print("Data frame mg a, og a: " + str(df_mg_a_og_a))
+# #
+# df_mg_a_og_rest = get_subset_columns_df(df_mg_a, set(orig_names) - set(filtered_og_by_A)) #left with og others
+# # # print(df_mg_a_og_rest)
+# #
+# new_df = count_occur_in_corr_class(df_mg_a_og_a)
+# # # print(new_df)
+# #
+# new_df_2 = count_occur_in_rest_class(df_mg_a_og_rest)
+# # # print(new_df_2)
+# #
+# end_df = pd.concat([new_df, new_df_2], axis=1)
+# end_df.rename(columns={0: 'same class', 1: 'different classes'}, inplace=True)
+# print("end data frame: " + str(end_df))
+# end_df.to_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0.9_train/MG_A_end_df.csv")

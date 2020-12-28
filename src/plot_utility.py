@@ -146,13 +146,13 @@ def count_occurences_in_columns(df):
     return occurences
 
 
-def create_diagram(df):
+def create_diagram(df, letter):
     """
 
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
     :return:
     """
-    # TODO return = histogram?
+    # TODO return histogram and save it at the same time? And check the test...
     x = df.to_numpy()
     occur_same_class = []
     occur_diff_class = []
@@ -179,10 +179,44 @@ def create_diagram(df):
     rects1 = ax.bar(y, height=sorted_occur_same_class, label='same')
     rects2 = ax.bar(y, height=sorted_occur_diff_class, label='different')
 
+    ax.set_title('Matching Graphs of Class ' + letter)
     ax.set_ylabel('Number of Occurences')
-    ax.set_xlabel('Number of Matching Graphs')
+    ax.set_xlabel('Matching Graphs')
     ax.legend()
 
     fig.tight_layout()
     plt.show()
     return
+
+
+def create_df_for_bsc(df, orig_names, mg_names, letter):
+    """
+    :param df: dataframe with all the data
+    :param orig_names: list of original graph names
+    :param mg_names: list of matching graph names
+    :param letter: letter class as a string e.g. "A"
+    :return: dataframe with occurences for the same class and occurences for the other classes (all in 1)
+    """
+    names_filtered_by_og = filter_original_graph_list_by_class(orig_names, letter)
+    names_filtered_by_mg = filter_matching_graph_list_by_class(mg_names, letter)
+
+    # create necessary subdataframes
+    df_mg = get_subset_rows_df(df, names_filtered_by_mg)  # MG from 1 class with OG from all classes
+    df_mg_og = get_subset_columns_df(df_mg, set(orig_names) - set(
+        names_filtered_by_og))  # MG from 1 class with OG from 1 (same) class
+    df_mg_og_rest = get_subset_columns_df(df_mg, set(orig_names) - (
+            set(orig_names) - set(names_filtered_by_og)))  # MG from 1 class with OG from 14 (other) classes
+
+    # count occurences in the subdataframes
+    occur_df_mg_og = count_occurences_in_row(df_mg_og)
+    occur_df_mg_og_rest = count_occurences_in_row(df_mg_og_rest)
+
+    # create end dataframe with the occurences
+    end_df = pd.concat([occur_df_mg_og, occur_df_mg_og_rest], axis=1)
+    end_df.rename(columns={0: 'same class', 1: 'different classes'}, inplace=True)
+
+    # TODO write to csv here? and check test
+
+    # print("end data frame: " + str(end_df))
+
+    return end_df
