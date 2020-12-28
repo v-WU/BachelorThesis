@@ -230,7 +230,7 @@ def get_original_graphs():
 
 def get_matching_graphs_from_folder(string):
     """
-    :param string: (relative) path of folder e.g. "Data/vero_folder_letter_matching_graphs_no_pruning_costs_0.6"
+    :param string: (relative) path of folder e.g. "Data/vero_folder_letter/matching_graphs_no_pruning_costs_0.6"
     :return: array with all the matching graphs from this folder
     """
     matching_graphs = []

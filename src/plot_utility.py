@@ -149,6 +149,7 @@ def count_occurences_in_columns(df):
 def create_diagram(df, letter):
     """
 
+    :param letter: string e.g. "A" (needed for the diagram title)
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
     :return:
     """
@@ -180,7 +181,7 @@ def create_diagram(df, letter):
     rects2 = ax.bar(y, height=sorted_occur_diff_class, label='different')
 
     ax.set_title('Matching Graphs of Class ' + letter)
-    ax.set_ylabel('Number of Occurences')
+    ax.set_ylabel('Number of Occurrences')
     ax.set_xlabel('Matching Graphs')
     ax.legend()
 
