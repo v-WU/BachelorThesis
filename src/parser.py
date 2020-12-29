@@ -217,13 +217,8 @@ def get_original_graphs():
     :return: 4 arrays (train_graphs, validation_graphs, test_graphs, set_of_labels)
     """
     train_graphs, set_of_labels = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/train.cxl")
-    # print("number of training graphs: " + str(len(train_graphs)))  # 750
-
     validation_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/validation.cxl")
-    # print("number of validation graphs: " + str(len(validation_graphs)))  # 750
-
     test_graphs, _ = read_graphs_with_cxl("Data/vero_folder_letter/letter/graphmlFiles", "/test.cxl")
-    # print("number of test graphs: " + str(len(test_graphs)))  # 750
 
     return train_graphs, validation_graphs, test_graphs, set_of_labels
 

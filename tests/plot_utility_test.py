@@ -22,6 +22,7 @@ class MyTestCase(unittest.TestCase):
         df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
                          ".9_train/MG_A_end_df.csv")
         create_diagram(df, "A")
+
         assert True
 
     def test_create_df_for_bsc(self):

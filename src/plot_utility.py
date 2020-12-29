@@ -186,6 +186,8 @@ def create_diagram(df, letter):
     ax.legend()
 
     fig.tight_layout()
+    # fig.savefig("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
+    #                      ".9_train/experimental.jpg")
     plt.show()
     return
 
