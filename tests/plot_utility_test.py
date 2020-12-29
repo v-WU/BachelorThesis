@@ -13,16 +13,15 @@ class MyTestCase(unittest.TestCase):
         assert len(M) == 1200
 
     def test_create_table(self):
-        df, names_OG, names_MG = create_table("letter_results/pruning_cost_1.6_dist_0.9_train")
+        df, names_OG, names_MG = create_table("letter_results/pruning_cost_1.6_dist_0.9_test")
         assert len(df) == 1200  # number of MG
         assert len(df.columns) == 750  # number of OG in train set
 
-    def test_create_histogram(self):
+    def test_create_diagram(self):
         # import MG A dataframe
         df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
                          ".9_train/MG_A_end_df.csv")
-        create_diagram(df, "A")
-
+        create_diagram(df, "A", "letter_results/pruning_cost_1.6_dist_0.9_train")
         assert True
 
     def test_create_df_for_bsc(self):

@@ -1,7 +1,7 @@
 import sys
 
 from ullmanAlgorithm import UllmanAlgorithm
-from src.parser import create_abs_path
+from src.parser import create_abs_path, get_matching_graphs_from_folder
 
 
 def create_txt_files(path, matchingGraphs, originalGraphSubset):

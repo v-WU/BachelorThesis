@@ -60,6 +60,8 @@ def create_table(string):
     overall_data = np.array(overall_data)
 
     df = pd.DataFrame(data=overall_data, index=names_MG, columns=names_OG)
+    df.to_csv(path + "/isomorphism_table.csv")
+
     return df, names_OG, names_MG
 
 
@@ -146,14 +148,16 @@ def count_occurences_in_columns(df):
     return occurences
 
 
-def create_diagram(df, letter):
+def create_diagram(df, letter, path):
     """
 
     :param letter: string e.g. "A" (needed for the diagram title)
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
     :return:
     """
-    # TODO return histogram and save it at the same time? And check the test...
+    path = create_abs_path(path)
+    path += "/diagrams"
+
     x = df.to_numpy()
     occur_same_class = []
     occur_diff_class = []
@@ -186,9 +190,8 @@ def create_diagram(df, letter):
     ax.legend()
 
     fig.tight_layout()
-    # fig.savefig("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
-    #                      ".9_train/experimental.jpg")
-    plt.show()
+    fig.savefig(path + "/MG_class_" + letter + ".jpg")
+    # plt.show()
     return
 
 
