@@ -143,7 +143,7 @@ def count_occurences_in_columns(df):
     :return: dataframe with col = MG names, row = #occurences
     """
     occurences = []
-    occurences = df.apply(lambda row: sum(row == 1), axis=0)
+    occurences = df.apply(np.sum, axis=0)
     occurences.to_frame()
     return occurences
 
@@ -248,3 +248,32 @@ def create_diagram_for_F(df, letter, path):
     ax.figure.savefig(path + "/MGs_class_" + letter + ".jpg")
 
     return
+
+
+def create_df_for_F(df, orig_names, mg_names, letter, set_of_classes):
+    """
+    :param set_of_classes: all original classes A, F, E, ..., Z
+    :param df: dataframe with all the data
+    :param orig_names: list of original graph names
+    :param mg_names: list of matching graph names
+    :param letter: letter class as a string e.g. "A"
+    :return: dataframe with MGs from 1 class in all OG classes. Index = A, E, F, ... , Z. Columns = e.g. MGs A.
+    """
+    names_filtered_by_mg = filter_matching_graph_list_by_class(mg_names, letter)
+
+    data = []
+
+    for cl in set_of_classes:
+        names_filtered_by_og = filter_original_graph_list_by_class(orig_names, cl)
+        subdf1 = create_subpart_df(df, names_filtered_by_og, names_filtered_by_mg)  # subdf with MGs from 'letter' and OGs from 1 class
+        subdf2 = count_occurences_in_row(subdf1)  # subdf with occurrences per MG in 1 whole OG class
+        occur = []
+        len_of_subdf2 = len(subdf2)
+        for i in range(len_of_subdf2):
+            occur.append(subdf2[i])
+        Sum = sum(occur)  # total sum of MG from class letter appearing in OG from class cl
+        data.append(Sum)
+
+    end_df = pd.DataFrame(data, columns=['MGs ' + letter], index=set_of_classes)
+
+    return end_df

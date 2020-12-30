@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from src.plot_utility import create_matrix
+from src.plot_utility import create_matrix, create_df_for_F
 from src.plot_utility import create_table
 from src.plot_utility import create_diagram_for_bsc
 from src.plot_utility import create_df_for_bsc
@@ -48,4 +48,14 @@ class MyTestCase(unittest.TestCase):
 
         # uncomment next line to test, but check path-folder-situation
         # create_diagram_for_F(df, "A", path)
+        assert True
+
+
+    def test_create_df_for_F(self):
+        # create df containing all data
+        df2, names_OG, names_MG = create_table("letter_results/pruning_cost_1.6_dist_0.9_train")
+        set_of_classes = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "X", "Y", "Z"]
+
+        create_df_for_F(df2, names_OG, names_MG, "A", set_of_classes)
+
         assert True
