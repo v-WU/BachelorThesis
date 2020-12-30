@@ -3,8 +3,9 @@ import pandas as pd
 
 from src.plot_utility import create_matrix
 from src.plot_utility import create_table
-from src.plot_utility import create_diagram
+from src.plot_utility import create_diagram_for_bsc
 from src.plot_utility import create_df_for_bsc
+from src.plot_utility import create_diagram_for_F
 
 
 class MyTestCase(unittest.TestCase):
@@ -17,11 +18,11 @@ class MyTestCase(unittest.TestCase):
         assert len(df) == 1200  # number of MG
         assert len(df.columns) == 750  # number of OG in train set
 
-    def test_create_diagram(self):
+    def test_create_diagram_for_bsc(self):
         # import MG A dataframe
         df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
                          ".9_train/MG_A_end_df.csv")
-        create_diagram(df, "A", "letter_results/pruning_cost_1.6_dist_0.9_train")
+        create_diagram_for_bsc(df, "A", "letter_results/pruning_cost_1.6_dist_0.9_train")
         assert True
 
     def test_create_df_for_bsc(self):
@@ -37,4 +38,14 @@ class MyTestCase(unittest.TestCase):
         # print("imported df = \n"+str(df))
         # new_df = create_df_for_bsc(df, names_OG, names_MG, "A")
         # print("imported subdf = \n " + str(new_df))
+        assert True
+
+    def test_create_diagram_for_F(self):
+        # create test dataframe
+        data = {"MGs A": [10, 5, 5]}
+        df = pd.DataFrame(data, index=['A', 'E', 'F'], columns=['MGs A'])
+        path= "/letter_results/pruning_cost_1.6_dist_0.9_train"
+
+        # uncomment next line to test, but check path-folder-situation
+        # create_diagram_for_F(df, "A", path)
         assert True

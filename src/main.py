@@ -8,7 +8,7 @@ import random
 from src.parser import get_original_graphs
 from src.parser import get_matching_graphs_from_folder
 from src.runHelper import create_txt_files
-from plot_utility import create_table, create_diagram, create_df_for_bsc
+from plot_utility import create_table, create_diagram_for_bsc, create_df_for_bsc
 
 pruning = ["pruning", "no_pruning"]
 costs = [0.2, 0.3, 0.4, 0.6, 0.9, 1.6]
@@ -29,4 +29,4 @@ for pr in pruning:
 
             for cls in set_of_labels:
                 subdf = create_df_for_bsc(df, names_OG, names_MG, cls)
-                create_diagram(subdf, cls, path)
+                create_diagram_for_bsc(subdf, cls, path)

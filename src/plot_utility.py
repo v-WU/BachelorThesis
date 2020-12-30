@@ -148,9 +148,10 @@ def count_occurences_in_columns(df):
     return occurences
 
 
-def create_diagram(df, letter, path):
+def create_diagram_for_bsc(df, letter, path):
     """
 
+    :param path: (relative) path of folder where the txt files and the df was stored --> path += "/diagrams
     :param letter: string e.g. "A" (needed for the diagram title)
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
     :return:
@@ -221,8 +222,29 @@ def create_df_for_bsc(df, orig_names, mg_names, letter):
     end_df = pd.concat([occur_df_mg_og, occur_df_mg_og_rest], axis=1)
     end_df.rename(columns={0: 'same class', 1: 'different classes'}, inplace=True)
 
-    # TODO write to csv here? and check test
-
-    # print("end data frame: " + str(end_df))
-
     return end_df
+
+
+def create_diagram_for_F(df, letter, path):
+    """
+
+    :param df: colums = MGs A, index = A, E, F, ...
+    :param letter:
+    :param path: (relative) path of folder where the txt and csv files are --> path += "/diagrams_for_F
+    :return:
+    """
+
+    path = create_abs_path(path)
+    path += "/diagrams_for_F"
+
+    # df2 = pd.DataFrame({'OG': ['A', 'E', 'F'], 'Occurrences': [10, 5, 5]})
+    # ax = df2.plot.bar(x='OG', y='Occurrences', rot=0)
+
+    ax = df.plot.bar(rot=0)
+    ax.set_xlabel('Original Graph Classes')
+    ax.set_title('Occurrences of MGs Class ' + letter)
+
+    plt.show()
+    ax.figure.savefig(path + "/MGs_class_" + letter + ".jpg")
+
+    return
