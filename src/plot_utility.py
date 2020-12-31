@@ -194,7 +194,9 @@ def create_diagram_for_bsc(df, letter, path):
     fig.savefig(path + "/MG_class_" + letter + ".jpg")
 
     plt.cla()
-    plt.close(fig)
+    plt.clf()
+    plt.close()
+
     # plt.show()
     return
 
@@ -249,7 +251,8 @@ def create_diagram_for_F(df, letter, path):
 
     # plt.show()
     ax.figure.savefig(path + "/MGs_class_" + letter + ".jpg")
-
+    plt.clf()
+    plt.close()
     return
 
 

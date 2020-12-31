@@ -22,7 +22,7 @@ set_of_labels = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "X"
 
 dict = {"train": train_graphs, "test": test_graphs, "validation": validation_graphs}
 
-
+# TODO for no_pruning_cost_1.6_dist_0.9 all sets
 for pr in pruning:
     for cost in costs:
         mg_path = "Data/vero_folder_letter/matching_graphs_{}_costs_{}".format(pr, cost)
