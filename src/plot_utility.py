@@ -244,7 +244,7 @@ def create_diagram_for_F(df, letter, path):
     ax.set_xlabel('Original Graph Classes')
     ax.set_title('Occurrences of MGs Class ' + letter)
 
-    plt.show()
+    # plt.show()
     ax.figure.savefig(path + "/MGs_class_" + letter + ".jpg")
 
     return
