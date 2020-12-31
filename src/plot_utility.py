@@ -177,7 +177,7 @@ def create_diagram_for_bsc(df, letter, path):
 
     # no idea why.
     y = []
-    for j in range(80):
+    for j in range(number_of_rows):
         y.append(j)
 
     # creating plot
@@ -192,6 +192,9 @@ def create_diagram_for_bsc(df, letter, path):
 
     fig.tight_layout()
     fig.savefig(path + "/MG_class_" + letter + ".jpg")
+
+    plt.cla()
+    plt.close(fig)
     # plt.show()
     return
 

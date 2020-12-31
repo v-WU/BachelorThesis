@@ -20,9 +20,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_create_diagram_for_bsc(self):
         # import MG A dataframe
-        df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_1.6_dist_0"
-                         ".9_train/MG_A_end_df.csv")
-        create_diagram_for_bsc(df, "A", "letter_results/pruning_cost_1.6_dist_0.9_train")
+        df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_0.2_dist_0.9_train/diagrams/Mgs_A.csv")
+        create_diagram_for_bsc(df, "A", "letter_results/pruning_cost_0.2_dist_0.9_train")
         assert True
 
     def test_create_df_for_bsc(self):
