@@ -25,7 +25,7 @@ for pr in pruning:
         mg_path = "Data/vero_folder_letter/matching_graphs_{}_costs_{}".format(pr, cost)
         matching_graphs = get_matching_graphs_from_folder(mg_path)
         for set_type in set_types:
-            path = "{}_cost_{}_dist_0.9_{}".format(pr, cost, set_type)
+            path = "/letter_results/{}_cost_{}_dist_0.9_{}".format(pr, cost, set_type)
             create_txt_files(path, matching_graphs, dict[set_type])
             df, names_OG, names_MG = create_table(path)
             df.to_csv(path + "/isomorphism_table.csv")
