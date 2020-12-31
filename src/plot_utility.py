@@ -277,3 +277,38 @@ def create_df_for_F(df, orig_names, mg_names, letter, set_of_classes):
     end_df = pd.DataFrame(data, columns=['MGs ' + letter], index=set_of_classes)
 
     return end_df
+
+
+def create_df_for_F_2(df, orig_names, mg_names, set_of_classes, path):
+    """
+
+    :param df:
+    :param orig_names:
+    :param mg_names:
+    :param set_of_classes:
+    :return: dataframe with index=Original Graphs, columns=classes of MG's
+    """
+    path = create_abs_path(path)
+    path += "/diagrams_for_F"
+
+    parts = []  # dataframes with same index that need to be concat() in the end
+
+    for cl in set_of_classes:
+        names_filtered_by_mg = filter_matching_graph_list_by_class(mg_names, cl)
+        subdf1 = create_subpart_df(df, orig_names, names_filtered_by_mg)
+        var = subdf1.T
+        subdf2 = count_occurences_in_row(var)
+        subdf2.index = orig_names
+        subdf2.columns = ['MGs ' + cl]
+        parts.append(subdf2)
+
+    # print(parts)
+
+    end_df = pd.concat(parts, axis=1)
+    end_df.columns = set_of_classes
+    # print(end_df)
+
+    end_df.to_csv(path + "/original_graph_table.csv")
+    end_df.to_excel(path + "/original_graph_table.xlsx")
+
+    return end_df

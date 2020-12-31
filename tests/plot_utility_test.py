@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from src.plot_utility import create_matrix, create_df_for_F
+from src.plot_utility import create_matrix, create_df_for_F, create_df_for_F_2
 from src.plot_utility import create_table
 from src.plot_utility import create_diagram_for_bsc
 from src.plot_utility import create_df_for_bsc
@@ -62,5 +62,15 @@ class MyTestCase(unittest.TestCase):
         set_of_classes = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "X", "Y", "Z"]
 
         end_df = create_df_for_F(df2, names_OG, names_MG, "A", set_of_classes)
+        print(end_df)
+        assert True
+
+
+    def test_create_df_for_F_2(self):
+        # create df containing all data
+        df2, names_OG, names_MG = create_table("letter_results/pruning_cost_1.6_dist_0.9_train")
+        set_of_classes = ["A", "E", "F", "H", "I", "K", "L", "M", "N", "T", "V", "W", "X", "Y", "Z"]
+
+        end_df = create_df_for_F_2(df2, names_OG, names_MG, set_of_classes, "letter_results/pruning_cost_1.6_dist_0.9_train")
         print(end_df)
         assert True
