@@ -3,6 +3,7 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy.ma as ma
 
 from src.parser import get_iso_results
 from src.parser import create_abs_path
@@ -175,15 +176,19 @@ def create_diagram_for_bsc(df, letter, path):
     sorted_occur_same_class = np.flip(sorted_occur_same_class)  # highest first
     sorted_occur_diff_class = np.flip(sorted_occur_diff_class)  # highest first
 
-    # no idea why.
-    y = []
-    for j in range(number_of_rows):
-        y.append(j)
-
     # creating plot
+    x1 = x2 = np.arange(number_of_rows)  # makes 80 'bins' on the x-axis
+    y1 = sorted_occur_same_class
+    y2 = sorted_occur_diff_class
+
+    # create masks
+    mask1 = ma.where(y1 >= y2)
+    mask2 = ma.where(y2 >= y1)
+
     fig, ax = plt.subplots()
-    rects1 = ax.bar(y, height=sorted_occur_same_class, label='same')
-    rects2 = ax.bar(y, height=sorted_occur_diff_class, label='different')
+    p1 = ax.bar(x1[mask1], y1[mask1], color='steelblue', label='same')
+    p2 = ax.bar(x2, y2, color='darkorange', label='different')
+    p3 = ax.bar(x1[mask2], y1[mask2], color='steelblue')
 
     ax.set_title('Matching Graphs of Class ' + letter)
     ax.set_ylabel('Number of Occurrences')
@@ -192,12 +197,12 @@ def create_diagram_for_bsc(df, letter, path):
 
     fig.tight_layout()
     fig.savefig(path + "/MG_class_" + letter + ".jpg")
+    # plt.show()
 
     plt.cla()
     plt.clf()
     plt.close()
 
-    # plt.show()
     return
 
 
@@ -271,7 +276,8 @@ def create_df_for_F(df, orig_names, mg_names, letter, set_of_classes):
 
     for cl in set_of_classes:
         names_filtered_by_og = filter_original_graph_list_by_class(orig_names, cl)
-        subdf1 = create_subpart_df(df, names_filtered_by_og, names_filtered_by_mg)  # subdf with MGs from 'letter' and OGs from 1 class
+        subdf1 = create_subpart_df(df, names_filtered_by_og,
+                                   names_filtered_by_mg)  # subdf with MGs from 'letter' and OGs from 1 class
         subdf2 = count_occurences_in_row(subdf1)  # subdf with occurrences per MG in 1 whole OG class
         occur = []
         len_of_subdf2 = len(subdf2)
