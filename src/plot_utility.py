@@ -98,6 +98,8 @@ def filter_matching_graph_list_by_class(graph_name_list, class_name):
 
     for graph_name in graph_name_list:
         parsed_line = re.search('(\d+_\d+)([a-zA-Z])(.*)', graph_name)
+        if parsed_line is None:
+            parsed_line = re.search('(\d+_)([a-zA-Z])(.*)', graph_name)
         cl_nam = parsed_line.group(2)
         if cl_nam == class_name:
             filtered_list.append(graph_name)

@@ -16,10 +16,10 @@ from plot_utility import create_table, create_diagram_for_bsc, create_df_for_bsc
 # TODO delete all bsc .jpg and redo the bsc diagrams
 
 # TODO for no_pruning_cost_1.6_dist_0.9 all sets
-# pruning = ["no_pruning"]
-# costs = [1.6]
-pruning = ["pruning", "no_pruning"]
-costs = [0.2, 0.3, 0.4, 0.6, 0.9, 1.6]
+pruning = ["no_pruning"]
+costs = [1.6]
+# pruning = ["pruning", "no_pruning"]
+# costs = [0.2, 0.3, 0.4, 0.6, 0.9, 1.6]
 set_types = ["train", "validation", "test"]
 
 # get original graphs
@@ -32,17 +32,17 @@ for pr in pruning:
     for cost in costs:
         mg_path = "Data/vero_folder_letter/matching_graphs_{}_costs_{}".format(pr, cost)
         matching_graphs = get_matching_graphs_from_folder(mg_path)
-        # matching_graphs = matching_graphs[:5]
+        matching_graphs = matching_graphs[:5]
         for set_type in set_types:
             path = "letter_results/{}_cost_{}_dist_0.9_{}".format(pr, cost, set_type)
             create_txt_files(path, matching_graphs, dict[set_type])  # comment when doing only the bsc diagrams
             df, names_OG, names_MG = create_table(path)
-            path2 = create_abs_path(path)  # comment when doing only the bsc diagrams
+            path2 = create_abs_path(path)
             df.to_csv(path2 + "/isomorphism_table.csv")  # comment when doing only the bsc diagrams
             df.to_excel(path2 + "/isomorphism_table.xlsx")  # comment when doing only the bsc diagrams
 
             for cls in set_of_labels:
-                subdf = create_df_for_bsc(df, names_OG, names_MG, cls)
+                subdf = create_df_for_bsc(df, names_OG, names_MG, cls)  # comment when doing only the bsc diagrams
                 subdf.to_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")  # comment when doing only the bsc diagrams
                 subdf.to_excel(path2 + "/diagrams/Mgs_" + cls + ".xlsx")  # comment when doing only the bsc diagrams
                 test = pd.read_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")
