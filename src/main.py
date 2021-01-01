@@ -32,7 +32,7 @@ for pr in pruning:
     for cost in costs:
         mg_path = "Data/vero_folder_letter/matching_graphs_{}_costs_{}".format(pr, cost)
         matching_graphs = get_matching_graphs_from_folder(mg_path)
-        matching_graphs = matching_graphs[:5]
+        # matching_graphs = matching_graphs[:5]
         for set_type in set_types:
             path = "letter_results/{}_cost_{}_dist_0.9_{}".format(pr, cost, set_type)
             create_txt_files(path, matching_graphs, dict[set_type])  # comment when doing only the bsc diagrams
@@ -45,8 +45,8 @@ for pr in pruning:
                 subdf = create_df_for_bsc(df, names_OG, names_MG, cls)  # comment when doing only the bsc diagrams
                 subdf.to_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")  # comment when doing only the bsc diagrams
                 subdf.to_excel(path2 + "/diagrams/Mgs_" + cls + ".xlsx")  # comment when doing only the bsc diagrams
-                test = pd.read_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")
-                create_diagram_for_bsc(test, cls, path)  # get saved in folder
+                # test = pd.read_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")
+                # create_diagram_for_bsc(test, cls, path)  # get saved in folder
 
                 # comment when doing only the bsc diagrams
                 subdf2 = create_df_for_F(df, names_OG, names_MG, cls, set_of_labels)
