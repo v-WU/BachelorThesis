@@ -188,18 +188,18 @@ def create_diagram_for_bsc(df, letter, path):
     mask2 = ma.where(y2 >= y1)
 
     fig, ax = plt.subplots()
-    p1 = ax.bar(x1[mask1], y1[mask1], color='steelblue')
-    p2 = ax.bar(x2, y2, color='darkorange')
-    p3 = ax.bar(x1[mask2], y1[mask2], color='steelblue')
+    p1 = ax.bar(x1[mask1], y1[mask1], color='darkorange')
+    p2 = ax.bar(x2, y2, color='steelblue')
+    p3 = ax.bar(x1[mask2], y1[mask2], color='darkorange')
 
     ax.set_title('Matching Graphs of Class ' + letter)
     ax.set_ylabel('Number of Occurrences')
     ax.set_xlabel('Matching Graphs')
     ax.legend()
     if len(p1.patches) == 0:
-        plt.legend((p2, p3), ('different', 'same'))
+        plt.legend((p2, p3), ('same', 'different'))
     else:
-        plt.legend((p1, p2), ('same', 'different'))
+        plt.legend((p1, p2), ('different', 'same'))
 
     fig.tight_layout()
     fig.savefig(path + "/MG_class_" + letter + ".jpg")
