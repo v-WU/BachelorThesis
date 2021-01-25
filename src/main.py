@@ -10,7 +10,7 @@ from src.parser import get_original_graphs, create_abs_path
 from src.parser import get_matching_graphs_from_folder
 from src.runHelper import create_txt_files
 from plot_utility import create_table, create_diagram_for_bsc, create_df_for_bsc, create_df_for_F, create_diagram_for_F, \
-    create_df_for_F_2
+    create_df_for_F_2, normalize_dataframe
 
 
 # TODO delete all bsc .jpg and redo the bsc diagrams
@@ -43,7 +43,8 @@ for pr in pruning:
                 # subdf.to_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")  # comment when doing only the bsc diagrams
                 # subdf.to_excel(path2 + "/diagrams/Mgs_" + cls + ".xlsx")  # comment when doing only the bsc diagrams
                 test = pd.read_csv(path2 + "/diagrams/Mgs_" + cls + ".csv")
-                create_diagram_for_bsc(test, cls, path)  # get saved in folder
+                df2 = normalize_dataframe(test)
+                create_diagram_for_bsc(df2, cls, path)  # get saved in folder
 
                 # comment when doing only the bsc diagrams
                 # subdf2 = create_df_for_F(df, names_OG, names_MG, cls, set_of_labels)
