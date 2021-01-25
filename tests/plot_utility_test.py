@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from src.plot_utility import create_matrix, create_df_for_F, create_df_for_F_2
+from src.plot_utility import create_matrix, create_df_for_F, create_df_for_F_2, normalize_dataframe, normalizing
 from src.plot_utility import create_table
 from src.plot_utility import create_diagram_for_bsc
 from src.plot_utility import create_df_for_bsc
@@ -20,8 +20,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_create_diagram_for_bsc(self):
         # import MG A dataframe
-        df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_0.4_dist_0.9_train/diagrams/Mgs_L.csv")
-        create_diagram_for_bsc(df, "L", "letter_results/test")
+        df = pd.read_csv("C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_0.4_dist_0.9_train/diagrams/Mgs_M.csv")
+        create_diagram_for_bsc(df, "M", "letter_results/test")
         assert True
 
     def test_create_df_for_bsc(self):
@@ -72,4 +72,28 @@ class MyTestCase(unittest.TestCase):
 
         end_df = create_df_for_F_2(df2, names_OG, names_MG, set_of_classes, "letter_results/pruning_cost_1.6_dist_0.9_train")
         print(end_df)
+        assert True
+
+    def test_normalize_dataframe(self):
+        #import dataframe
+        df = pd.read_csv(
+            "C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_0.4_dist_0.9_train/diagrams/Mgs_L.csv")
+        print(df)
+        df2 = normalize_dataframe(df)
+        print(df2)
+        assert True
+
+    def test_normalizing(self):
+        x = 14
+        y = normalizing(x)
+        assert y == 1
+
+    def test_create_diagrams_for_bsc2(self):
+        #import dataframe
+        df = pd.read_csv(
+            "C:/Users/zhaox/PycharmProjects/BachelorThesis/letter_results/pruning_cost_0.4_dist_0.9_train/diagrams/Mgs_L.csv")
+        print(df)
+        df2 = normalize_dataframe(df)
+        print(df2)
+        create_diagram_for_bsc(df2, letter="L", path="letter_results/test")
         assert True

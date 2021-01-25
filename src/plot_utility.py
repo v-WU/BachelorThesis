@@ -202,7 +202,7 @@ def create_diagram_for_bsc(df, letter, path):
         plt.legend((p1, p2), ('different', 'same'))
 
     fig.tight_layout()
-    fig.savefig(path + "/MG_class_" + letter + ".jpg")
+    fig.savefig(path + "/MG_class_" + letter + "_norm.jpg")
     # plt.show()
 
     plt.cla()
@@ -330,3 +330,13 @@ def create_df_for_F_2(df, orig_names, mg_names, set_of_classes, path):
     end_df.to_excel(path + "/original_graph_table.xlsx")
 
     return end_df
+
+
+def normalize_dataframe(df):
+    # the names in the columns of the dataframes are swapped!! That's why we normalise the "same class" column.
+    df["same class"] = df["same class"].apply(normalizing)
+    return df
+
+def normalizing(x):
+    return x/14
+
