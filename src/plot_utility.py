@@ -153,7 +153,7 @@ def count_occurences_in_columns(df):
 
 def create_diagram_for_bsc(df, letter, path):
     """
-
+    CAREFUL because the column names in the dfs are swapped, the labeling seems contra intuitive!
     :param path: (relative) path of folder where the txt files and the df was stored --> path += "/diagrams
     :param letter: string e.g. "A" (needed for the diagram title)
     :param df: dataframe with rows = names of MG, columns(2) = #occur in correct class, #occur in other classes
@@ -214,6 +214,8 @@ def create_diagram_for_bsc(df, letter, path):
 
 def create_df_for_bsc(df, orig_names, mg_names, letter):
     """
+    CAREFUL: it returns a df, where the column names are swapped! The first column contains the numbers corresponding to "different classes"
+    and the second column contains the numbers corresponding to "same class"
     :param df: dataframe with all the data
     :param orig_names: list of original graph names
     :param mg_names: list of matching graph names
@@ -337,6 +339,6 @@ def normalize_dataframe(df):
     df["same class"] = df["same class"].apply(normalizing)
     return df
 
-def normalizing(x):
-    return x/14
 
+def normalizing(x):
+    return x / 14
